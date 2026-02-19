@@ -30,14 +30,13 @@ public class Planet : MonoBehaviour
     {
         Initialize();
         GenerateMesh();
-        GenerateColours();  
+        GenerateColours();
     }
-
     void OnValidate()
     {
         Initialize();
         GenerateMesh();
-        GenerateColours();        
+        GenerateColours();
     }
 
     void Initialize()
