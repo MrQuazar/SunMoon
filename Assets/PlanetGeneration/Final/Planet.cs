@@ -26,6 +26,12 @@ public class Planet : MonoBehaviour
     MeshFilter[] meshFilters;
     TerrainFace[] terrainFaces;
 
+    void OnValidate()
+    {
+        Initialize();
+        GenerateMesh();
+        GenerateColours();        
+    }
 
     void Initialize()
     {
@@ -72,6 +78,7 @@ public class Planet : MonoBehaviour
         {
             Initialize();
             GenerateMesh();
+            GenerateColours();
         }
     }
 
@@ -80,6 +87,7 @@ public class Planet : MonoBehaviour
         if (autoUpdate)
         {
             Initialize();
+            GenerateColours();
             GenerateColours();
         }
     }
