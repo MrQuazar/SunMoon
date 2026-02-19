@@ -46,17 +46,17 @@ public class PlayerController : MonoBehaviour
 
         if (useArrowKeys)
         {
-            if (Input.GetKey(KeyCode.LeftArrow)) h -= 1f;
-            if (Input.GetKey(KeyCode.RightArrow)) h += 1f;
-            if (Input.GetKey(KeyCode.UpArrow)) v += 1f;
-            if (Input.GetKey(KeyCode.DownArrow)) v -= 1f;
+            if (Input.GetKey(KeyCode.UpArrow)) h -= 1f;
+            if (Input.GetKey(KeyCode.DownArrow)) h += 1f;
+            if (Input.GetKey(KeyCode.RightArrow)) v += 1f;
+            if (Input.GetKey(KeyCode.LeftArrow)) v -= 1f;
         }
         else
         {
-            if (Input.GetKey(KeyCode.A)) h -= 1f;
-            if (Input.GetKey(KeyCode.D)) h += 1f;
-            if (Input.GetKey(KeyCode.W)) v += 1f;
-            if (Input.GetKey(KeyCode.S)) v -= 1f;
+            if (Input.GetKey(KeyCode.W)) h -= 1f;
+            if (Input.GetKey(KeyCode.S)) h += 1f;
+            if (Input.GetKey(KeyCode.D)) v += 1f;
+            if (Input.GetKey(KeyCode.A)) v -= 1f;
         }
 
         Vector3 normal = GetNormal();
