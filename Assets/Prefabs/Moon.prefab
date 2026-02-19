@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 486907902722732065}
   - component: {fileID: 6491208777690090470}
   - component: {fileID: 1635130846463311762}
+  - component: {fileID: 4401506582225216315}
   m_Layer: 3
   m_Name: Moon
   m_TagString: Player
@@ -132,6 +133,29 @@ CapsuleCollider:
   m_Height: 3
   m_Direction: 1
   m_Center: {x: 0, y: -1, z: 0}
+--- !u!114 &4401506582225216315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2508340270525239493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d743d8be41b87b4eb894a1912a41992, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  convertTime: 3
+  blockTags:
+  - Overgrowth
+  - Thorn
+  - Flower
+  - Grass
+  replacementPrefabs:
+  - {fileID: 4209542921565992774, guid: 96a6dda31a20cba4aacb5729a3cc6962, type: 3}
+  - {fileID: 4209542921565992774, guid: 78d56ca3a1736554288f6566a5d9fc0f, type: 3}
+  - {fileID: 4209542921565992774, guid: e26cd07f365edc64aafcc33cbd80b3a9, type: 3}
+  - {fileID: 4209542921565992774, guid: e3cb2107dcd016d48818a96561c6bab8, type: 3}
 --- !u!1 &4561086131120910116
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,7 +261,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3208996706056882508
 Transform:
   m_ObjectHideFlags: 0
