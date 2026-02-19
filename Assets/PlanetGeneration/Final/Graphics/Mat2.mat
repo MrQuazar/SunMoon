@@ -55,10 +55,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - Vector1_7AD16554: 0
+    - Vector1_7AD16554: -0.39
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _elevationMinMax: {r: -0.14143433, g: 0.14492248, b: 0, a: 0}
+    - _elevationMinMax: {r: -0.07451168, g: 0.093187496, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
