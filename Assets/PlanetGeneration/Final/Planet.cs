@@ -26,11 +26,17 @@ public class Planet : MonoBehaviour
     MeshFilter[] meshFilters;
     TerrainFace[] terrainFaces;
 
+    void Start()
+    {
+        Initialize();
+        GenerateMesh();
+        GenerateColours();
+    }
     void OnValidate()
     {
         Initialize();
         GenerateMesh();
-        GenerateColours();        
+        GenerateColours();
     }
 
     void Initialize()
