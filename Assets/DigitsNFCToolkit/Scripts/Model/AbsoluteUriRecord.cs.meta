@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: 7e7c163e96cb2a94391f11c84b33f9ac
+labels:
+- android
+- ios
+- nfc
+- read
+- write
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 131674
+  packageName: Digits NFC Toolkit
+  packageVersion: 1.6.4
+  assetPath: Assets/DigitsNFCToolkit/Scripts/Model/AbsoluteUriRecord.cs
+  uploadId: 702339

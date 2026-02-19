@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 856217cd1a843ed4fa24f77621557f88
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 131674
+  packageName: Digits NFC Toolkit
+  packageVersion: 1.6.4
+  assetPath: Assets/DigitsNFCToolkit/Scripts/JSON/IJSONSerializable.cs
+  uploadId: 702339

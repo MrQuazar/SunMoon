@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 5af24a2ef65e93346a93dd1b566143e8
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 131674
+  packageName: Digits NFC Toolkit
+  packageVersion: 1.6.4
+  assetPath: Assets/DigitsNFCToolkit/Samples/Scripts/ReadScreenView.cs
+  uploadId: 702339

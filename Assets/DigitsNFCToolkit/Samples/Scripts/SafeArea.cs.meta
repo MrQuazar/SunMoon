@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: dded3be72f7cb4c3796e3b37902c9c09
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 131674
+  packageName: Digits NFC Toolkit
+  packageVersion: 1.6.4
+  assetPath: Assets/DigitsNFCToolkit/Samples/Scripts/SafeArea.cs
+  uploadId: 702339

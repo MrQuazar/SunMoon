@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: de8a4973ae497fc4985e128210ce3408
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 131674
+  packageName: Digits NFC Toolkit
+  packageVersion: 1.6.4
+  assetPath: Assets/DigitsNFCToolkit/Samples/Scripts/WriteScreenView.cs
+  uploadId: 702339

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 06fde99a307bc9c4f8f6bdf1f2c55163
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 131674
+  packageName: Digits NFC Toolkit
+  packageVersion: 1.6.4
+  assetPath: Assets/DigitsNFCToolkit/Samples/Prefabs/SmartPosterRecordItem.prefab
+  uploadId: 702339

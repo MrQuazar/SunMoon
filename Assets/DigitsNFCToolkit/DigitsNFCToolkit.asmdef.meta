@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 64d4acba940ddf140b8272a80021a736
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 131674
+  packageName: Digits NFC Toolkit
+  packageVersion: 1.6.4
+  assetPath: Assets/DigitsNFCToolkit/DigitsNFCToolkit.asmdef
+  uploadId: 702339
