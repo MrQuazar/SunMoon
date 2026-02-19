@@ -112,8 +112,8 @@ public class PlayerController : MonoBehaviour
         {
             Vector2 input = joystick.InputDirection;
 
-            h = input.y;   // left/right
-            v = -input.x;  // flipped forward/back
+            h = -input.y;   // left/right
+            v = input.x;  // flipped forward/back
         }
 
         // Gyro controls for Android
