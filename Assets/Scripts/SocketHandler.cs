@@ -27,7 +27,62 @@ public class SocketHandler : MonoBehaviour
         public Vector3 pos; // Example additional field for position data
     }
 
-    private void Start()
+    [Serializable]
+    public class CreateRoomResponse
+    {
+        public string roomId;
+        public string message;
+    }
+
+    [ContextMenu("Create New Room")]
+    private void CreateNewRoomRequest()
+    {
+        // 1. Create request with a callback
+        var request = HTTPRequest.CreateGet("http://localhost:3000/room/create",
+                                             CreateNewRoomResponse);
+
+        // 3. Send request
+        request.Send();
+    }
+
+    // 4. This callback is called when the request is finished. It might finished because of an error!
+    private void CreateNewRoomResponse(HTTPRequest req, HTTPResponse resp)
+    {
+        switch (req.State)
+        {
+            case HTTPRequestStates.Finished:
+                if (resp.IsSuccess)
+                {
+                    // 5. Here we can process the server's response
+                    Debug.Log("Data received from server:" + resp.DataAsText);
+                    CreateRoomResponse createRoomResponse = new CreateRoomResponse();
+                    JsonUtility.FromJsonOverwrite(resp.DataAsText, createRoomResponse);
+                    if (!string.IsNullOrEmpty(createRoomResponse.roomId))
+                    {
+                        Debug.Log($"Created room with ID: {createRoomResponse.roomId}");
+                        roomID = createRoomResponse.roomId;
+                        JoinRoomWS();
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Room ID is missing in the response.");
+                    }
+                }
+                else
+                {
+                    // 6. Error handling
+                    Debug.Log($"Server sent an error: {resp.StatusCode}-{resp.Message}");
+                }
+                break;
+
+            default:
+                // 6. Error handling
+                Debug.LogError($"Request finished with error! Request state: {req.State}");
+                break;
+        }
+    }
+
+    private void JoinRoomWS()
     {
         // Create WebSocket connection
         ws = new WebSocket(new System.Uri(serverUrl));
@@ -37,7 +92,7 @@ public class SocketHandler : MonoBehaviour
         {
             Debug.Log("Connected to server");
             // After connection, join a room
-            JoinRoom("ABCD");
+            JoinRoom(roomID);
         };
 
         ws.OnMessage += (WebSocket w, string message) =>
