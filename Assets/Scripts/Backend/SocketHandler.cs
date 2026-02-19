@@ -13,7 +13,7 @@ public class SocketHandler : MonoBehaviour
     private WebSocket ws;
 
     // URL to your WebSocket server
-    private string serverUrl = "ws://10.104.77.29:3000/ws"; // Change this to your server URL
+    private string serverUrl = "ws://172.24.144.152:3000/ws"; // Change this to your server URL
 
     [SerializeField] private Transform cube1;
     [SerializeField] private Transform cube2;
@@ -40,7 +40,7 @@ public class SocketHandler : MonoBehaviour
     internal void CreateNewRoomRequest()
     {
         // 1. Create request with a callback
-        var request = HTTPRequest.CreateGet("http://10.104.77.29:3000/room/create",
+        var request = HTTPRequest.CreateGet("http://172.24.144.152:3000/room/create",
                                              CreateNewRoomResponse);
 
         // 3. Send request
@@ -203,6 +203,7 @@ public class SocketHandler : MonoBehaviour
             Debug.Log("Joined room successfully: " + receivedMessage.roomId);
             roomID = receivedMessage.roomId;
             players = receivedMessage.players;
+            HandleStartGame(players, myID);
             if (LobbySelectionScreen.instance != null)
             {
                 if (LobbySelectionScreen.instance.gameObject.activeInHierarchy)
@@ -249,6 +250,14 @@ public class SocketHandler : MonoBehaviour
 
             ws = null;
         }
+    }
+
+    private void HandleStartGame(string[] players, string myID)
+    {
+        LobbyManager lobbyManager = gameObject.GetComponent<LobbyManager>();
+        lobbyManager.roomCreated = true;
+        lobbyManager.myId = myID;
+        lobbyManager.receivedIds = players;
     }
 
 }
