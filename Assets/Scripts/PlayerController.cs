@@ -8,18 +8,18 @@ public class PlayerController : MonoBehaviour
 
     [Header("Movement")]
     public float moveSpeed = 6f;
-    public float rotationSpeed = 12f;
     [Header("Controls")]
     public bool useArrowKeys = false;
 
+    [Header("Collision")]
+    public float collisionRadius = 0.5f;
+    public LayerMask playerLayer;
+
     Vector3 forward;
     Vector3 right;
-    Rigidbody rb;
-
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
         InitializePosition();
     }
 
@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     void InitializePosition()
     {
         Vector3 normal = GetNormal();
-        rb.MovePosition(planet.position + normal * radius);
+        transform.position = planet.position + normal * radius;
 
         forward = Vector3.ProjectOnPlane(transform.forward, normal).normalized;
 
@@ -42,9 +42,8 @@ public class PlayerController : MonoBehaviour
 
     Vector3 GetNormal()
     {
-        return (rb.position - planet.position).normalized;
+        return (transform.position - planet.position).normalized;
     }
-
 
     void HandleMovement()
     {
@@ -66,33 +65,31 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKey(KeyCode.S)) v -= 1f;
         }
 
+        if (Mathf.Abs(h) < 0.001f && Mathf.Abs(v) < 0.001f)
+            return; // no input
+
         Vector3 normal = GetNormal();
 
-        right = Vector3.Cross(forward, normal).normalized;
-        forward = Vector3.Cross(normal, right).normalized;
+        // Keep movement aligned to planet surface
+        Vector3 forwardDir = Vector3.ProjectOnPlane(transform.forward, normal).normalized;
+        Vector3 rightDir = Vector3.ProjectOnPlane(transform.right, normal).normalized;
 
-        Vector3 move = forward * v + right * h;
+        Vector3 desiredMove = (forwardDir * v + rightDir * h).normalized * moveSpeed * Time.fixedDeltaTime;
 
-        Vector3 newPos = rb.position;
-
-        if (move.sqrMagnitude > 0.001f)
-        {
-            move.Normalize();
-            newPos += move * moveSpeed * Time.fixedDeltaTime;
-
-            Quaternion targetRot = Quaternion.LookRotation(move, normal);
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, rotationSpeed * Time.fixedDeltaTime));
-        }
+        Vector3 newPos = transform.position + desiredMove;
 
         newPos = planet.position + (newPos - planet.position).normalized * radius;
 
-        rb.MovePosition(newPos);
+        if (!Physics.CheckSphere(newPos, collisionRadius, playerLayer))
+        {
+            transform.position = newPos;
+        }
     }
 
     void AlignToSurface()
     {
         Vector3 normal = GetNormal();
         Quaternion target = Quaternion.FromToRotation(transform.up, normal) * transform.rotation;
-        transform.rotation = Quaternion.Slerp(transform.rotation, target, rotationSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, target, 12f * Time.fixedDeltaTime);
     }
 }
