@@ -11,8 +11,8 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 6f;
     public float alignSpeed = 12f;
 
-    [Header("PC Controls")]
-    public bool useArrowKeys = false;
+    [Header("Player Controlled")]
+    public bool isPlayerController = false;
 
     [Header("Android Controls")]
     public bool useJoystick = true;
@@ -71,42 +71,14 @@ public class PlayerController : MonoBehaviour
 
     void HandleMovement()
     {
+        if (!isPlayerController)
+            return;
         float h = 0f; // LEFT/RIGHT
         float v = 0f; // UP/DOWN
 
-#if UNITY_EDITOR || UNITY_STANDALONE
         // ================================
-        // PC CONTROLS (as is, no change)
+        // ANDROID CONTROLS
         // ================================
-        if (useArrowKeys)
-        {
-            if (Input.GetKey(KeyCode.UpArrow)) h -= 1f;
-            if (Input.GetKey(KeyCode.DownArrow)) h += 1f;
-
-            if (Input.GetKey(KeyCode.LeftArrow)) v -= 1f;
-            if (Input.GetKey(KeyCode.RightArrow)) v += 1f;
-        }
-        else
-        {
-            if (Input.GetKey(KeyCode.W)) h -= 1f; // up
-            if (Input.GetKey(KeyCode.S)) h += 1f; // down
-
-            if (Input.GetKey(KeyCode.A)) v -= 1f; // left
-            if (Input.GetKey(KeyCode.D)) v += 1f; // right
-        }
-
-#else
-    // ================================
-    // ANDROID CONTROLS
-    // ================================
-    if (useArrowKeys)
-    {
-        // If using arrow keys on Android, don't allow player to move
-        h = 0f;
-        v = 0f;
-    }
-    else
-    {
         // Joystick controls for Android
         if (useJoystick && joystick != null)
         {
@@ -117,7 +89,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Gyro controls for Android
-        if (useGyro && gyroAvailable)
+        else if (useGyro && gyroAvailable)
         {
             Vector3 tilt = Input.gyro.gravity;
 
@@ -131,7 +103,7 @@ public class PlayerController : MonoBehaviour
 
             // Apply a threshold for more significant tilts
             float tiltThreshold = 0.1f;  // Minimum tilt value to trigger movement (adjust if necessary)
-            
+
             if (Mathf.Abs(gyroY) > tiltThreshold)
             {
                 h = gyroY;   // left/right (x-axis)
@@ -142,8 +114,6 @@ public class PlayerController : MonoBehaviour
                 v = gyroX;  // forward/back (y-axis)
             }
         }
-    }
-#endif
 
         // Calculate movement direction and apply it to player
         Vector3 normal = GetNormal();
