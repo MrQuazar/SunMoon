@@ -8,22 +8,21 @@ public class PlayerController : MonoBehaviour
 
     [Header("Movement")]
     public float moveSpeed = 6f;
+    public float alignSpeed = 12f;
+
     [Header("Controls")]
     public bool useArrowKeys = false;
 
-    [Header("Collision")]
-    public float collisionRadius = 0.5f;
-    public LayerMask playerLayer;
-
-    Vector3 forward;
-    Vector3 right;
+    [Header("Blocking")]
+    public float playerCollisionRadius = 0.5f;
+    public GameObject otherPlayer;
 
     void Start()
     {
         InitializePosition();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         HandleMovement();
         AlignToSurface();
@@ -33,11 +32,6 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 normal = GetNormal();
         transform.position = planet.position + normal * radius;
-
-        forward = Vector3.ProjectOnPlane(transform.forward, normal).normalized;
-
-        if (forward == Vector3.zero)
-            forward = Vector3.Cross(normal, Vector3.right).normalized;
     }
 
     Vector3 GetNormal()
@@ -65,31 +59,48 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKey(KeyCode.S)) v -= 1f;
         }
 
-        if (Mathf.Abs(h) < 0.001f && Mathf.Abs(v) < 0.001f)
-            return; // no input
-
         Vector3 normal = GetNormal();
 
-        // Keep movement aligned to planet surface
         Vector3 forwardDir = Vector3.ProjectOnPlane(transform.forward, normal).normalized;
         Vector3 rightDir = Vector3.ProjectOnPlane(transform.right, normal).normalized;
 
-        Vector3 desiredMove = (forwardDir * v + rightDir * h).normalized * moveSpeed * Time.fixedDeltaTime;
+        Vector3 moveDir = (forwardDir * v + rightDir * h);
 
-        Vector3 newPos = transform.position + desiredMove;
+        if (moveDir.sqrMagnitude < 0.001f)
+            return;
 
+        moveDir.Normalize();
+
+        Vector3 newPos = transform.position + moveDir * moveSpeed * Time.deltaTime;
+
+        // Clamp to planet surface
         newPos = planet.position + (newPos - planet.position).normalized * radius;
 
-        if (!Physics.CheckSphere(newPos, collisionRadius, playerLayer))
+        // Block movement if it overlaps another player
+        if (!WouldCollideWithOtherPlayer(newPos))
         {
             transform.position = newPos;
         }
     }
 
+    bool WouldCollideWithOtherPlayer(Vector3 targetPos)
+    {
+        PlayerController other = otherPlayer.GetComponent<PlayerController>();
+        if (other == null)
+            return false;
+
+        float combinedRadius = playerCollisionRadius + other.playerCollisionRadius;
+
+        float dist = Vector3.Distance(targetPos, otherPlayer.transform.position);
+        if (dist < combinedRadius)
+            return true;
+        return false;
+    }
+
     void AlignToSurface()
     {
         Vector3 normal = GetNormal();
-        Quaternion target = Quaternion.FromToRotation(transform.up, normal) * transform.rotation;
-        transform.rotation = Quaternion.Slerp(transform.rotation, target, 12f * Time.fixedDeltaTime);
+        Quaternion targetRot = Quaternion.FromToRotation(transform.up, normal) * transform.rotation;
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, alignSpeed * Time.deltaTime);
     }
 }
