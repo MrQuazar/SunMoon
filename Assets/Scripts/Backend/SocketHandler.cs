@@ -13,7 +13,7 @@ public class SocketHandler : MonoBehaviour
     private WebSocket ws;
 
     // URL to your WebSocket server
-    private string serverUrl = "ws://10.104.77.29:3000/ws"; // Change this to your server URL
+    private string serverUrl = "ws://172.24.144.152:3000/ws"; // Change this to your server URL
 
     [SerializeField] private Transform cube1;
     [SerializeField] private Transform cube2;
@@ -21,6 +21,9 @@ public class SocketHandler : MonoBehaviour
     private string[] players;
 
     private string myID;
+    private bool hasGameStarted = false;
+    private bool isPlayerSun = true;
+    private Vector3 previousLocation = Vector3.zero;
 
     private void Awake()
     {
@@ -35,12 +38,21 @@ public class SocketHandler : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        Debug.Log(hasGameStarted + " " + Vector3.Distance(cube1.position, previousLocation));
+        if (hasGameStarted && Vector3.Distance(cube1.position, previousLocation) > 0.01f)
+        {
+            Debug.Log("Position changed, sending data...");
+            SendData();
+        }
+    }
 
     [ContextMenu("Create New Room")]
     internal void CreateNewRoomRequest()
     {
         // 1. Create request with a callback
-        var request = HTTPRequest.CreateGet("http://10.104.77.29:3000/room/create",
+        var request = HTTPRequest.CreateGet("http://172.24.144.152:3000/room/create",
                                              CreateNewRoomResponse);
 
         // 3. Send request
@@ -137,40 +149,20 @@ public class SocketHandler : MonoBehaviour
         ws.Send(json);
     }
 
-    [ContextMenu("Send Dummy Data")]
-    public void DummyData()
-    {
-        StartCoroutine(ContinouslySendData());
-    }
-
-    private IEnumerator ContinouslySendData()
-    {
-        int counter = 0;
-        while (true)
-        {
-            string dummyData = "Hello, this is a test message!" + counter;
-
-            // Send dummy data every 5 seconds
-            SendData(dummyData);
-            counter++;
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
-
     // Send data to the other player in the room
-    public void SendData(string data)
+    public void SendData()
     {
         WebSocketMessage dataMessage = new WebSocketMessage
         {
             type = "send_data",
             roomId = null, // Not needed in this case
-            data = data,
             pos = cube1.position
         };
 
         string json = JsonUtility.ToJson(dataMessage);
         ws.Send(json);
-        Debug.Log("Sent data: " + data);
+        previousLocation = cube1.position;
+        Debug.Log("Sent data: " + json);
     }
     string roomID;
     // Handle received messages based on type
@@ -209,6 +201,10 @@ public class SocketHandler : MonoBehaviour
                     LobbySelectionScreen.instance.OnJoinRoomSuccess(roomID, players.Length);
                 else if (LobbySelectionScreen.instance.lobbyWaitingScreen.gameObject.activeInHierarchy)
                     LobbySelectionScreen.instance.lobbyWaitingScreen.SetRoomCode(roomID, players.Length);
+            }
+            if (players.Length == 2)
+            {
+                Invoke(nameof(HandleStartGame), 2f);
             }
         }
         else if (type == "peer_joined")
@@ -251,6 +247,20 @@ public class SocketHandler : MonoBehaviour
         }
     }
 
+    private void HandleStartGame()
+    {
+        isPlayerSun = players.Length > 0 && players[0] == myID; // First player is Sun, second is Moon
+        if (!isPlayerSun)
+        {
+            Transform temp = cube1;
+            cube1 = cube2;
+            cube2 = temp;
+        }
+        LobbyManager lobbyManager = gameObject.GetComponent<LobbyManager>();
+        lobbyManager.roomCreated = true;
+        lobbyManager.isPlayerSun = isPlayerSun;
+        hasGameStarted = true;
+    }
 }
 
 // Define a simple class for JSON serialization

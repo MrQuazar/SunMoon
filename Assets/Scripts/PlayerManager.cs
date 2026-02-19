@@ -31,34 +31,15 @@ public class PlayerManager : MonoBehaviour
             return;
         }
 
-        Camera p1Cam = player1.GetComponentInChildren<Camera>(true);
-        Camera p2Cam = player2.GetComponentInChildren<Camera>(true);
-
-        if (p1Cam == null || p2Cam == null)
+        if (!isPlayerSun)
         {
-            Debug.LogError("PlayerManager: One of the players does not have a Camera child!");
-            return;
-        }
-
-        if (isPlayerSun)
-        {
-            // Player 2 is controlled by Arrow Keys
-            p2Controller.useArrowKeys = true;
-            p1Controller.useArrowKeys = false;
-
-            // Player 2 camera OFF, Player 1 camera ON
-            p2Cam.gameObject.SetActive(false);
-            p1Cam.gameObject.SetActive(true);
+            p2Controller.isPlayerController = true;
+            p1Controller.isPlayerController = false;
         }
         else
         {
-            // Player 1 is controlled by Arrow Keys
-            p1Controller.useArrowKeys = true;
-            p2Controller.useArrowKeys = false;
-
-            // Player 1 camera OFF, Player 2 camera ON
-            p1Cam.gameObject.SetActive(false);
-            p2Cam.gameObject.SetActive(true);
+            p1Controller.isPlayerController = true;
+            p2Controller.isPlayerController = false;
         }
     }
 }

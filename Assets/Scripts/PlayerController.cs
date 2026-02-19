@@ -1,4 +1,5 @@
 using UnityEngine;
+using PinePie.SimpleJoystick;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,16 +11,31 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 6f;
     public float alignSpeed = 12f;
 
-    [Header("Controls")]
-    public bool useArrowKeys = false;
+    [Header("Player Controlled")]
+    public bool isPlayerController = false;
+
+    [Header("Android Controls")]
+    public bool useJoystick = true;
+    public bool useGyro = false;
+
+    [Tooltip("Drag the PinePie JoystickController here (Right joystick).")]
+    public JoystickController joystick;
+
+    [Header("Gyro Settings")]
+    public float gyroSensitivity = 1.5f;
+    public bool invertGyroX = false;
+    public bool invertGyroY = false;
 
     [Header("Blocking")]
     public float playerCollisionRadius = 0.5f;
     public GameObject otherPlayer;
 
+    private bool gyroAvailable = false;
+
     void Start()
     {
         InitializePosition();
+        SetupGyro();
     }
 
     void Update()
@@ -39,28 +55,68 @@ public class PlayerController : MonoBehaviour
         return (transform.position - planet.position).normalized;
     }
 
-    void HandleMovement()
+    void SetupGyro()
     {
-        float h = 0f;
-        float v = 0f;
-
-        if (useArrowKeys)
+        if (SystemInfo.supportsGyroscope)
         {
-            if (Input.GetKey(KeyCode.UpArrow)) h -= 1f;
-            if (Input.GetKey(KeyCode.DownArrow)) h += 1f;
-            if (Input.GetKey(KeyCode.RightArrow)) v += 1f;
-            if (Input.GetKey(KeyCode.LeftArrow)) v -= 1f;
+            Input.gyro.enabled = true;
+            gyroAvailable = true;
         }
         else
         {
-            if (Input.GetKey(KeyCode.W)) h -= 1f;
-            if (Input.GetKey(KeyCode.S)) h += 1f;
-            if (Input.GetKey(KeyCode.D)) v += 1f;
-            if (Input.GetKey(KeyCode.A)) v -= 1f;
+            gyroAvailable = false;
+            useGyro = false;
+        }
+    }
+
+    void HandleMovement()
+    {
+        if (!isPlayerController)
+            return;
+        float h = 0f; // LEFT/RIGHT
+        float v = 0f; // UP/DOWN
+
+        // ================================
+        // ANDROID CONTROLS
+        // ================================
+        // Joystick controls for Android
+        if (useJoystick && joystick != null)
+        {
+            Vector2 input = joystick.InputDirection;
+
+            h = input.y;   // left/right
+            v = -input.x;  // flipped forward/back
         }
 
-        Vector3 normal = GetNormal();
+        // Gyro controls for Android
+        else if (useGyro && gyroAvailable)
+        {
+            Vector3 tilt = Input.gyro.gravity;
 
+            // Apply gyro sensitivity adjustment to reduce sensitivity
+            float gyroX = tilt.x * gyroSensitivity;
+            float gyroY = tilt.y * gyroSensitivity;
+
+            // Invert gyro based on settings
+            if (invertGyroX) gyroX *= -1f;
+            if (invertGyroY) gyroY *= -1f;
+
+            // Apply a threshold for more significant tilts
+            float tiltThreshold = 0.1f;  // Minimum tilt value to trigger movement (adjust if necessary)
+
+            if (Mathf.Abs(gyroY) > tiltThreshold)
+            {
+                h = gyroY;   // left/right (x-axis)
+            }
+
+            if (Mathf.Abs(gyroX) > tiltThreshold)
+            {
+                v = gyroX;  // forward/back (y-axis)
+            }
+        }
+
+        // Calculate movement direction and apply it to player
+        Vector3 normal = GetNormal();
         Vector3 forwardDir = Vector3.ProjectOnPlane(transform.forward, normal).normalized;
         Vector3 rightDir = Vector3.ProjectOnPlane(transform.right, normal).normalized;
 
@@ -76,7 +132,6 @@ public class PlayerController : MonoBehaviour
         // Clamp to planet surface
         newPos = planet.position + (newPos - planet.position).normalized * radius;
 
-        // Block movement if it overlaps another player
         if (!WouldCollideWithOtherPlayer(newPos))
         {
             transform.position = newPos;
@@ -85,16 +140,17 @@ public class PlayerController : MonoBehaviour
 
     bool WouldCollideWithOtherPlayer(Vector3 targetPos)
     {
+        if (otherPlayer == null)
+            return false;
+
         PlayerController other = otherPlayer.GetComponent<PlayerController>();
         if (other == null)
             return false;
 
         float combinedRadius = playerCollisionRadius + other.playerCollisionRadius;
-
         float dist = Vector3.Distance(targetPos, otherPlayer.transform.position);
-        if (dist < combinedRadius)
-            return true;
-        return false;
+
+        return dist < combinedRadius;
     }
 
     void AlignToSurface()
