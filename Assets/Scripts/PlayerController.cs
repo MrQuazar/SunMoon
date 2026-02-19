@@ -8,22 +8,21 @@ public class PlayerController : MonoBehaviour
 
     [Header("Movement")]
     public float moveSpeed = 6f;
-    public float rotationSpeed = 12f;
+    public float alignSpeed = 12f;
+
     [Header("Controls")]
     public bool useArrowKeys = false;
 
-    Vector3 forward;
-    Vector3 right;
-    Rigidbody rb;
-
+    [Header("Blocking")]
+    public float playerCollisionRadius = 0.5f;
+    public GameObject otherPlayer;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
         InitializePosition();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         HandleMovement();
         AlignToSurface();
@@ -32,19 +31,13 @@ public class PlayerController : MonoBehaviour
     void InitializePosition()
     {
         Vector3 normal = GetNormal();
-        rb.MovePosition(planet.position + normal * radius);
-
-        forward = Vector3.ProjectOnPlane(transform.forward, normal).normalized;
-
-        if (forward == Vector3.zero)
-            forward = Vector3.Cross(normal, Vector3.right).normalized;
+        transform.position = planet.position + normal * radius;
     }
 
     Vector3 GetNormal()
     {
-        return (rb.position - planet.position).normalized;
+        return (transform.position - planet.position).normalized;
     }
-
 
     void HandleMovement()
     {
@@ -53,46 +46,61 @@ public class PlayerController : MonoBehaviour
 
         if (useArrowKeys)
         {
-            if (Input.GetKey(KeyCode.LeftArrow)) h -= 1f;
-            if (Input.GetKey(KeyCode.RightArrow)) h += 1f;
-            if (Input.GetKey(KeyCode.UpArrow)) v += 1f;
-            if (Input.GetKey(KeyCode.DownArrow)) v -= 1f;
+            if (Input.GetKey(KeyCode.UpArrow)) h -= 1f;
+            if (Input.GetKey(KeyCode.DownArrow)) h += 1f;
+            if (Input.GetKey(KeyCode.RightArrow)) v += 1f;
+            if (Input.GetKey(KeyCode.LeftArrow)) v -= 1f;
         }
         else
         {
-            if (Input.GetKey(KeyCode.A)) h -= 1f;
-            if (Input.GetKey(KeyCode.D)) h += 1f;
-            if (Input.GetKey(KeyCode.W)) v += 1f;
-            if (Input.GetKey(KeyCode.S)) v -= 1f;
+            if (Input.GetKey(KeyCode.W)) h -= 1f;
+            if (Input.GetKey(KeyCode.S)) h += 1f;
+            if (Input.GetKey(KeyCode.D)) v += 1f;
+            if (Input.GetKey(KeyCode.A)) v -= 1f;
         }
 
         Vector3 normal = GetNormal();
 
-        right = Vector3.Cross(forward, normal).normalized;
-        forward = Vector3.Cross(normal, right).normalized;
+        Vector3 forwardDir = Vector3.ProjectOnPlane(transform.forward, normal).normalized;
+        Vector3 rightDir = Vector3.ProjectOnPlane(transform.right, normal).normalized;
 
-        Vector3 move = forward * v + right * h;
+        Vector3 moveDir = (forwardDir * v + rightDir * h);
 
-        Vector3 newPos = rb.position;
+        if (moveDir.sqrMagnitude < 0.001f)
+            return;
 
-        if (move.sqrMagnitude > 0.001f)
-        {
-            move.Normalize();
-            newPos += move * moveSpeed * Time.fixedDeltaTime;
+        moveDir.Normalize();
 
-            Quaternion targetRot = Quaternion.LookRotation(move, normal);
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, rotationSpeed * Time.fixedDeltaTime));
-        }
+        Vector3 newPos = transform.position + moveDir * moveSpeed * Time.deltaTime;
 
+        // Clamp to planet surface
         newPos = planet.position + (newPos - planet.position).normalized * radius;
 
-        rb.MovePosition(newPos);
+        // Block movement if it overlaps another player
+        if (!WouldCollideWithOtherPlayer(newPos))
+        {
+            transform.position = newPos;
+        }
+    }
+
+    bool WouldCollideWithOtherPlayer(Vector3 targetPos)
+    {
+        PlayerController other = otherPlayer.GetComponent<PlayerController>();
+        if (other == null)
+            return false;
+
+        float combinedRadius = playerCollisionRadius + other.playerCollisionRadius;
+
+        float dist = Vector3.Distance(targetPos, otherPlayer.transform.position);
+        if (dist < combinedRadius)
+            return true;
+        return false;
     }
 
     void AlignToSurface()
     {
         Vector3 normal = GetNormal();
-        Quaternion target = Quaternion.FromToRotation(transform.up, normal) * transform.rotation;
-        transform.rotation = Quaternion.Slerp(transform.rotation, target, rotationSpeed * Time.deltaTime);
+        Quaternion targetRot = Quaternion.FromToRotation(transform.up, normal) * transform.rotation;
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, alignSpeed * Time.deltaTime);
     }
 }
