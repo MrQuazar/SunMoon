@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 1209407489428878492}
   - component: {fileID: 1456266731933101686}
   m_Layer: 0
-  m_Name: BarrenLand
-  m_TagString: Untagged
+  m_Name: Thorns
+  m_TagString: Thorn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4e8a931cc1c605c4080a93b04fd911fe, type: 2}
+  - {fileID: -3972308710636615446, guid: 39dda57e2d7e23d4f843bbd5c20483b3, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
