@@ -1,6 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+[System.Serializable]
+public class WeightedLandPrefab
+{
+    public GameObject prefab;
+    [Min(0f)] public float weight = 1f;
+}
 
 public class Spawner : MonoBehaviour
 {
@@ -18,19 +24,17 @@ public class Spawner : MonoBehaviour
     public LayerMask waterMask;
     public LayerMask landMask;
 
-    [Header("Spawning")]
-    public GameObject waterSpawn;
-    public GameObject landSpawn;
+    [Header("Weighted Land Prefabs")]
+    public WeightedLandPrefab[] landSpawns;
+
+    [Header("Spawn Settings")]
     public int spawnCount = 50;
     public int maxAttemptsPerSpawn = 50;
 
     public List<GameObject> spawned = new List<GameObject>();
 
-
-    [Tooltip("Push spawned prefab outward so it doesn't clip into the surface.")]
+    [Header("Surface Settings")]
     public float surfaceOffset = 0.05f;
-
-    [Tooltip("If true, align object's up to surface normal.")]
     public bool alignUpToNormal = true;
 
     void Reset()
@@ -46,62 +50,80 @@ public class Spawner : MonoBehaviour
     [ContextMenu("Spawn")]
     public void Spawn()
     {
-        if (!center || !landSpawn || !waterSpawn)
+        if (!center)
         {
-            Debug.LogWarning("Missing center or prefab.");
+            Debug.LogWarning("Missing center transform.");
             return;
         }
 
-        int spawned = 0;
-        for (int i = 0; i < spawnCount; i++)
+        if (landSpawns == null || landSpawns.Length == 0)
         {
-            if (TrySpawnOne())
-                spawned++;
+            Debug.LogWarning("No land prefabs assigned.");
+            return;
         }
 
-        Debug.Log($"Spawned {spawned}/{spawnCount}");
+        int successCount = 0;
+
+        for (int i = 0; i < spawnCount; i++)
+        {
+            if (TrySpawnOne() == 1)
+            {
+                successCount++;
+            }
+            else
+            {
+                i -= 1;
+            }
+        }
+
+        Debug.Log($"Spawned {successCount}/{spawnCount}");
     }
 
-    bool TrySpawnOne()
+    int TrySpawnOne()
     {
         for (int attempt = 0; attempt < maxAttemptsPerSpawn; attempt++)
         {
             Vector3 origin = RandomPointOnSphere(center.position, radius + startPadding);
-            Vector3 dir = (center.position - origin).normalized; // inward
+            Vector3 dir = (center.position - origin).normalized;
 
             float maxDist = radius * maxDistanceMultiplier;
 
             int combinedMask = waterMask | landMask;
+
             RaycastHit[] hits = Physics.RaycastAll(origin, dir, maxDist, combinedMask, QueryTriggerInteraction.Ignore);
 
             if (hits == null || hits.Length == 0)
                 continue;
 
-            // Sort by distance so we process the first surface hit outward->inward
             System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
             foreach (var hit in hits)
             {
                 int hitLayerMask = 1 << hit.collider.gameObject.layer;
 
-                // if we hit water, we skip it and keep going inward
+                // Skip water hits completely
                 if ((hitLayerMask & waterMask.value) != 0)
                 {
-                    SpawnAtHit(hit, -dir, waterSpawn); // face towards where the ray came from (outward)
-                    return true;
+                    Debug.Log("Hit water, skipping.");
+                    return 0;
                 }
 
-                // if we hit land, spawn and stop
+                // Spawn ONLY if we hit land
                 if ((hitLayerMask & landMask.value) != 0)
                 {
-                    SpawnAtHit(hit, -dir, landSpawn); // face towards where the ray came from (outward)
-                    return true;
+                    GameObject prefab = GetWeightedRandomPrefab(landSpawns);
+
+                    if (prefab == null)
+                        return 0;
+
+                    SpawnAtHit(hit, -dir, prefab);
+                    Debug.Log($"Spawned on land at {prefab.name}");
+                    return 1;
                 }
             }
-
         }
 
-        return false;
+        return 0;
     }
 
     void SpawnAtHit(RaycastHit hit, Vector3 outwardDirection, GameObject prefab)
@@ -110,16 +132,41 @@ public class Spawner : MonoBehaviour
 
         Quaternion rot;
         if (alignUpToNormal)
-        {
-            // forward points outward toward ray origin, up aligns to surface normal
             rot = Quaternion.LookRotation(outwardDirection, hit.normal);
-        }
         else
-        {
             rot = Quaternion.LookRotation(outwardDirection);
-        }
 
         spawned.Add(Instantiate(prefab, pos, rot, transform));
+    }
+
+    GameObject GetWeightedRandomPrefab(WeightedLandPrefab[] prefabs)
+    {
+        float totalWeight = 0f;
+
+        foreach (var item in prefabs)
+        {
+            if (item.prefab != null && item.weight > 0f)
+                totalWeight += item.weight;
+        }
+
+        if (totalWeight <= 0f)
+            return null;
+
+        float randomValue = Random.Range(0f, totalWeight);
+        float currentWeight = 0f;
+
+        foreach (var item in prefabs)
+        {
+            if (item.prefab == null || item.weight <= 0f)
+                continue;
+
+            currentWeight += item.weight;
+
+            if (randomValue <= currentWeight)
+                return item.prefab;
+        }
+
+        return null;
     }
 
     static Vector3 RandomPointOnSphere(Vector3 center, float r)
