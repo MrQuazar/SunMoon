@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections.Generic;
+
 
 public class Spawner : MonoBehaviour
 {
@@ -21,6 +23,9 @@ public class Spawner : MonoBehaviour
     public GameObject landSpawn;
     public int spawnCount = 50;
     public int maxAttemptsPerSpawn = 50;
+
+    public List<GameObject> spawned = new List<GameObject>();
+
 
     [Tooltip("Push spawned prefab outward so it doesn't clip into the surface.")]
     public float surfaceOffset = 0.05f;
@@ -66,7 +71,6 @@ public class Spawner : MonoBehaviour
 
             float maxDist = radius * maxDistanceMultiplier;
 
-            // RaycastAll so we can "continue" after water
             int combinedMask = waterMask | landMask;
             RaycastHit[] hits = Physics.RaycastAll(origin, dir, maxDist, combinedMask, QueryTriggerInteraction.Ignore);
 
@@ -95,7 +99,6 @@ public class Spawner : MonoBehaviour
                 }
             }
 
-            // We only hit water (or nothing useful) — try another origin point
         }
 
         return false;
@@ -116,7 +119,7 @@ public class Spawner : MonoBehaviour
             rot = Quaternion.LookRotation(outwardDirection);
         }
 
-        Instantiate(prefab, pos, rot, transform);
+        spawned.Add(Instantiate(prefab, pos, rot, transform));
     }
 
     static Vector3 RandomPointOnSphere(Vector3 center, float r)
