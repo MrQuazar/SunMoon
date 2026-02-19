@@ -12,27 +12,36 @@ public class BlockDetector : MonoBehaviour
     [Header("Replacement Prefabs (Same Order As Tags)")]
     public GameObject[] replacementPrefabs = new GameObject[5];
 
-    // Tracks blocks currently being touched + timer
+    // Stores progress time for each block
     private Dictionary<GameObject, float> blockTimers = new Dictionary<GameObject, float>();
+
+    // Tracks which blocks are currently being touched
+    private HashSet<GameObject> currentlyTouching = new HashSet<GameObject>();
 
     private void OnTriggerEnter(Collider other)
     {
-        if (IsValidBlock(other.gameObject))
+        if (!IsValidBlock(other.gameObject))
+            return;
+
+        GameObject block = other.gameObject;
+
+        currentlyTouching.Add(block);
+
+        if (!blockTimers.ContainsKey(block))
         {
-            if (!blockTimers.ContainsKey(other.gameObject))
-            {
-                blockTimers.Add(other.gameObject, 0f);
-                Debug.Log($"Started touching block: {other.gameObject.name}");
-            }
+            blockTimers.Add(block, 0f);
+            Debug.Log($"Started tracking block: {block.name}");
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (blockTimers.ContainsKey(other.gameObject))
+        GameObject block = other.gameObject;
+
+        if (currentlyTouching.Contains(block))
         {
-            blockTimers.Remove(other.gameObject);
-            Debug.Log($"Stopped touching block: {other.gameObject.name}");
+            currentlyTouching.Remove(block);
+            Debug.Log($"Stopped touching block: {block.name}");
         }
     }
 
@@ -41,7 +50,6 @@ public class BlockDetector : MonoBehaviour
         if (blockTimers.Count == 0)
             return;
 
-        // We copy keys because we can't modify dictionary while looping
         List<GameObject> keys = new List<GameObject>(blockTimers.Keys);
 
         foreach (GameObject block in keys)
@@ -49,15 +57,31 @@ public class BlockDetector : MonoBehaviour
             if (block == null)
             {
                 blockTimers.Remove(block);
+                currentlyTouching.Remove(block);
                 continue;
             }
 
-            blockTimers[block] += Time.deltaTime;
-
-            if (blockTimers[block] >= convertTime)
+            // If touching, increase timer
+            if (currentlyTouching.Contains(block))
             {
-                ConvertBlock(block);
-                blockTimers.Remove(block);
+                blockTimers[block] += Time.deltaTime;
+
+                if (blockTimers[block] >= convertTime)
+                {
+                    ConvertBlock(block);
+                    blockTimers.Remove(block);
+                    currentlyTouching.Remove(block);
+                }
+            }
+            // If not touching, decrease timer (fade progress)
+            else
+            {
+                blockTimers[block] -= Time.deltaTime;
+
+                if (blockTimers[block] <= 0f)
+                {
+                    blockTimers.Remove(block);
+                }
             }
         }
     }
@@ -75,7 +99,7 @@ public class BlockDetector : MonoBehaviour
     void ConvertBlock(GameObject block)
     {
         Debug.Log($"Converting block: {block.name}");
-        // Find which tag it currently has
+
         for (int i = 0; i < blockTags.Length; i++)
         {
             if (!string.IsNullOrEmpty(blockTags[i]) && block.CompareTag(blockTags[i]))
@@ -92,8 +116,7 @@ public class BlockDetector : MonoBehaviour
 
                 Destroy(block);
 
-                GameObject newBlock = Instantiate(replacementPrefabs[i], pos, rot, parent);
-
+                Instantiate(replacementPrefabs[i], pos, rot, parent);
                 return;
             }
         }
