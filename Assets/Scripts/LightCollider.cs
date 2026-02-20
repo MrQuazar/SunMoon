@@ -4,7 +4,7 @@ public class LightCollider : MonoBehaviour
 {
     public bool isSun = true;
     public float increaseRate = 0.05f;
-    public bool isEclipse = true;
+    public bool isEclipse = false;
 
     private void OnTriggerStay(Collider other)
     {
