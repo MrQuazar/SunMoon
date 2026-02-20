@@ -63,20 +63,20 @@ public class Spawner : MonoBehaviour
         }
 
         int successCount = 0;
+        int totalAttempts = 0;
+        int maxTotalAttempts = spawnCount * maxAttemptsPerSpawn;
 
-        for (int i = 0; i < spawnCount; i++)
+        while (successCount < spawnCount && totalAttempts < maxTotalAttempts)
         {
+            totalAttempts++;
+
             if (TrySpawnOne() == 1)
             {
                 successCount++;
             }
-            else
-            {
-                i -= 1;
-            }
         }
 
-        Debug.Log($"Spawned {successCount}/{spawnCount}");
+        Debug.Log($"Spawned {successCount}/{spawnCount} after {totalAttempts} attempts");
     }
 
     int TrySpawnOne()
