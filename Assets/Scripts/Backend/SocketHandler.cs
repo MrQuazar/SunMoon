@@ -15,8 +15,8 @@ public class SocketHandler : MonoBehaviour
     // URL to your WebSocket server
     private string serverUrl = "ws://172.24.144.152:3000/ws"; // Change this to your server URL
 
-    [SerializeField] private Transform cube1;
-    [SerializeField] private Transform cube2;
+    public Transform cube1;
+    public Transform cube2;
 
     private string[] players;
 
@@ -24,6 +24,7 @@ public class SocketHandler : MonoBehaviour
     private bool hasGameStarted = false;
     private bool isPlayerSun = true;
     private Vector3 previousLocation = Vector3.zero;
+    public Vector3 recievedLocation = Vector3.zero;
 
     private void Awake()
     {
@@ -183,8 +184,7 @@ public class SocketHandler : MonoBehaviour
             // Handle received data from the other player
             string receivedData = receivedMessage.data;
             Debug.Log("Received data from peer: " + receivedData);
-            Vector3 receivedPos = receivedMessage.pos;
-            cube2.position = new Vector3(receivedPos.x, receivedPos.y, receivedPos.z - 10);
+            recievedLocation = receivedMessage.pos;
         }
         else if (type == "room_created")
         {

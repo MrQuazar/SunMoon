@@ -128,13 +128,10 @@ public class Spawner : MonoBehaviour
 
     void SpawnAtHit(RaycastHit hit, Vector3 outwardDirection, GameObject prefab)
     {
-        Vector3 pos = hit.point + hit.normal * surfaceOffset;
+        Vector3 pos = hit.point + hit.collider.transform.up * surfaceOffset;
 
-        Quaternion rot;
-        if (alignUpToNormal)
-            rot = Quaternion.LookRotation(outwardDirection, hit.normal);
-        else
-            rot = Quaternion.LookRotation(outwardDirection);
+        // Align prefab's UP (Y) to the hit object's UP axis
+        Quaternion rot = Quaternion.FromToRotation(Vector3.up, outwardDirection);
 
         spawned.Add(Instantiate(prefab, pos, rot, transform));
     }
