@@ -205,7 +205,7 @@ public class SocketHandler : MonoBehaviour
         previousLocation = cube1.position;
         Debug.Log("Sent data: " + json);
     }
-    string roomID;
+    public string roomID;
     internal bool isSameDirection = false;
     // Handle received messages based on type
     private void HandleReceivedMessage(string message)
@@ -279,11 +279,11 @@ public class SocketHandler : MonoBehaviour
             if (isPlayerSun)
             {
                 cube1 = lobbyManager.eclipse.transform;
-                lobbyManager.HandleEclipseCameraTransition();
             }
+            lobbyManager.eclipse.gameObject.SetActive(true);
+            lobbyManager.HandleEclipseCameraTransition();
             lobbyManager.player1.gameObject.SetActive(false);
             lobbyManager.player2.gameObject.SetActive(false);
-            lobbyManager.eclipse.gameObject.SetActive(true);
         }
         else if (type == "eclipse_end")
         {
