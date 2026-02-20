@@ -317,8 +317,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuHandler: {fileID: 0}
   back: {fileID: 8605515708678230163}
-  startGame: {fileID: 0}
-  txtRoomCode: {fileID: 1325498004237206009}
+  copyCode: {fileID: 3324301124341880604}
+  txtRoomCode: {fileID: 0}
 --- !u!1 &2852309790978218890
 GameObject:
   m_ObjectHideFlags: 0
