@@ -16,7 +16,6 @@ public class PlayerController : MonoBehaviour
     public Vector3 recievedLocation = Vector3.zero;
 
     [Header("Android Controls")]
-    public bool useJoystick = true;
     public bool useGyro = false;
 
     [Tooltip("Drag the PinePie JoystickController here (Right joystick).")]
@@ -122,7 +121,7 @@ public class PlayerController : MonoBehaviour
         // ANDROID CONTROLS
         // ================================
         // Joystick controls for Android
-        if (useJoystick && joystick != null)
+        if (!useGyro && joystick != null)
         {
             Vector2 input = joystick.InputDirection;
 

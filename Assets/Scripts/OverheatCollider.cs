@@ -28,6 +28,7 @@ public class OverheatCollider : MonoBehaviour
     public bool isOverheating = false;
     private bool hasShownDialogue = false;
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private JoystickToggleHandler vibrationToggleHandler;
 
     void Start()
     {
@@ -101,6 +102,7 @@ public class OverheatCollider : MonoBehaviour
     {
         isOverheating = false;
         HideUI();
+        AudioManager.Instance.StopSFX();
         Debug.Log("OVERHEAT ENDED");
     }
 
@@ -135,6 +137,7 @@ public class OverheatCollider : MonoBehaviour
 
     void Vibrate()
     {
+        if (!vibrationToggleHandler.state) return;
 #if UNITY_ANDROID || UNITY_IOS
         Handheld.Vibrate();
 #endif

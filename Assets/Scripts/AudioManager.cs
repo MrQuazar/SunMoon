@@ -107,4 +107,8 @@ public class AudioManager : MonoBehaviour
     {
         AudioManager.Instance.MuteSFX(!isOn);
     }
+    public void StopSFX()
+    {
+        sfxSource.Stop();
+    }
 }

@@ -7,7 +7,9 @@ public class ToggleHandler : MonoBehaviour
     public Sprite offSprite;
     public Image image;
     public Button button;
-
+    public PlayerController sunController;
+    public PlayerController moonController;
+    public PlayerController ecclipseController;
     public bool state = true;
 
     void Awake()
@@ -21,8 +23,10 @@ public class ToggleHandler : MonoBehaviour
     void OnClick()
     {
         state = !state;
-
-        if (state) 
+        sunController.useGyro = !state;
+        moonController.useGyro = !state;
+        ecclipseController.useGyro = !state;
+        if (state)
         {
             image.sprite = onSprite;
         }
