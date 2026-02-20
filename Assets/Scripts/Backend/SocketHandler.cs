@@ -18,9 +18,9 @@ public class SocketHandler : MonoBehaviour
     public Transform cube1;
     public Transform cube2;
 
-    private string[] players;
+    public string[] players;
 
-    private string myID;
+    public string myID;
     private bool hasGameStarted = false;
     private bool isPlayerSun = true;
     private Vector3 previousLocation = Vector3.zero;
@@ -163,7 +163,7 @@ public class SocketHandler : MonoBehaviour
         previousLocation = cube1.position;
         Debug.Log("Sent data: " + json);
     }
-    string roomID;
+    public string roomID;
     // Handle received messages based on type
     private void HandleReceivedMessage(string message)
     {
@@ -261,6 +261,7 @@ public class SocketHandler : MonoBehaviour
         LobbyManager lobbyManager = gameObject.GetComponent<LobbyManager>();
         lobbyManager.roomCreated = true;
         lobbyManager.isPlayerSun = isPlayerSun;
+        MenuHandler.instance.ChangeScreen(MenuHandler.instance.gameScreen);
         hasGameStarted = true;
     }
 }

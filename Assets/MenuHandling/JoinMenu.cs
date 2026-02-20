@@ -78,13 +78,6 @@ public class JoinMenu : Screens
     internal void OnJoinRoomSuccess(string roomId, int playerCount)
     {
         Debug.Log("Successfully joined room: " + roomId);
-
-        if (lobbyWaitingScreen != null)
-        {
-            lobbyWaitingScreen.gameObject.SetActive(true);
-            lobbyWaitingScreen.SetRoomCode(roomId, playerCount);
-        }
-
         gameObject.SetActive(false);
     }
 
