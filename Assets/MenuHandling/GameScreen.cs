@@ -6,10 +6,12 @@ public class GameScreen : Screens
 {
     public Button settings;
     public RoundManager roundManager;
+    public Spawner spawner;
 
     internal override void AddListeners()
     {
         settings.onClick.AddListener(OnSettingsPress);
+        spawner.ResetPlants();
         roundManager.inGame = true;
     }
 
