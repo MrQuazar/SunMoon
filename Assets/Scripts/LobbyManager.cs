@@ -7,6 +7,7 @@ public class LobbyManager : MonoBehaviour
     public GameObject planet;
     public GameObject player1;
     public GameObject player2;
+    public GameObject eclipse;
     public GameObject gameManager;
 
     public bool roomCreated = false; // Set to true once the room is created
@@ -17,6 +18,7 @@ public class LobbyManager : MonoBehaviour
     public CinemachineCamera cinemachineCamera;
     public Transform player1CameraTransform;
     public Transform player2CameraTransform;
+    public Transform eclipseCameraTransform;
     public float cameraTransitionSpeed = 2f; // Adjust speed of camera pan
     public AudioClip bgMusic;
 
@@ -73,7 +75,7 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
-    void HandleCameraTransition()
+    internal void HandleCameraTransition()
     {
         if (isPlayerSun)
         {
@@ -87,6 +89,36 @@ public class LobbyManager : MonoBehaviour
             cinemachineCamera.gameObject.SetActive(false); // Disable the current Cinemachine camera
             StartCoroutine(PanCameraToTarget(player2CameraTransform)); // Pan to player2's camera
         }
+    }
+
+    internal void HandleEclipseCameraTransition()
+    {
+        // Disable current camera and transition to eclipse camera
+        cinemachineCamera.gameObject.SetActive(false); // Disable the current Cinemachine camera
+        if (eclipseCameraTransform == null)
+        {
+            Debug.LogError("Eclipse camera transform is not assigned!");
+            return;
+        }
+
+        // Directly set the camera's position and rotation (teleport without pan)
+        TeleportCameraToTarget(eclipseCameraTransform);
+    }
+
+    void TeleportCameraToTarget(Transform target)
+    {
+        Transform cam = Camera.main.transform;
+
+        // Set the camera's position and rotation to the target's position and rotation
+        cam.position = target.position;
+        cam.rotation = target.rotation;
+
+        // Now make it a child of the TARGET (not the parent)
+        cam.SetParent(target);
+
+        // Reset local transform so it follows perfectly
+        cam.localPosition = Vector3.zero;
+        cam.localRotation = Quaternion.identity;
     }
 
     IEnumerator PanCameraToTarget(Transform target)

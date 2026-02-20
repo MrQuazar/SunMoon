@@ -185,12 +185,14 @@ MonoBehaviour:
   planet: {fileID: 1849394347}
   player1: {fileID: 171148635}
   player2: {fileID: 535296853}
+  eclipse: {fileID: 595397573}
   gameManager: {fileID: 478407250}
   roomCreated: 0
   isPlayerSun: 1
   cinemachineCamera: {fileID: 1325218231}
   player1CameraTransform: {fileID: 1143940089}
   player2CameraTransform: {fileID: 316091464}
+  eclipseCameraTransform: {fileID: 595397574}
   cameraTransitionSpeed: 2
   bgMusic: {fileID: 8300000, guid: 2a2d70dbdcede7d4eb501d1d0d43f67a, type: 3}
 --- !u!1 &109125967 stripped
@@ -1980,6 +1982,81 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &595397572
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1072438170956880513, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+      propertyPath: planet
+      value: 
+      objectReference: {fileID: 1849394348}
+    - target: {fileID: 1072438170956880513, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+      propertyPath: joystick
+      value: 
+      objectReference: {fileID: 704494372}
+    - target: {fileID: 6639416554454101902, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.84
+      objectReference: {fileID: 0}
+    - target: {fileID: 6639416554454101902, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7.94
+      objectReference: {fileID: 0}
+    - target: {fileID: 6639416554454101902, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 6639416554454101902, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6639416554454101902, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6639416554454101902, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6639416554454101902, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6639416554454101902, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6639416554454101902, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6639416554454101902, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6874113771290985880, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+      propertyPath: m_Name
+      value: Eclipse
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+--- !u!1 &595397573 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6874113771290985880, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+  m_PrefabInstance: {fileID: 595397572}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &595397574 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3915104711485298408, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+  m_PrefabInstance: {fileID: 595397572}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &603688828
 GameObject:
   m_ObjectHideFlags: 0
@@ -4320,6 +4397,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1236263036
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1236263038}
+  - component: {fileID: 1236263037}
+  m_Layer: 0
+  m_Name: NFCHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1236263037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236263036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20464b1c3c690a947beb557bb14b20f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1236263038
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236263036}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -15.000008, y: 2.249999, z: -4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1270953372
 GameObject:
   m_ObjectHideFlags: 0
@@ -5749,6 +5870,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2764635460266486064, guid: 605b2b40f66f6de4a876ad316f500d75, type: 3}
   m_PrefabInstance: {fileID: 1670664827}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1670664829 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3294007875163507885, guid: 605b2b40f66f6de4a876ad316f500d75, type: 3}
+  m_PrefabInstance: {fileID: 1670664827}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1676464671 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 962787933495167195, guid: b5c525866645a6741ae02048219203c5, type: 3}
@@ -7063,9 +7195,11 @@ SceneRoots:
   - {fileID: 36775476}
   - {fileID: 535296852}
   - {fileID: 171148634}
+  - {fileID: 595397572}
   - {fileID: 369332898}
   - {fileID: 1024901123}
   - {fileID: 1325218232}
   - {fileID: 1229442778}
   - {fileID: 603688830}
   - {fileID: 407668316}
+  - {fileID: 1236263038}

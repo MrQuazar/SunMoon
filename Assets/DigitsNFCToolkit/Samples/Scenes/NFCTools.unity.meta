@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: befa626c478f23b4cb9ead522d1c55fb
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 131674
+  packageName: Digits NFC Toolkit
+  packageVersion: 1.6.4
+  assetPath: Assets/DigitsNFCToolkit/Samples/Scenes/NFCTools.unity
+  uploadId: 702339

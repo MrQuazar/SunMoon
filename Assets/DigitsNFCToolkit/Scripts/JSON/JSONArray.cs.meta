@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 75e69d48ab5207b4d95376edda86f120
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 131674
+  packageName: Digits NFC Toolkit
+  packageVersion: 1.6.4
+  assetPath: Assets/DigitsNFCToolkit/Scripts/JSON/JSONArray.cs
+  uploadId: 702339

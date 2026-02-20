@@ -77,6 +77,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    internal Vector3 moveDirGlobal;
     void CheckWiggle(float horizontalInput)
     {
         if (Mathf.Abs(horizontalInput) < wiggleThreshold)
@@ -102,7 +103,7 @@ public class PlayerController : MonoBehaviour
 
     void HandleMovement()
     {
-        if (!isPlayerController)
+        if (!isPlayerController && SocketHandler.instance.hasGameStarted)
         {
             recievedLocation = SocketHandler.instance.recievedLocation;
             Debug.Log("Received location: " + recievedLocation);
@@ -110,6 +111,8 @@ public class PlayerController : MonoBehaviour
             {
                 transform.position = recievedLocation;
             }
+
+            // if (!SocketHandler.instance.isEclipseActive)
             return;
         }
         float h = 0f; // LEFT/RIGHT
@@ -162,12 +165,14 @@ public class PlayerController : MonoBehaviour
         Vector3 rightDir = Vector3.ProjectOnPlane(transform.right, normal).normalized;
 
         Vector3 moveDir = (forwardDir * v + rightDir * h);
-
         if (moveDir.sqrMagnitude < 0.001f)
             return;
 
-        moveDir.Normalize();
 
+        moveDir.Normalize();
+        moveDirGlobal = moveDir;
+        // if (!isPlayerController/*  || (SocketHandler.instance.isEclipseActive && !SocketHandler.instance.isSameDirection) */)
+        //     return;
         Vector3 newPos = transform.position + moveDir * moveSpeed * Time.deltaTime;
 
         // Clamp to planet surface

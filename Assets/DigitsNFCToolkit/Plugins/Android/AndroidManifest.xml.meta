@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: d2b3373346f535a43816944b43ff5c7c
+labels:
+- android
+- nfc
+- read
+- write
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 131674
+  packageName: Digits NFC Toolkit
+  packageVersion: 1.6.4
+  assetPath: Assets/DigitsNFCToolkit/Plugins/Android/AndroidManifest.xml
+  uploadId: 702339
