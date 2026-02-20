@@ -4,6 +4,7 @@ using Best.WebSockets;
 using Best.WebSockets.Implementations;
 using System;
 using System.Collections;
+using DigitsNFCToolkit.Samples;
 // using Newtonsoft.Json;
 
 public class SocketHandler : MonoBehaviour
@@ -13,7 +14,7 @@ public class SocketHandler : MonoBehaviour
     private WebSocket ws;
 
     // URL to your WebSocket server
-    private string serverUrl = "ws://172.24.144.152:3000/ws"; // Change this to your server URL
+    private string serverUrl = "ws://172.24.144.152:8000/ws"; // Change this to your server URL
 
     public Transform cube1;
     public Transform cube2;
@@ -53,7 +54,7 @@ public class SocketHandler : MonoBehaviour
     internal void CreateNewRoomRequest()
     {
         // 1. Create request with a callback
-        var request = HTTPRequest.CreateGet("http://172.24.144.152:3000/room/create",
+        var request = HTTPRequest.CreateGet("http://172.24.144.152:8000/room/create",
                                              CreateNewRoomResponse);
 
         // 3. Send request
@@ -177,6 +178,8 @@ public class SocketHandler : MonoBehaviour
             Debug.Log("Received connected message. My ID: " + receivedMessage.clientId);
             myID = receivedMessage.clientId;
             JoinRoom(roomID);
+            SendEclipseRequest();
+
         }
 
         if (type == "receive_data")
@@ -206,6 +209,20 @@ public class SocketHandler : MonoBehaviour
             {
                 Invoke(nameof(HandleStartGame), 2f);
             }
+        }
+        else if (type == "eclipse_start")
+        {
+            Debug.Log("Eclipse started!");
+
+            isPlayerSun = players.Length > 0 && players[0] == myID; // First player is Sun, second is Moon
+            if (isPlayerSun)
+            {
+
+            }
+        }
+        else if (type == "eclipse_end")
+        {
+            Debug.Log("Eclipse ended!");
         }
         else if (type == "peer_joined")
         {
@@ -255,11 +272,28 @@ public class SocketHandler : MonoBehaviour
             Transform temp = cube1;
             cube1 = cube2;
             cube2 = temp;
+            NFCGameHandler.instance.OnMakeReadonlyClick();
+        }
+        else
+        {
+            NFCGameHandler.instance.OnPushMessageClick("Hello from Sun!");
         }
         LobbyManager lobbyManager = gameObject.GetComponent<LobbyManager>();
         lobbyManager.roomCreated = true;
         lobbyManager.isPlayerSun = isPlayerSun;
         hasGameStarted = true;
+    }
+
+    private void SendEclipseRequest()
+    {
+        WebSocketMessage dataMessage = new WebSocketMessage
+        {
+            type = "eclipse",
+            roomId = roomID
+        };
+        string json = JsonUtility.ToJson(dataMessage);
+        ws.Send(json);
+        Debug.Log("Sending eclipse request: " + JsonUtility.ToJson(dataMessage));
     }
 }
 
