@@ -125,7 +125,7 @@ public class PlayerController : MonoBehaviour
 
             h = -input.y;   // left/right
             v = input.x;  // flipped forward/back
-            CheckWiggle(h);
+            //CheckWiggle(h);
         }
 
         // Gyro controls for Android
@@ -153,7 +153,7 @@ public class PlayerController : MonoBehaviour
             {
                 v = gyroX;  // forward/back (y-axis)
             }
-            CheckWiggle(h);
+            //CheckWiggle(h);
         }
 
         // Calculate movement direction and apply it to player

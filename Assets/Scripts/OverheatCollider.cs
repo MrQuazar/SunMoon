@@ -3,8 +3,7 @@ using System.Collections;
 
 public class OverheatCollider : MonoBehaviour
 {
-    public float minInterval = 20f;
-    public float maxInterval = 30f;
+    public float interval = 30f;
     public float overheatDuration = 5f;
 
     [SerializeField] private bool isPlayerSun = true;
@@ -20,8 +19,7 @@ public class OverheatCollider : MonoBehaviour
     {
         while (true)
         {
-            float waitTime = Random.Range(minInterval, maxInterval);
-            yield return new WaitForSeconds(waitTime);
+            yield return new WaitForSeconds(interval);
 
             isOverheating = true;
             Debug.Log("OVERHEAT STARTED");

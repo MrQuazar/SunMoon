@@ -646,8 +646,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12c67d80475eeef49b74e4231404d800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minInterval: 5
-  maxInterval: 7
+  interval: 30
   overheatDuration: 5
   isPlayerSun: 1
 --- !u!43 &191186922
@@ -1546,6 +1545,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2508340270525239493, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 535296871}
+    - targetCorrespondingSourceObject: {fileID: 2508340270525239493, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 535296872}
   m_SourcePrefab: {fileID: 100100000, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
 --- !u!1 &535296853 stripped
 GameObject:
@@ -1569,10 +1571,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12c67d80475eeef49b74e4231404d800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minInterval: 5
-  maxInterval: 7
+  interval: 30
   overheatDuration: 5
   isPlayerSun: 0
+--- !u!54 &535296872
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535296853}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &603688828
 GameObject:
   m_ObjectHideFlags: 0
@@ -4826,7 +4854,9 @@ MonoBehaviour:
     m_Bits: 8
   landSpawns:
   - prefab: {fileID: 7327397989898089303, guid: cb2f0de24135e9f46b4961ebd15d5598, type: 3}
-    weight: 100
+    weight: 50
+  - prefab: {fileID: 7327397989898089303, guid: 6757ad7fff194cb44b8c664ef5be4680, type: 3}
+    weight: 50
   spawnCount: 100
   maxAttemptsPerSpawn: 50
   spawned: []

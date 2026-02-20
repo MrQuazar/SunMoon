@@ -265,7 +265,7 @@ GameObject:
   - component: {fileID: 4460946706073824370}
   - component: {fileID: 391311942581196271}
   m_Layer: 0
-  m_Name: Base Plant
+  m_Name: Base Plant 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -392,7 +392,7 @@ MonoBehaviour:
   - {fileID: 4209542921565992774, guid: 78d56ca3a1736554288f6566a5d9fc0f, type: 3}
   - {fileID: 4209542921565992774, guid: 96a6dda31a20cba4aacb5729a3cc6962, type: 3}
   - {fileID: 4209542921565992774, guid: 2b53bc6b28a8c9e4ebb5d31c3a8c45be, type: 3}
-  currentState: 0
+  currentState: 4
   currentStatePrefab: {fileID: 0}
 --- !u!1 &9157839104768675829
 GameObject:
