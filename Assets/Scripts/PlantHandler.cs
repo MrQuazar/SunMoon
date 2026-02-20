@@ -5,7 +5,7 @@ public class PlantHandler : MonoBehaviour
 {
     public CanvasGroup barGroup;
     public Image progressBar;
-    
+
     [HideInInspector]
     public float currentAmount = 0f;
     public float maxAmount = 3f;
@@ -46,8 +46,8 @@ public class PlantHandler : MonoBehaviour
 
         if (!isTriggered)
         {
-            DecreaseProgress(0.01f, false);  
-            
+            DecreaseProgress(false);
+
             currentTimeTriggered -= 0.05f;
             if (currentTimeTriggered <= 0)
             {
@@ -75,7 +75,7 @@ public class PlantHandler : MonoBehaviour
     }
 
     public void ChangeState(int value = 1)
-    {   
+    {
         if (currentState == PlantState.dead && value < 0) return;
         if (currentState == PlantState.monster && value > 0) return;
 
@@ -94,31 +94,36 @@ public class PlantHandler : MonoBehaviour
         currentStatePrefab = Instantiate(statePrefabs[(int)currentState], transform);
     }
 
-    public void SetState(PlantState state)
+    public void SetFinalState(bool isPlayerSun)
     {
-        currentState = state;
+        currentState = isPlayerSun ? PlantState.monster : PlantState.dead;
         progressBar.color = stateColors[(int)currentState];
+
+        Destroy(currentStatePrefab);
+        currentStatePrefab = Instantiate(statePrefabs[(int)currentState], transform);
     }
 
-    public void IncreaseProgress(float value, bool allowChange)
+    public void IncreaseProgress(bool CanChangeState)
     {
-        currentAmount += value;
+        currentAmount += Time.deltaTime;
 
-        if (currentAmount > maxAmount) currentAmount = maxAmount;
+        if (currentAmount > maxAmount)
+            currentAmount = maxAmount;
 
-        if (currentAmount >= maxAmount && allowChange)
+        if (currentAmount >= maxAmount && CanChangeState)
         {
             ChangeState(1);
         }
     }
 
-    public void DecreaseProgress(float value, bool allowChange)
+    public void DecreaseProgress(bool CanChangeState)
     {
-        currentAmount -= value;
+        currentAmount -= Time.deltaTime;
 
-        if (currentAmount < 0) currentAmount = 0;
+        if (currentAmount < 0)
+            currentAmount = 0;
 
-        if (currentAmount <= 0 && allowChange)
+        if (currentAmount <= 0 && CanChangeState)
         {
             ChangeState(-1);
         }

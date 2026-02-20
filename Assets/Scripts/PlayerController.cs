@@ -31,6 +31,13 @@ public class PlayerController : MonoBehaviour
     public float playerCollisionRadius = 0.5f;
     public GameObject otherPlayer;
 
+    [Header("Wiggle Fix Settings")]
+    public float wiggleThreshold = 0.2f;     // minimum horizontal input
+    public int requiredWiggles = 3;          // left-right switches required
+
+    private int lastWiggleDirection = 0;
+    private int wiggleCount = 0;
+
     private bool gyroAvailable = false;
 
     void Start()
@@ -70,6 +77,29 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void CheckWiggle(float horizontalInput)
+    {
+        if (Mathf.Abs(horizontalInput) < wiggleThreshold)
+            return;
+
+        int direction = horizontalInput > 0 ? 1 : -1;
+
+        if (lastWiggleDirection != 0 && direction != lastWiggleDirection)
+        {
+            wiggleCount++;
+
+            if (wiggleCount >= requiredWiggles)
+            {
+                ForceStopOverheat();
+                wiggleCount = 0;
+                lastWiggleDirection = 0;
+                return;
+            }
+        }
+
+        lastWiggleDirection = direction;
+    }
+
     void HandleMovement()
     {
         if (!isPlayerController)
@@ -95,6 +125,7 @@ public class PlayerController : MonoBehaviour
 
             h = -input.y;   // left/right
             v = input.x;  // flipped forward/back
+            CheckWiggle(h);
         }
 
         // Gyro controls for Android
@@ -122,6 +153,7 @@ public class PlayerController : MonoBehaviour
             {
                 v = gyroX;  // forward/back (y-axis)
             }
+            CheckWiggle(h);
         }
 
         // Calculate movement direction and apply it to player
@@ -167,5 +199,17 @@ public class PlayerController : MonoBehaviour
         Vector3 normal = GetNormal();
         Quaternion targetRot = Quaternion.FromToRotation(transform.up, normal) * transform.rotation;
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, alignSpeed * Time.deltaTime);
+    }
+
+    void ForceStopOverheat()
+    {
+        OverheatCollider overheat = GetComponent<OverheatCollider>();
+        if (overheat == null) return;
+
+        if (overheat.IsOverheating())
+        {
+            overheat.ForceStopOverheat();
+            Debug.Log("OVERHEAT FORCE STOPPED BY WIGGLE");
+        }
     }
 }

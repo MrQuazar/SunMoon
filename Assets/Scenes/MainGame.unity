@@ -548,69 +548,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4266489942205163716, guid: 16abd216900745b40b3cac7d842192af, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4276562921090852078, guid: 16abd216900745b40b3cac7d842192af, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4310528059478020432, guid: 16abd216900745b40b3cac7d842192af, type: 3}
       propertyPath: planet
       value: 
       objectReference: {fileID: 1849394348}
     - target: {fileID: 4310528059478020432, guid: 16abd216900745b40b3cac7d842192af, type: 3}
       propertyPath: useGyro
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4310528059478020432, guid: 16abd216900745b40b3cac7d842192af, type: 3}
       propertyPath: joystick
       value: 
       objectReference: {fileID: 704494372}
     - target: {fileID: 4310528059478020432, guid: 16abd216900745b40b3cac7d842192af, type: 3}
-      propertyPath: invertGyroX
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4310528059478020432, guid: 16abd216900745b40b3cac7d842192af, type: 3}
-      propertyPath: invertGyroY
-      value: 1
-      objectReference: {fileID: 0}
+      propertyPath: overheat
+      value: 
+      objectReference: {fileID: 171148656}
     - target: {fileID: 4310528059478020432, guid: 16abd216900745b40b3cac7d842192af, type: 3}
       propertyPath: otherPlayer
       value: 
       objectReference: {fileID: 535296853}
     - target: {fileID: 4310528059478020432, guid: 16abd216900745b40b3cac7d842192af, type: 3}
-      propertyPath: joystickName
-      value: Static Free moving
-      objectReference: {fileID: 0}
-    - target: {fileID: 4310528059478020432, guid: 16abd216900745b40b3cac7d842192af, type: 3}
-      propertyPath: gyroSensitivity
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4310528059478020432, guid: 16abd216900745b40b3cac7d842192af, type: 3}
-      propertyPath: playerCollisionRadius
-      value: 2
+      propertyPath: useJoystick
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6510025948560072213, guid: 16abd216900745b40b3cac7d842192af, type: 3}
       propertyPath: m_Name
       value: Sun
-      objectReference: {fileID: 0}
-    - target: {fileID: 6510025948560072213, guid: 16abd216900745b40b3cac7d842192af, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6510025948560072213, guid: 16abd216900745b40b3cac7d842192af, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7161376239633174062, guid: 16abd216900745b40b3cac7d842192af, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8099346303244392319, guid: 16abd216900745b40b3cac7d842192af, type: 3}
-      propertyPath: m_Layer
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9106667443301847160, guid: 16abd216900745b40b3cac7d842192af, type: 3}
       propertyPath: m_LocalPosition.x
@@ -652,18 +616,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7161376239633174062, guid: 16abd216900745b40b3cac7d842192af, type: 3}
-    m_RemovedGameObjects:
-    - {fileID: 8099346303244392319, guid: 16abd216900745b40b3cac7d842192af, type: 3}
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 9106667443301847160, guid: 16abd216900745b40b3cac7d842192af, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1143940089}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6510025948560072213, guid: 16abd216900745b40b3cac7d842192af, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 171148649}
+      addedObject: {fileID: 171148656}
   m_SourcePrefab: {fileID: 100100000, guid: 16abd216900745b40b3cac7d842192af, type: 3}
 --- !u!1 &171148635 stripped
 GameObject:
@@ -675,7 +634,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9106667443301847160, guid: 16abd216900745b40b3cac7d842192af, type: 3}
   m_PrefabInstance: {fileID: 171148634}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &171148649
+--- !u!114 &171148656
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -684,11 +643,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 171148635}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48f6c8221fad1ae4d8035002ee7ee9b9, type: 3}
+  m_Script: {fileID: 11500000, guid: 12c67d80475eeef49b74e4231404d800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isSun: 1
-  increaseRate: 0.05
+  minInterval: 5
+  maxInterval: 7
+  overheatDuration: 5
+  isPlayerSun: 1
 --- !u!43 &191186922
 Mesh:
   m_ObjectHideFlags: 0
@@ -986,37 +947,11 @@ MonoBehaviour:
   txtWaitingMessage: {fileID: 1783161124}
   txtPlayer1Name: {fileID: 1507528970}
   txtPlayer2Name: {fileID: 1427776959}
---- !u!1 &316091463
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 316091464}
-  m_Layer: 0
-  m_Name: CameraPosition
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &316091464
+--- !u!4 &316091464 stripped
 Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 9153342382470979534, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
+  m_PrefabInstance: {fileID: 535296852}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 316091463}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.08859691, y: -0.7677488, z: 0.21032837, w: 0.59872735}
-  m_LocalPosition: {x: 9.97, y: 0.74000156, z: 2.1600063}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 535296859}
-  m_LocalEulerAnglesHint: {x: 12.525, y: -101.497, z: 23.413}
 --- !u!1 &336623063
 GameObject:
   m_ObjectHideFlags: 0
@@ -1540,53 +1475,29 @@ PrefabInstance:
       propertyPath: m_Name
       value: Moon
       objectReference: {fileID: 0}
-    - target: {fileID: 2508340270525239493, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2508340270525239493, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4561086131120910116, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6491208777690090470, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: planet
       value: 
       objectReference: {fileID: 1849394348}
     - target: {fileID: 6491208777690090470, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: useGyro
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6491208777690090470, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: joystick
       value: 
       objectReference: {fileID: 704494372}
     - target: {fileID: 6491208777690090470, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
-      propertyPath: invertGyroX
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6491208777690090470, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
-      propertyPath: invertGyroY
-      value: 1
-      objectReference: {fileID: 0}
+      propertyPath: overheat
+      value: 
+      objectReference: {fileID: 535296871}
     - target: {fileID: 6491208777690090470, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: otherPlayer
       value: 
       objectReference: {fileID: 171148635}
     - target: {fileID: 6491208777690090470, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
-      propertyPath: joystickName
-      value: Static Free moving
-      objectReference: {fileID: 0}
-    - target: {fileID: 6491208777690090470, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
-      propertyPath: gyroSensitivity
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6491208777690090470, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
-      propertyPath: playerCollisionRadius
-      value: 2
+      propertyPath: useJoystick
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6853264597455414612, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1628,22 +1539,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6979355976785922904, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 4401506582225216315, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
-    m_RemovedGameObjects:
-    - {fileID: 6979355976785922904, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 6853264597455414612, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 316091464}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2508340270525239493, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 535296865}
+      addedObject: {fileID: 535296871}
   m_SourcePrefab: {fileID: 100100000, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
 --- !u!1 &535296853 stripped
 GameObject:
@@ -1655,7 +1557,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6853264597455414612, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
   m_PrefabInstance: {fileID: 535296852}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &535296865
+--- !u!114 &535296871
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1664,11 +1566,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 535296853}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48f6c8221fad1ae4d8035002ee7ee9b9, type: 3}
+  m_Script: {fileID: 11500000, guid: 12c67d80475eeef49b74e4231404d800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isSun: 0
-  increaseRate: 0.05
+  minInterval: 5
+  maxInterval: 7
+  overheatDuration: 5
+  isPlayerSun: 0
 --- !u!1 &603688828
 GameObject:
   m_ObjectHideFlags: 0
@@ -3199,37 +3103,11 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 191186922}
---- !u!1 &1143940088
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1143940089}
-  m_Layer: 0
-  m_Name: CameraPosition
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1143940089
+--- !u!4 &1143940089 stripped
 Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 3650321857613978355, guid: 16abd216900745b40b3cac7d842192af, type: 3}
+  m_PrefabInstance: {fileID: 171148634}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1143940088}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.1158106, y: -0.76229227, z: 0.21749097, w: 0.59849495}
-  m_LocalPosition: {x: 9.037, y: -1.377, z: 1.154}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 171148642}
-  m_LocalEulerAnglesHint: {x: 11.126, y: -101.106, z: 26.44}
 --- !u!43 &1213424231
 Mesh:
   m_ObjectHideFlags: 0

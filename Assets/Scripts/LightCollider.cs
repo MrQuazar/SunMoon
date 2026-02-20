@@ -11,13 +11,9 @@ public class LightCollider : MonoBehaviour
         if (plant == null) return;
 
         if (isSun)
-        {
-            plant.IncreaseProgress(increaseRate, true);
-        }
+            plant.IncreaseProgress(true);
         else
-        {
-            plant.DecreaseProgress(increaseRate, true);
-        }
+            plant.DecreaseProgress(true);
     }
 
     private void OnTriggerEnter(Collider other)
