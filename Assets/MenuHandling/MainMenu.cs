@@ -39,6 +39,16 @@ public class MainMenu : Screens
     {
         Debug.Log("Changing screen to host menu.");
         menuHandler.ChangeScreen(menuHandler.hostGame);
+        HostMenu hostMenu = menuHandler.hostGame.GetComponent<HostMenu>();
+        if (hostMenu != null)
+        {
+            Debug.Log("Host menu found, setting room code.");
+            hostMenu.SetRoomCode(SocketHandler.instance.roomID, SocketHandler.instance.players.Length);
+        }
+        else
+        {
+            Debug.LogError("Host menu component not found!");
+        }
     }
     private void OnJoinPress()
     {

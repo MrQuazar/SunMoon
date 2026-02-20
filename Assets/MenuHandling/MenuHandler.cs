@@ -23,7 +23,12 @@ public class MenuHandler : MonoBehaviour
     [Header("Sounds")]
     public AudioClip click1;
     public AudioClip click2;
+    public static MenuHandler instance;
 
+    void Awake()
+    {
+        instance = this;
+    }
     void Start()
     {
         // Set menu handler for all

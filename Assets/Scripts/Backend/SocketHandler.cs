@@ -19,7 +19,7 @@ public class SocketHandler : MonoBehaviour
     public Transform cube1;
     public Transform cube2;
 
-    private string[] players;
+    public string[] players;
 
     private string myID;
     internal bool hasGameStarted = false;
@@ -358,6 +358,7 @@ public class SocketHandler : MonoBehaviour
         // LobbyManager lobbyManager = gameObject.GetComponent<LobbyManager>();
         lobbyManager.roomCreated = true;
         lobbyManager.isPlayerSun = isPlayerSun;
+        MenuHandler.instance.ChangeScreen(MenuHandler.instance.gameScreen);
         hasGameStarted = true;
     }
 
