@@ -279,14 +279,14 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2255995019705152599}
   m_TextComponent: {fileID: 4584479603941943635}
   m_Placeholder: {fileID: 4241974361815240931}
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 2
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
-  m_CharacterLimit: 0
+  m_CharacterValidation: 1
+  m_CharacterLimit: 5
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -739,7 +739,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 400}
-  m_SizeDelta: {x: 800, y: 500}
+  m_SizeDelta: {x: 1100, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1580191110989914255
 CanvasRenderer:
@@ -769,8 +769,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cecdbf60b0c9d47c9a26b99a41425de0, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 6392e9dcf36121b499d69c59cc78ced1, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -796,7 +796,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5403495141032674510
 RectTransform:
   m_ObjectHideFlags: 0
@@ -975,3 +975,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuHandler: {fileID: 0}
   back: {fileID: 285223372601612364}
+  joinGameButton: {fileID: 3294007875163507885}
+  roomCodeInput: {fileID: 7289827280970912707}
+  lobbyWaitingScreen: {fileID: 0}

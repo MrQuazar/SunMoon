@@ -94,7 +94,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &545454889494966094
 RectTransform:
   m_ObjectHideFlags: 0
@@ -391,8 +391,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 250, y: 400}
-  m_SizeDelta: {x: 300, y: 150}
+  m_AnchoredPosition: {x: 0, y: 400}
+  m_SizeDelta: {x: 492.7, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7887216340474240861
 CanvasRenderer:
@@ -488,6 +488,7 @@ GameObject:
   - component: {fileID: 2263337661499421406}
   - component: {fileID: 6017463100037953664}
   - component: {fileID: 7355775499296592262}
+  - component: {fileID: 8986888781256422199}
   m_Layer: 5
   m_Name: Victory Screen
   m_TagString: Untagged
@@ -578,6 +579,21 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &8986888781256422199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5759523351432479859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4717e7696432793479dd5de7f309467a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuHandler: {fileID: 0}
+  playAgain: {fileID: 6950515896351129976}
+  mainMenu: {fileID: 4320922955750970844}
 --- !u!1 &5930507376594262968
 GameObject:
   m_ObjectHideFlags: 0

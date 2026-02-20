@@ -21,7 +21,7 @@ public class SocketHandler : MonoBehaviour
 
     public string[] players;
 
-    private string myID;
+    public string myID;
     internal bool hasGameStarted = false;
     private bool isPlayerSun = true;
     private Vector3 previousLocation = Vector3.zero;
@@ -98,7 +98,7 @@ public class SocketHandler : MonoBehaviour
 
             default:
                 // 6. Error handling
-                Debug.LogError($"Request finished with error! Request state: {req.State}");
+                Debug.Log($"Request finished with error! Request state: {req.State}");
                 break;
         }
     }
@@ -131,6 +131,7 @@ public class SocketHandler : MonoBehaviour
         ws.OnClosed += (WebSocket w, WebSocketStatusCodes code, string reason) =>
         {
             Debug.Log("Disconnected from server. Code: " + code + " Reason: " + reason);
+            hasGameStarted = true;
             // Clear reference
             ws = null;
         };
@@ -315,6 +316,7 @@ public class SocketHandler : MonoBehaviour
         }
         else
         {
+            hasGameStarted = true;
             Debug.Log("Unknown message type: " + type);
         }
     }

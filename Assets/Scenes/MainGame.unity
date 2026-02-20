@@ -1688,21 +1688,10 @@ MonoBehaviour:
   clock: {fileID: 1101430261}
   loseThreshold: 0.4
   loseTimeLimit: 60
-  timerText: {fileID: 942534634}
+  timerText: {fileID: 0}
   menuHandler: {fileID: 258204196}
   currentTime: 0
   maxTime: 60
---- !u!114 &482379407 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3294007875163507885, guid: 605b2b40f66f6de4a876ad316f500d75, type: 3}
-  m_PrefabInstance: {fileID: 1670664827}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &535296852
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3274,7 +3263,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1104934280066228427, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5849352337976130786, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
       propertyPath: m_Pivot.x
@@ -3781,6 +3770,22 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3324301124341880604, guid: b5c525866645a6741ae02048219203c5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3324301124341880604, guid: b5c525866645a6741ae02048219203c5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3324301124341880604, guid: b5c525866645a6741ae02048219203c5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1218470482}
+    - target: {fileID: 3324301124341880604, guid: b5c525866645a6741ae02048219203c5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4817562007649598304, guid: b5c525866645a6741ae02048219203c5, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -3873,6 +3878,11 @@ PrefabInstance:
 --- !u!224 &1218470481 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4817562007649598304, guid: b5c525866645a6741ae02048219203c5, type: 3}
+  m_PrefabInstance: {fileID: 1218470480}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1218470482 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2773109633978633937, guid: b5c525866645a6741ae02048219203c5, type: 3}
   m_PrefabInstance: {fileID: 1218470480}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1219377929 stripped
@@ -5383,7 +5393,7 @@ PrefabInstance:
     - target: {fileID: 2923879280751227528, guid: 605b2b40f66f6de4a876ad316f500d75, type: 3}
       propertyPath: joinGameButton
       value: 
-      objectReference: {fileID: 482379407}
+      objectReference: {fileID: 0}
     - target: {fileID: 2923879280751227528, guid: 605b2b40f66f6de4a876ad316f500d75, type: 3}
       propertyPath: lobbyWaitingScreen
       value: 
@@ -5397,7 +5407,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3844666064476931762, guid: 605b2b40f66f6de4a876ad316f500d75, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 605b2b40f66f6de4a876ad316f500d75, type: 3}
@@ -5411,7 +5422,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 962787933495167195, guid: b5c525866645a6741ae02048219203c5, type: 3}
   m_PrefabInstance: {fileID: 1218470480}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1218470482}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ee3f80fd22a4e7b40b0ee29032b0f20f, type: 3}
@@ -5970,7 +5981,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa8f0203af1be6f40b35f16728315aad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roundManager: {fileID: 0}
+  roundManager: {fileID: 478407253}
   center: {fileID: 1002670629}
   radius: 10
   startPadding: 0.5

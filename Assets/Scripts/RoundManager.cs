@@ -44,6 +44,11 @@ public class RoundManager : MonoBehaviour
         if (gameEnded)
             return;
 
+        if (SocketHandler.instance.hasGameStarted == false)
+        {
+            return;
+        }
+
         float progress = CalculateProgress();
         UpdateProgressBar(progress);
 
@@ -58,7 +63,7 @@ public class RoundManager : MonoBehaviour
         if (progress < loseThreshold)
         {
             currentTime += Time.deltaTime;
-            clock.fillAmount = currentTime/maxTime;
+            clock.fillAmount = currentTime / maxTime;
 
             if (currentTime >= maxTime)
             {
@@ -80,7 +85,7 @@ public class RoundManager : MonoBehaviour
         foreach (GameObject plant in plants)
         {
             PlantHandler plantHandler = plant.GetComponent<PlantHandler>();
-            totalCount++;            
+            totalCount++;
             if (plantHandler.currentState == PlantHandler.PlantState.flower)
             {
                 Debug.Log("FLOWER");
@@ -88,14 +93,14 @@ public class RoundManager : MonoBehaviour
             }
         }
 
-        if (totalCount == 0) {return 0;}
+        if (totalCount == 0) { return 0; }
 
-        return flowerCount/totalCount;
+        return flowerCount / totalCount;
     }
 
     void UpdateProgressBar(float progress)
     {
-        Debug.Log(progress);
+        // Debug.Log(progress);
         if (progressBar != null)
             progressBar.fillAmount = progress;
     }
@@ -118,7 +123,7 @@ public class RoundManager : MonoBehaviour
 
         if (timerText != null)
             timerText.text = "YOU LOSE!";
-        
+
         menuHandler.ChangeScreen(menuHandler.lose);
     }
 }
