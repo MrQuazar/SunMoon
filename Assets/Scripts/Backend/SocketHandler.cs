@@ -193,12 +193,12 @@ public class SocketHandler : MonoBehaviour
             Debug.Log("Joined room successfully: " + receivedMessage.roomId);
             roomID = receivedMessage.roomId;
             players = receivedMessage.players;
-            if (LobbySelectionScreen.instance != null)
+            if (JoinMenu.instance != null)
             {
-                if (LobbySelectionScreen.instance.gameObject.activeInHierarchy)
-                    LobbySelectionScreen.instance.OnJoinRoomSuccess(roomID, players.Length);
-                else if (LobbySelectionScreen.instance.lobbyWaitingScreen.gameObject.activeInHierarchy)
-                    LobbySelectionScreen.instance.lobbyWaitingScreen.SetRoomCode(roomID, players.Length);
+                if (JoinMenu.instance.gameObject.activeInHierarchy)
+                    JoinMenu.instance.OnJoinRoomSuccess(roomID, players.Length);
+                else if (JoinMenu.instance.lobbyWaitingScreen.gameObject.activeInHierarchy)
+                    JoinMenu.instance.lobbyWaitingScreen.SetRoomCode(roomID, players.Length);
             }
             if (players.Length == 2)
             {

@@ -1892,6 +1892,17 @@ MonoBehaviour:
   loseThreshold: 0.4
   loseTimeLimit: 60
   timerText: {fileID: 942534634}
+--- !u!114 &482379407 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3294007875163507885, guid: 605b2b40f66f6de4a876ad316f500d75, type: 3}
+  m_PrefabInstance: {fileID: 1670664827}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &535296852
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2031,6 +2042,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &587028682 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1325498004237206009, guid: b5c525866645a6741ae02048219203c5, type: 3}
+  m_PrefabInstance: {fileID: 1218470480}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &603688828
 GameObject:
   m_ObjectHideFlags: 0
@@ -2690,6 +2712,17 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 920055638}
+--- !u!114 &820694649 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7289827280970912707, guid: 605b2b40f66f6de4a876ad316f500d75, type: 3}
+  m_PrefabInstance: {fileID: 1670664827}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d199490a83bb2b844b9695cbf13b01ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &836911254
 GameObject:
   m_ObjectHideFlags: 0
@@ -4157,6 +4190,14 @@ PrefabInstance:
       propertyPath: startGame
       value: 
       objectReference: {fileID: 1641814404}
+    - target: {fileID: 962787933495167195, guid: b5c525866645a6741ae02048219203c5, type: 3}
+      propertyPath: menuHandler
+      value: 
+      objectReference: {fileID: 258204196}
+    - target: {fileID: 962787933495167195, guid: b5c525866645a6741ae02048219203c5, type: 3}
+      propertyPath: txtRoomCode
+      value: 
+      objectReference: {fileID: 587028682}
     - target: {fileID: 2773109633978633937, guid: b5c525866645a6741ae02048219203c5, type: 3}
       propertyPath: m_Name
       value: HostGameMenu
@@ -5871,9 +5912,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2923879280751227528, guid: 605b2b40f66f6de4a876ad316f500d75, type: 3}
+      propertyPath: menuHandler
+      value: 
+      objectReference: {fileID: 258204196}
+    - target: {fileID: 2923879280751227528, guid: 605b2b40f66f6de4a876ad316f500d75, type: 3}
+      propertyPath: roomCodeInput
+      value: 
+      objectReference: {fileID: 820694649}
+    - target: {fileID: 2923879280751227528, guid: 605b2b40f66f6de4a876ad316f500d75, type: 3}
+      propertyPath: joinGameButton
+      value: 
+      objectReference: {fileID: 482379407}
+    - target: {fileID: 2923879280751227528, guid: 605b2b40f66f6de4a876ad316f500d75, type: 3}
+      propertyPath: lobbyWaitingScreen
+      value: 
+      objectReference: {fileID: 1676464671}
     - target: {fileID: 8815836747733838590, guid: 605b2b40f66f6de4a876ad316f500d75, type: 3}
       propertyPath: m_Name
       value: JoinGameMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 8815836747733838590, guid: 605b2b40f66f6de4a876ad316f500d75, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
