@@ -279,14 +279,14 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2255995019705152599}
   m_TextComponent: {fileID: 4584479603941943635}
   m_Placeholder: {fileID: 4241974361815240931}
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 2
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
-  m_CharacterLimit: 0
+  m_CharacterValidation: 1
+  m_CharacterLimit: 5
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -975,3 +975,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuHandler: {fileID: 0}
   back: {fileID: 285223372601612364}
+  joinGameButton: {fileID: 3294007875163507885}
+  roomCodeInput: {fileID: 7289827280970912707}
+  lobbyWaitingScreen: {fileID: 0}
