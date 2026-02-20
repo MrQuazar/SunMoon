@@ -128,4 +128,20 @@ public class PlantHandler : MonoBehaviour
             ChangeState(-1);
         }
     }
+
+    public void GoToPerfect()
+    {
+        if ((int)currentState > 3)
+        {
+            DecreaseProgress(true);
+        }
+        else if ((int)currentState < 3)
+        {
+            IncreaseProgress(true);
+        }
+        else
+        {
+            IncreaseProgress(false);
+        }
+    }
 }

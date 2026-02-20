@@ -143,6 +143,17 @@ public class Spawner : MonoBehaviour
         // Align prefab's UP (Y) to the hit object's UP axis
         Quaternion rot = Quaternion.FromToRotation(Vector3.up, outwardDirection);
 
+        PlantHandler ph = prefab.GetComponent<PlantHandler>();
+        
+        if (rng.NextDouble() < 0.5f)
+        {
+            ph.currentState = PlantHandler.PlantState.monster;
+        }
+        else
+        {
+            ph.currentState = PlantHandler.PlantState.dead;
+        }
+
         spawned.Add(Instantiate(prefab, pos, rot, transform));
     }
 

@@ -4,13 +4,16 @@ public class LightCollider : MonoBehaviour
 {
     public bool isSun = true;
     public float increaseRate = 0.05f;
+    public bool isEclipse = true;
 
     private void OnTriggerStay(Collider other)
     {
         PlantHandler plant = other.GetComponent<PlantHandler>();
         if (plant == null) return;
 
-        if (isSun)
+        if (isEclipse)
+            plant.GoToPerfect();
+        else if (isSun)
             plant.IncreaseProgress(true);
         else
             plant.DecreaseProgress(true);
