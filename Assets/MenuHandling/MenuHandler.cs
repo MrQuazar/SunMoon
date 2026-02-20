@@ -15,9 +15,14 @@ public class MenuHandler : MonoBehaviour
     public Screens tutorial;
     public Screens lose;
     public Screens win;
+    public Screens gameSettingsMenu;
 
     [Header("Screen Handling")]
     public Screens startScreen;
+
+    [Header("Sounds")]
+    public AudioClip click1;
+    public AudioClip click2;
 
     void Start()
     {

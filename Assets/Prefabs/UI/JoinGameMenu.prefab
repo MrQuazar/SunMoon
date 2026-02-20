@@ -870,6 +870,7 @@ GameObject:
   - component: {fileID: 1541399373776595864}
   - component: {fileID: 1966044535817586982}
   - component: {fileID: 1037420352493877359}
+  - component: {fileID: 2923879280751227528}
   m_Layer: 5
   m_Name: JoinGameMenu
   m_TagString: Untagged
@@ -960,3 +961,17 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &2923879280751227528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8815836747733838590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df19fe09937172c4f855600afd2ff823, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuHandler: {fileID: 0}
+  back: {fileID: 285223372601612364}

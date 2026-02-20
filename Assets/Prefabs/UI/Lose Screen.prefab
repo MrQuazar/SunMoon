@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 4889566576794365722}
   - component: {fileID: 6006555421622505697}
   - component: {fileID: 8005025908396403169}
+  - component: {fileID: 3695269073353257765}
   m_Layer: 5
   m_Name: Lose Screen
   m_TagString: Untagged
@@ -223,6 +224,21 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &3695269073353257765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2235603015728070001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0749cc30752d6dc4183a051d5eb2cd54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuHandler: {fileID: 0}
+  playAgain: {fileID: 3629801779658429851}
+  mainMenu: {fileID: 8352157289518984835}
 --- !u!1 &2510581399253761351
 GameObject:
   m_ObjectHideFlags: 0
