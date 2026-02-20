@@ -206,7 +206,7 @@ public class PlayerController : MonoBehaviour
         OverheatCollider overheat = GetComponent<OverheatCollider>();
         if (overheat == null) return;
 
-        if (overheat.IsOverheating())
+        if (overheat.isOverheating)
         {
             overheat.ForceStopOverheat();
             Debug.Log("OVERHEAT FORCE STOPPED BY WIGGLE");
