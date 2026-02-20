@@ -20,10 +20,12 @@ public class HostMenu : Screens
     private void OnBackPress()
     {
         menuHandler.ChangeScreen(menuHandler.mainMenu);
+        AudioManager.Instance.PlaySFX(menuHandler.click1);
     }
 
     private void OnStartPress()
     {
         //
+        AudioManager.Instance.PlaySFX(menuHandler.click1);
     }
 }
