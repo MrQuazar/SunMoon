@@ -401,6 +401,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4266489942205163716, guid: 16abd216900745b40b3cac7d842192af, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4310528059478020432, guid: 16abd216900745b40b3cac7d842192af, type: 3}
       propertyPath: planet
       value: 
@@ -412,6 +416,10 @@ PrefabInstance:
     - target: {fileID: 6510025948560072213, guid: 16abd216900745b40b3cac7d842192af, type: 3}
       propertyPath: m_Name
       value: Sun
+      objectReference: {fileID: 0}
+    - target: {fileID: 6510025948560072213, guid: 16abd216900745b40b3cac7d842192af, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9106667443301847160, guid: 16abd216900745b40b3cac7d842192af, type: 3}
       propertyPath: m_LocalPosition.x
@@ -909,6 +917,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Moon
       objectReference: {fileID: 0}
+    - target: {fileID: 2508340270525239493, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6491208777690090470, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: planet
       value: 
@@ -927,35 +939,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6853264597455414612, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7
+      value: -7.12
       objectReference: {fileID: 0}
     - target: {fileID: 6853264597455414612, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.714812
       objectReference: {fileID: 0}
     - target: {fileID: 6853264597455414612, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0.69926196
       objectReference: {fileID: 0}
     - target: {fileID: 6853264597455414612, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.0051283133
       objectReference: {fileID: 0}
     - target: {fileID: 6853264597455414612, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: 0.0070886095
       objectReference: {fileID: 0}
     - target: {fileID: 6853264597455414612, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -88.73
       objectReference: {fileID: 0}
     - target: {fileID: 6853264597455414612, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -6.69
       objectReference: {fileID: 0}
     - target: {fileID: 6853264597455414612, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 7.68
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -965,11 +977,6 @@ PrefabInstance:
 --- !u!1 &535296853 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2508340270525239493, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
-  m_PrefabInstance: {fileID: 535296852}
-  m_PrefabAsset: {fileID: 0}
---- !u!20 &535296854 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 3510378196497046235, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
   m_PrefabInstance: {fileID: 535296852}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &748890262
@@ -2626,6 +2633,7 @@ MonoBehaviour:
   spawned: []
   surfaceOffset: -0.05
   alignUpToNormal: 1
+  seed: 12345
 --- !u!43 &1892786543
 Mesh:
   m_ObjectHideFlags: 0
@@ -3667,11 +3675,11 @@ PrefabInstance:
     - target: {fileID: 3078257170799284286, guid: cb2f0de24135e9f46b4961ebd15d5598, type: 3}
       propertyPath: targetCamera
       value: 
-      objectReference: {fileID: 535296854}
+      objectReference: {fileID: 0}
     - target: {fileID: 6615153515470219748, guid: cb2f0de24135e9f46b4961ebd15d5598, type: 3}
       propertyPath: targetCamera
       value: 
-      objectReference: {fileID: 535296854}
+      objectReference: {fileID: 0}
     - target: {fileID: 7327397989898089303, guid: cb2f0de24135e9f46b4961ebd15d5598, type: 3}
       propertyPath: m_Name
       value: Base Plant
