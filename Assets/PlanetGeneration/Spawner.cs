@@ -36,10 +36,18 @@ public class Spawner : MonoBehaviour
     [Header("Surface Settings")]
     public float surfaceOffset = 0.05f;
     public bool alignUpToNormal = true;
+    
+    public int seed = 12345;
+    System.Random rng;
 
     void Reset()
     {
         center = transform;
+    }
+
+    void Awake()
+    {
+        rng = new System.Random(seed);
     }
 
     void Start()
@@ -83,8 +91,10 @@ public class Spawner : MonoBehaviour
     {
         for (int attempt = 0; attempt < maxAttemptsPerSpawn; attempt++)
         {
-            Vector3 origin = RandomPointOnSphere(center.position, radius + startPadding);
+            Vector3 origin = RandomPointOnSphere(center.position, radius + startPadding, rng);
             Vector3 dir = (center.position - origin).normalized;
+
+            Debug.Log(origin);
 
             float maxDist = radius * maxDistanceMultiplier;
 
@@ -149,7 +159,7 @@ public class Spawner : MonoBehaviour
         if (totalWeight <= 0f)
             return null;
 
-        float randomValue = Random.Range(0f, totalWeight);
+        float randomValue = (float)rng.NextDouble() * totalWeight;
         float currentWeight = 0f;
 
         foreach (var item in prefabs)
@@ -166,8 +176,17 @@ public class Spawner : MonoBehaviour
         return null;
     }
 
-    static Vector3 RandomPointOnSphere(Vector3 center, float r)
+    static Vector3 RandomPointOnSphere(Vector3 center, float r, System.Random rng)
     {
-        return center + Random.onUnitSphere * r;
+        // uniform point on unit sphere
+        double z = rng.NextDouble() * 2.0 - 1.0;
+        double t = rng.NextDouble() * (System.Math.PI * 2.0);
+        double xy = System.Math.Sqrt(1.0 - z * z);
+
+        float x = (float)(xy * System.Math.Cos(t));
+        float y = (float)z;
+        float z2 = (float)(xy * System.Math.Sin(t));
+
+        return center + new Vector3(x, y, z2) * r;
     }
 }
