@@ -18,7 +18,10 @@ public class LightCollider : MonoBehaviour
         PlantHandler plant = other.GetComponent<PlantHandler>();
         if (plant == null) return;
 
-        plant.IncreaseProgress(increaseRate, true);
+        if (isSun)
+            plant.IncreaseProgress(true);
+        else
+            plant.DecreaseProgress(true);
     }
 
     private void OnTriggerEnter(Collider other)

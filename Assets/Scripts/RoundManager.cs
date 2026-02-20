@@ -85,7 +85,7 @@ public class RoundManager : MonoBehaviour
 
         if (totalBlocks == 0)
             return 0f;
-
+        Debug.Log($"Progress: {correctBlocks}/{totalBlocks} = {(float)correctBlocks / totalBlocks:P1}");
         return (float)correctBlocks / totalBlocks;
     }
 
