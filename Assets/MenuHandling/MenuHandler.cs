@@ -46,14 +46,20 @@ public class MenuHandler : MonoBehaviour
 
     public void ChangeScreen(Screens nextScreen)
     {
-        currentScreen.Disable();
         previousScreen = currentScreen;
         currentScreen = nextScreen;
+
+        previousScreen.Disable();
         currentScreen.Enable();
     }
 
     public void GoBack()
     {
-        ChangeScreen(previousScreen);
+        Screens temp = previousScreen;
+        previousScreen = currentScreen;
+        currentScreen = temp;
+
+        previousScreen.Disable();
+        currentScreen.Enable();
     }
 }

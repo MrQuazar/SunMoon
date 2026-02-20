@@ -1,10 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.VFX;
 
 public class PlantHandler : MonoBehaviour
 {
     public CanvasGroup barGroup;
     public Image progressBar;
+    public VisualEffect dustCloud;
 
     [HideInInspector]
     public float currentAmount = 0f;
@@ -38,6 +40,7 @@ public class PlantHandler : MonoBehaviour
 
         progressBar.color = stateColors[(int)currentState];
         currentStatePrefab = Instantiate(statePrefabs[(int)currentState], transform);
+        dustCloud.SendEvent("Stop");
     }
 
     void Update()
@@ -89,6 +92,8 @@ public class PlantHandler : MonoBehaviour
         }
         currentState = (PlantState)((int)currentState + value);
         progressBar.color = stateColors[(int)currentState];
+
+        dustCloud.SendEvent("OnPlay");
 
         Destroy(currentStatePrefab);
         currentStatePrefab = Instantiate(statePrefabs[(int)currentState], transform);
