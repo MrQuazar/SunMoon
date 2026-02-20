@@ -1812,6 +1812,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Static Free moving
       objectReference: {fileID: 0}
+    - target: {fileID: 6792227008128828349, guid: 41fc2224df5c7f643b3b6849b10ca38d, type: 3}
+      propertyPath: baseMode
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4851,10 +4855,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   landSpawns:
-  - prefab: {fileID: 4209542921565992774, guid: e3cb2107dcd016d48818a96561c6bab8, type: 3}
-    weight: 50
-  - prefab: {fileID: 4209542921565992774, guid: 2b53bc6b28a8c9e4ebb5d31c3a8c45be, type: 3}
-    weight: 50
+  - prefab: {fileID: 7327397989898089303, guid: cb2f0de24135e9f46b4961ebd15d5598, type: 3}
+    weight: 100
   spawnCount: 100
   maxAttemptsPerSpawn: 50
   spawned: []
