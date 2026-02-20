@@ -13,5 +13,6 @@ public class GameSettingsMenu : Screens
     private void OnBackPress()
     {
         menuHandler.ChangeScreen(menuHandler.gameScreen);
+        AudioManager.Instance.PlaySFX(menuHandler.click1);
     }
 }

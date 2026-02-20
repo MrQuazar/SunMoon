@@ -18,5 +18,6 @@ public class GameScreen : Screens
     private void OnSettingsPress()
     {
         menuHandler.ChangeScreen(menuHandler.gameSettingsMenu);
+        AudioManager.Instance.PlaySFX(menuHandler.click1);
     }
 }
