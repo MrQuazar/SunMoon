@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.VFX;
@@ -77,6 +78,13 @@ public class PlantHandler : MonoBehaviour
         }
     }
 
+    IEnumerator DustPuff()
+    {
+        dustCloud.SendEvent("OnPlay");
+        yield return new WaitForSeconds(1.0f);
+        dustCloud.SendEvent("Stop");
+    }
+
     public void ChangeState(int value = 1)
     {
         if (currentState == PlantState.dead && value < 0) return;
@@ -93,10 +101,11 @@ public class PlantHandler : MonoBehaviour
         currentState = (PlantState)((int)currentState + value);
         progressBar.color = stateColors[(int)currentState];
 
-        dustCloud.SendEvent("OnPlay");
 
         Destroy(currentStatePrefab);
         currentStatePrefab = Instantiate(statePrefabs[(int)currentState], transform);
+
+        StartCoroutine(DustPuff());
     }
 
     public void SetFinalState(bool isPlayerSun)
