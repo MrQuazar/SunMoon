@@ -10,6 +10,11 @@ public class GameSettingsMenu : Screens
         back.onClick.AddListener(OnBackPress);
     }
 
+    internal override void RemoveListeners()
+    {
+        back.onClick.RemoveListener(OnBackPress);
+    }
+
     private void OnBackPress()
     {
         menuHandler.ChangeScreen(menuHandler.gameScreen);
