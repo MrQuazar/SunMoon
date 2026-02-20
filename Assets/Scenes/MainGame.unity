@@ -569,6 +569,10 @@ PrefabInstance:
       propertyPath: useJoystick
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5252201107971370767, guid: 16abd216900745b40b3cac7d842192af, type: 3}
+      propertyPath: isEclipse
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6510025948560072213, guid: 16abd216900745b40b3cac7d842192af, type: 3}
       propertyPath: m_Name
       value: Sun
@@ -1689,6 +1693,7 @@ MonoBehaviour:
   loseThreshold: 0.4
   loseTimeLimit: 60
   timerText: {fileID: 0}
+  inGame: 0
   menuHandler: {fileID: 258204196}
   currentTime: 0
   maxTime: 60
@@ -1710,6 +1715,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2508340270525239493, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2606401974581309215, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
+      propertyPath: isEclipse
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6491208777690090470, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
@@ -3247,6 +3256,10 @@ PrefabInstance:
       propertyPath: menuHandler
       value: 
       objectReference: {fileID: 258204196}
+    - target: {fileID: 304615002461858496, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
+      propertyPath: roundManager
+      value: 
+      objectReference: {fileID: 478407253}
     - target: {fileID: 315000266997826292, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
       propertyPath: m_IsActive
       value: 0

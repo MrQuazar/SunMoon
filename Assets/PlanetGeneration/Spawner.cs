@@ -41,6 +41,11 @@ public class Spawner : MonoBehaviour
     public int seed = 12345;
     System.Random rng;
 
+    void Reset()
+    {
+        center = transform;
+    }
+
     void Awake()
     {
         rng = new System.Random(seed);
@@ -48,13 +53,6 @@ public class Spawner : MonoBehaviour
 
     void Start()
     {
-        Spawn();
-        roundManager.GetPlants(spawned);
-    }
-
-    void Reset()
-    {
-        
         Spawn();
         roundManager.GetPlants(spawned);
     }
@@ -89,14 +87,6 @@ public class Spawner : MonoBehaviour
         }
 
         Debug.Log($"Spawned {successCount}/{spawnCount} after {totalAttempts} attempts");
-    }
-
-    public void DestroyAllSpawned()
-    {
-        for (int i = transform.childCount - 1; i >= 0; i--)
-            Destroy(transform.GetChild(i).gameObject);
-
-        spawned.Clear();
     }
 
     int TrySpawnOne()
