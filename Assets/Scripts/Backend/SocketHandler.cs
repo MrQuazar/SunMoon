@@ -228,7 +228,7 @@ public class SocketHandler : MonoBehaviour
             string receivedData = receivedMessage.data;
             Debug.Log("Received data from peer: " + receivedData);
 
-            Debug.LogError("Other: " + receivedMessage.direction + " MY: " + eclipseDirection);
+            // Debug.LogError("Other: " + receivedMessage.direction + " MY: " + eclipseDirection);
             isSameDirection = isEclipseActive && receivedMessage.direction == eclipseDirection;
             if (/* isEclipseActive && isSameDirection && */ myID != receivedMessage.clientId)
             {
@@ -271,7 +271,7 @@ public class SocketHandler : MonoBehaviour
 
             // LobbyManager lobbyManager = gameObject.GetComponent<LobbyManager>();
             lobbyManager.eclipse.transform.position = lobbyManager.player1.transform.position;
-            lobbyManager.eclipse.transform.localRotation = lobbyManager.player1.transform.localRotation;
+            // lobbyManager.eclipse.transform.localRotation = lobbyManager.player1.transform.localRotation;
             if (isPlayerSun)
             {
                 cube1 = lobbyManager.eclipse.transform;

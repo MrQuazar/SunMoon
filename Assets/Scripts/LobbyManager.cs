@@ -75,13 +75,6 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
-    void SwitchCanvases()
-    {
-        // Disable the main menu canvas and enable the main game canvas
-        mainMenuCanvas.enabled = false;
-        mainGameCanvas.enabled = true;
-    }
-
     internal void HandleCameraTransition()
     {
         if (isPlayerSun)
