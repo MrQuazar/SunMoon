@@ -8,8 +8,6 @@ public class LobbyManager : MonoBehaviour
     public GameObject player1;
     public GameObject player2;
     public GameObject gameManager;
-    public Canvas mainMenuCanvas;
-    public Canvas mainGameCanvas;
 
     public bool roomCreated = false; // Set to true once the room is created
     private bool isPlanetRotating = true;
@@ -43,7 +41,6 @@ public class LobbyManager : MonoBehaviour
             StopPlanetRotation();
             EnableGameObjects();
             SetPlayerSunStatus();
-            SwitchCanvases();
             HandleCameraTransition();
         }
     }
@@ -74,13 +71,6 @@ public class LobbyManager : MonoBehaviour
             player1.GetComponent<PlayerController>().isPlayerController = false;
             player2.GetComponent<PlayerController>().isPlayerController = true;
         }
-    }
-
-    void SwitchCanvases()
-    {
-        // Disable the main menu canvas and enable the main game canvas
-        mainMenuCanvas.enabled = false;
-        mainGameCanvas.enabled = true;
     }
 
     void HandleCameraTransition()
