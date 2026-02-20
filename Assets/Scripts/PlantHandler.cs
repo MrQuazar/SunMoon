@@ -143,6 +143,19 @@ public class PlantHandler : MonoBehaviour
         }
     }
 
+    public void SetToMonster()
+    {
+        currentState = PlantState.baby;
+        ChangeState(1);
+    }
+
+    public void SetToDeadr()
+    {
+        
+        currentState = PlantState.grass;
+        ChangeState(-1);
+    }
+
     public void GoToPerfect()
     {
 
