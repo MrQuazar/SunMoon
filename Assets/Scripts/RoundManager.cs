@@ -6,27 +6,37 @@ public class RoundManager : MonoBehaviour
 {
     [Header("References")]
     public Spawner spawner;
-    public Slider progressSlider;
+    public Image progressBar;
+    public List<GameObject> plants = new List<GameObject>();
+    public Image clock;
 
     [Header("Win/Lose Settings")]
-    public string correctTag = "Flower";
     public float loseThreshold = 0.4f;     // 40%
     public float loseTimeLimit = 60f;      // 60 seconds
 
     [Header("UI")]
     public Text timerText; // UI text to show danger timer
-
-    private float belowThresholdTimer = 0f;
     private bool gameEnded = false;
+
+    public MenuHandler menuHandler;
+    public float currentTime = 0;
+    public float maxTime = 5;
 
     void Start()
     {
-        if (progressSlider != null)
+        if (progressBar != null)
         {
-            progressSlider.minValue = 0f;
-            progressSlider.maxValue = 1f;
-            progressSlider.value = 0f;
+            progressBar.fillAmount = 0f;
         }
+        if (clock != null)
+        {
+            clock.fillAmount = 0f;
+        }
+    }
+
+    public void GetPlants(List<GameObject> plants2)
+    {
+        plants = plants2;
     }
 
     void Update()
@@ -47,9 +57,10 @@ public class RoundManager : MonoBehaviour
         // LOSE TIMER LOGIC
         if (progress < loseThreshold)
         {
-            belowThresholdTimer += Time.deltaTime;
+            currentTime += Time.deltaTime;
+            clock.fillAmount = currentTime/maxTime;
 
-            if (belowThresholdTimer >= loseTimeLimit)
+            if (currentTime >= maxTime)
             {
                 LoseGame();
                 return;
@@ -57,58 +68,36 @@ public class RoundManager : MonoBehaviour
         }
         else
         {
-            // Reset timer if player recovers above 40%
-            belowThresholdTimer = 0f;
+            currentTime = 0;
         }
-
-        UpdateTimerUI();
     }
 
     float CalculateProgress()
     {
-        if (spawner == null || spawner.spawned == null || spawner.spawned.Count == 0)
-            return 0f;
+        float totalCount = 0;
+        float flowerCount = 0;
 
-        int totalBlocks = 0;
-        int correctBlocks = 0;
-
-        foreach (GameObject block in spawner.spawned)
+        foreach (GameObject plant in plants)
         {
-            if (block == null)
-                continue;
-
-            totalBlocks++;
-
-            if (block.CompareTag(correctTag))
-                correctBlocks++;
+            PlantHandler plantHandler = plant.GetComponent<PlantHandler>();
+            totalCount++;            
+            if (plantHandler.currentState == PlantHandler.PlantState.flower)
+            {
+                Debug.Log("FLOWER");
+                flowerCount++;
+            }
         }
 
-        if (totalBlocks == 0)
-            return 0f;
-        Debug.Log($"Progress: {correctBlocks}/{totalBlocks} = {(float)correctBlocks / totalBlocks:P1}");
-        return (float)correctBlocks / totalBlocks;
+        if (totalCount == 0) {return 0;}
+
+        return flowerCount/totalCount;
     }
 
     void UpdateProgressBar(float progress)
     {
-        if (progressSlider != null)
-            progressSlider.value = progress;
-    }
-
-    void UpdateTimerUI()
-    {
-        if (timerText == null)
-            return;
-
-        if (progressSlider.value < loseThreshold)
-        {
-            float remaining = loseTimeLimit - belowThresholdTimer;
-            timerText.text = $"Danger: {remaining:F1}s";
-        }
-        else
-        {
-            timerText.text = "Safe";
-        }
+        Debug.Log(progress);
+        if (progressBar != null)
+            progressBar.fillAmount = progress;
     }
 
     void WinGame()
@@ -118,6 +107,8 @@ public class RoundManager : MonoBehaviour
 
         if (timerText != null)
             timerText.text = "YOU WIN!";
+
+        menuHandler.ChangeScreen(menuHandler.win);
     }
 
     void LoseGame()
@@ -127,5 +118,7 @@ public class RoundManager : MonoBehaviour
 
         if (timerText != null)
             timerText.text = "YOU LOSE!";
+        
+        menuHandler.ChangeScreen(menuHandler.lose);
     }
 }

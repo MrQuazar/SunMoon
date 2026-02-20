@@ -21,9 +21,11 @@ public class WinScreen : Screens
     private void OnPlayAgain()
     {
         // play again
+        AudioManager.Instance.PlaySFX(menuHandler.click1);
     }
     private void OnMainMenu()
     {
         menuHandler.ChangeScreen(menuHandler.mainMenu);
+        AudioManager.Instance.PlaySFX(menuHandler.click1);
     }
 }

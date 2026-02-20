@@ -145,17 +145,13 @@ public class PlantHandler : MonoBehaviour
 
     public void GoToPerfect()
     {
-        if ((int)currentState > 3)
-        {
-            DecreaseProgress(true);
-        }
-        else if ((int)currentState < 3)
-        {
-            IncreaseProgress(true);
-        }
-        else
-        {
-            IncreaseProgress(false);
-        }
+
+        currentState = PlantState.grass;
+        ChangeState(1);
+
+        // else
+        // {
+        //     IncreaseProgress(false);
+        // }
     }
 }
