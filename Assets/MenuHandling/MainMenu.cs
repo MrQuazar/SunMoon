@@ -14,6 +14,13 @@ public class MainMenu : Screens
         join.onClick.AddListener(OnJoinPress);
     }
 
+    internal override void RemoveListeners()
+    {
+        settings.onClick.RemoveListener(OnSettingsPress);
+        host.onClick.RemoveListener(OnHostPress);
+        join.onClick.RemoveListener(OnJoinPress);
+    }
+
     private void OnSettingsPress()
     {
         menuHandler.ChangeScreen(menuHandler.settings);

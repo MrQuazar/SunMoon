@@ -12,6 +12,6 @@ public class SettingsMenu : Screens
 
     private void OnBackPress()
     {
-        menuHandler.GoBack();
+        menuHandler.ChangeScreen(menuHandler.mainMenu);
     }
 }
