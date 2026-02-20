@@ -21,7 +21,6 @@ public class RoundManager : MonoBehaviour
 
     void Start()
     {
-        Screen.orientation = ScreenOrientation.Portrait;
         if (progressSlider != null)
         {
             progressSlider.minValue = 0f;

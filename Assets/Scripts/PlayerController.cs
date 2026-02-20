@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Player Controlled")]
     public bool isPlayerController = false;
+    public Vector3 recievedLocation = Vector3.zero;
 
     [Header("Android Controls")]
     public bool useJoystick = true;
@@ -72,7 +73,15 @@ public class PlayerController : MonoBehaviour
     void HandleMovement()
     {
         if (!isPlayerController)
+        {
+            recievedLocation = SocketHandler.instance.recievedLocation;
+            Debug.Log("Received location: " + recievedLocation);
+            if (!WouldCollideWithOtherPlayer(recievedLocation))
+            {
+                transform.position = recievedLocation;
+            }
             return;
+        }
         float h = 0f; // LEFT/RIGHT
         float v = 0f; // UP/DOWN
 

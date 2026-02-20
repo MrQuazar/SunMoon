@@ -7,7 +7,7 @@ public class LobbyManager : MonoBehaviour
     public GameObject planet;
     public GameObject player1;
     public GameObject player2;
-    public GameObject playerManager;
+    public GameObject gameManager;
     public Canvas mainMenuCanvas;
     public Canvas mainGameCanvas;
 
@@ -20,6 +20,12 @@ public class LobbyManager : MonoBehaviour
     public Transform player1CameraTransform;
     public Transform player2CameraTransform;
     public float cameraTransitionSpeed = 2f; // Adjust speed of camera pan
+
+    void Start()
+    {
+        Screen.orientation = ScreenOrientation.Portrait;
+        UnityEngine.Application.targetFrameRate = 120;
+    }
 
     void Update()
     {
@@ -50,7 +56,7 @@ public class LobbyManager : MonoBehaviour
         // Enable player objects and game manager
         player1.SetActive(true);
         player2.SetActive(true);
-        playerManager.SetActive(true);
+        gameManager.SetActive(true);
     }
 
     void SetPlayerSunStatus()
@@ -58,11 +64,13 @@ public class LobbyManager : MonoBehaviour
         // Check if myId is at the start or end of receivedIds
         if (isPlayerSun)
         {
-            playerManager.GetComponent<PlayerManager>().isPlayerSun = true;
+            player1.GetComponent<PlayerController>().isPlayerController = true;
+            player2.GetComponent<PlayerController>().isPlayerController = false;
         }
         else
         {
-            playerManager.GetComponent<PlayerManager>().isPlayerSun = false;
+            player1.GetComponent<PlayerController>().isPlayerController = false;
+            player2.GetComponent<PlayerController>().isPlayerController = true;
         }
     }
 
@@ -75,7 +83,7 @@ public class LobbyManager : MonoBehaviour
 
     void HandleCameraTransition()
     {
-        if (playerManager.GetComponent<PlayerManager>().isPlayerSun)
+        if (isPlayerSun)
         {
             // Disable Cinemachine camera and transition to player1's camera
             cinemachineCamera.gameObject.SetActive(false); // Disable the current Cinemachine camera
@@ -91,27 +99,34 @@ public class LobbyManager : MonoBehaviour
 
     IEnumerator PanCameraToTarget(Transform target)
     {
-        // Pan camera to the new target smoothly
         float timeElapsed = 0f;
-        Vector3 initialPosition = Camera.main.transform.position;
-        Quaternion initialRotation = Camera.main.transform.rotation;
+
+        Transform cam = Camera.main.transform;
+
+        Vector3 initialPosition = cam.position;
+        Quaternion initialRotation = cam.rotation;
+
         Vector3 targetPosition = target.position;
         Quaternion targetRotation = target.rotation;
 
         while (timeElapsed < 1f)
         {
-            Camera.main.transform.position = Vector3.Lerp(initialPosition, targetPosition, timeElapsed);
-            Camera.main.transform.rotation = Quaternion.Slerp(initialRotation, targetRotation, timeElapsed);
-            timeElapsed += Time.deltaTime * cameraTransitionSpeed; // Adjust speed of transition
+            cam.position = Vector3.Lerp(initialPosition, targetPosition, timeElapsed);
+            cam.rotation = Quaternion.Slerp(initialRotation, targetRotation, timeElapsed);
+
+            timeElapsed += Time.deltaTime * cameraTransitionSpeed;
             yield return null;
         }
 
-        // Ensure the camera reaches the exact target position and rotation
-        Camera.main.transform.position = targetPosition;
-        Camera.main.transform.rotation = targetRotation;
-        if (target.parent != null)
-        {
-            Camera.main.transform.SetParent(target.parent);
-        }
+        // Snap exactly
+        cam.position = targetPosition;
+        cam.rotation = targetRotation;
+
+        // 🔥 Now make it a child of the TARGET (not the parent)
+        cam.SetParent(target);
+
+        // Reset local transform so it follows perfectly
+        cam.localPosition = Vector3.zero;
+        cam.localRotation = Quaternion.identity;
     }
 }
