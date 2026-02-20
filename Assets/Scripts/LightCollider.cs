@@ -5,14 +5,6 @@ public class LightCollider : MonoBehaviour
     public bool isSun = true;
     public float increaseRate = 0.05f;
 
-    void Start()
-    {
-        if (!isSun)
-        {
-            increaseRate *= -1;
-        }
-    }
-
     private void OnTriggerStay(Collider other)
     {
         PlantHandler plant = other.GetComponent<PlantHandler>();
