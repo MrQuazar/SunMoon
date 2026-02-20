@@ -2594,6 +2594,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa8f0203af1be6f40b35f16728315aad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roundManager: {fileID: 0}
   center: {fileID: 1002670629}
   radius: 10
   startPadding: 0.5
@@ -3653,9 +3654,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5912852552382225531, guid: cb2f0de24135e9f46b4961ebd15d5598, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7327397989898089303, guid: cb2f0de24135e9f46b4961ebd15d5598, type: 3}
       propertyPath: m_Name
       value: Base Plant
+      objectReference: {fileID: 0}
+    - target: {fileID: 7327397989898089303, guid: cb2f0de24135e9f46b4961ebd15d5598, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
