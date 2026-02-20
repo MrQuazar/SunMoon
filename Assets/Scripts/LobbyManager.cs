@@ -20,11 +20,13 @@ public class LobbyManager : MonoBehaviour
     public Transform player1CameraTransform;
     public Transform player2CameraTransform;
     public float cameraTransitionSpeed = 2f; // Adjust speed of camera pan
+    public AudioClip bgMusic;
 
     void Start()
     {
         Screen.orientation = ScreenOrientation.Portrait;
         UnityEngine.Application.targetFrameRate = 120;
+        AudioManager.Instance.PlayMusic(bgMusic);
     }
 
     void Update()
