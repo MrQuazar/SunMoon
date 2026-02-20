@@ -123,7 +123,7 @@ public class SocketHandler : MonoBehaviour
         ws.OnClosed += (WebSocket w, WebSocketStatusCodes code, string reason) =>
         {
             Debug.Log("Disconnected from server. Code: " + code + " Reason: " + reason);
-            hasGameStarted = true;
+            hasGameStarted = false;
             // Clear reference
             ws = null;
         };
@@ -224,7 +224,6 @@ public class SocketHandler : MonoBehaviour
         }
         else
         {
-            hasGameStarted = true;
             Debug.Log("Unknown message type: " + type);
         }
     }
