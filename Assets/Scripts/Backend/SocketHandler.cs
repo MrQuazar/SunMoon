@@ -22,10 +22,14 @@ public class SocketHandler : MonoBehaviour
     private string[] players;
 
     private string myID;
-    private bool hasGameStarted = false;
+    internal bool hasGameStarted = false;
     private bool isPlayerSun = true;
     private Vector3 previousLocation = Vector3.zero;
     public Vector3 recievedLocation = Vector3.zero;
+
+    internal bool isEclipseActive = false;
+
+    private LobbyManager lobbyManager;
 
     private void Awake()
     {
@@ -38,12 +42,14 @@ public class SocketHandler : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        lobbyManager = GetComponent<LobbyManager>();
     }
 
     private void FixedUpdate()
     {
-        Debug.Log(hasGameStarted + " " + Vector3.Distance(cube1.position, previousLocation));
-        if (hasGameStarted && Vector3.Distance(cube1.position, previousLocation) > 0.01f)
+        // Debug.Log(hasGameStarted + " " + Vector3.Distance(cube1.position, previousLocation));
+        if (hasGameStarted /* && Vector3.Distance(cube1.position, previousLocation) > 0.01f */)
         {
             Debug.Log("Position changed, sending data...");
             SendData();
@@ -151,6 +157,7 @@ public class SocketHandler : MonoBehaviour
         ws.Send(json);
     }
 
+    private int eclipseDirection = -1;
     // Send data to the other player in the room
     public void SendData()
     {
@@ -161,12 +168,46 @@ public class SocketHandler : MonoBehaviour
             pos = cube1.position
         };
 
+        if (isEclipseActive)
+        {
+            float x = lobbyManager.eclipse.GetComponent<PlayerController>().moveDirGlobal.x;
+            float y = lobbyManager.eclipse.GetComponent<PlayerController>().moveDirGlobal.y;
+            float z = lobbyManager.eclipse.GetComponent<PlayerController>().moveDirGlobal.z;
+            // Debug.LogError(x + " " + y + " " + z);
+            // Debug.Log(x > 0f && z > 0f);
+            if (x > 0f && y < 0f && z > 0f)
+            {
+                Debug.Log("Direction: Left");
+                eclipseDirection = 0;
+                dataMessage.direction = 0;
+            }
+            else if (x < 0f && y > 0f && z < 0f)
+            {
+                Debug.Log("Direction: Right");
+                eclipseDirection = 1;
+                dataMessage.direction = 1;
+            }
+            else if (x > 0f && y > 0f && z > 0f)
+            {
+                Debug.Log("Direction: Up");
+                eclipseDirection = 2;
+                dataMessage.direction = 2;
+            }
+            else if (x < 0f && y < 0f && z < 0f)
+            {
+                Debug.Log("Direction: Down");
+                eclipseDirection = 3;
+                dataMessage.direction = 3;
+            }
+        }
+
         string json = JsonUtility.ToJson(dataMessage);
         ws.Send(json);
         previousLocation = cube1.position;
         Debug.Log("Sent data: " + json);
     }
     string roomID;
+    internal bool isSameDirection = false;
     // Handle received messages based on type
     private void HandleReceivedMessage(string message)
     {
@@ -178,7 +219,7 @@ public class SocketHandler : MonoBehaviour
             Debug.Log("Received connected message. My ID: " + receivedMessage.clientId);
             myID = receivedMessage.clientId;
             JoinRoom(roomID);
-            SendEclipseRequest();
+            // SendEclipseRequest();
 
         }
 
@@ -187,7 +228,20 @@ public class SocketHandler : MonoBehaviour
             // Handle received data from the other player
             string receivedData = receivedMessage.data;
             Debug.Log("Received data from peer: " + receivedData);
-            recievedLocation = receivedMessage.pos;
+
+            Debug.LogError("Other: " + receivedMessage.direction + " MY: " + eclipseDirection);
+            isSameDirection = isEclipseActive && receivedMessage.direction == eclipseDirection;
+            if (/* isEclipseActive && isSameDirection && */ myID != receivedMessage.clientId)
+            {
+                if (!isEclipseActive)
+                {
+                    recievedLocation = receivedMessage.pos;
+                }
+                else if (isEclipseActive && isSameDirection)
+                {
+                    recievedLocation = receivedMessage.pos;
+                }
+            }
         }
         else if (type == "room_created")
         {
@@ -213,16 +267,36 @@ public class SocketHandler : MonoBehaviour
         else if (type == "eclipse_start")
         {
             Debug.Log("Eclipse started!");
-
+            isEclipseActive = true;
             isPlayerSun = players.Length > 0 && players[0] == myID; // First player is Sun, second is Moon
+
+            // LobbyManager lobbyManager = gameObject.GetComponent<LobbyManager>();
+            lobbyManager.eclipse.transform.position = lobbyManager.player1.transform.position;
+            lobbyManager.eclipse.transform.localRotation = lobbyManager.player1.transform.localRotation;
             if (isPlayerSun)
             {
-
+                cube1 = lobbyManager.eclipse.transform;
+                lobbyManager.HandleEclipseCameraTransition();
             }
+            lobbyManager.player1.gameObject.SetActive(false);
+            lobbyManager.player2.gameObject.SetActive(false);
+            lobbyManager.eclipse.gameObject.SetActive(true);
         }
         else if (type == "eclipse_end")
         {
             Debug.Log("Eclipse ended!");
+            isEclipseActive = false;
+            isPlayerSun = players.Length > 0 && players[0] == myID; // First player is Sun, second is Moon
+
+            // LobbyManager lobbyManager = gameObject.GetComponent<LobbyManager>();
+            lobbyManager.player1.gameObject.SetActive(true);
+            lobbyManager.player2.gameObject.SetActive(true);
+            if (isPlayerSun)
+            {
+                cube1 = lobbyManager.player1.transform;
+                lobbyManager.HandleCameraTransition();
+            }
+            lobbyManager.eclipse.gameObject.SetActive(false);
         }
         else if (type == "peer_joined")
         {
@@ -278,13 +352,14 @@ public class SocketHandler : MonoBehaviour
         {
             NFCGameHandler.instance.OnPushMessageClick("Hello from Sun!");
         }
-        LobbyManager lobbyManager = gameObject.GetComponent<LobbyManager>();
+        // LobbyManager lobbyManager = gameObject.GetComponent<LobbyManager>();
         lobbyManager.roomCreated = true;
         lobbyManager.isPlayerSun = isPlayerSun;
         hasGameStarted = true;
     }
 
-    private void SendEclipseRequest()
+    [ContextMenu("Send Eclipse Request")]
+    internal void SendEclipseRequest()
     {
         WebSocketMessage dataMessage = new WebSocketMessage
         {
@@ -307,6 +382,7 @@ public class WebSocketMessage
     public string clientId;
     public Vector3 pos; // Example additional field for position data
     public string[] players; // Example additional field for player list
+    public int direction = -1;   // 0 = left, 1 = right, 2 = up, 3 = down
 }
 
 [Serializable]

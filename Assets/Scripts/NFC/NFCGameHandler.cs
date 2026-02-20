@@ -30,6 +30,11 @@ NativeNFCManager.AddNFCTagDetectedListener(OnNFCTagDetected);
 
 // Register listener to handle NDEF message read result
 NativeNFCManager.AddNDEFReadFinishedListener(OnNDEFReadFinished);
+
+
+//Write Events
+NativeNFCManager.AddNDEFPushFinishedListener(OnNDEFPushFinished);
+
 			NativeNFCManager.Enable();
 			NativeNFCManager.RequestNDEFMakeReadonly();
 #endif
@@ -45,6 +50,7 @@ NativeNFCManager.AddNDEFReadFinishedListener(OnNDEFReadFinished);
 
         public void OnNDEFReadFinished(NDEFReadResult result)
         {
+            Debug.LogError("NDEF Read Finished");
             string readResultString = string.Empty;
             //Get The TextRecord
             result.Message.Records.ForEach(record =>
@@ -60,6 +66,7 @@ NativeNFCManager.AddNDEFReadFinishedListener(OnNDEFReadFinished);
             {
                 readResultString = string.Format("NDEF Message was read successfully from tag {0}", result.TagID);
                 // view.UpdateNDEFMessage(result.Message);
+                SocketHandler.instance.SendEclipseRequest();
             }
             else
             {
@@ -74,10 +81,12 @@ NativeNFCManager.AddNDEFReadFinishedListener(OnNDEFReadFinished);
 
         public void OnNDEFPushFinished(NDEFPushResult result)
         {
+            Debug.LogError("NDEF Push Finished");
             string pushResultString = string.Empty;
             if (result.Success)
             {
                 pushResultString = "NDEF Message pushed successfully to other device";
+                // SocketHandler.instance.SendEclipseRequest();
             }
             else
             {

@@ -7,6 +7,7 @@ public class LobbyManager : MonoBehaviour
     public GameObject planet;
     public GameObject player1;
     public GameObject player2;
+    public GameObject eclipse;
     public GameObject gameManager;
     public Canvas mainMenuCanvas;
     public Canvas mainGameCanvas;
@@ -19,6 +20,7 @@ public class LobbyManager : MonoBehaviour
     public CinemachineCamera cinemachineCamera;
     public Transform player1CameraTransform;
     public Transform player2CameraTransform;
+    public Transform eclipseCameraTransform;
     public float cameraTransitionSpeed = 2f; // Adjust speed of camera pan
 
     void Start()
@@ -81,7 +83,7 @@ public class LobbyManager : MonoBehaviour
         mainGameCanvas.enabled = true;
     }
 
-    void HandleCameraTransition()
+    internal void HandleCameraTransition()
     {
         if (isPlayerSun)
         {
@@ -95,6 +97,18 @@ public class LobbyManager : MonoBehaviour
             cinemachineCamera.gameObject.SetActive(false); // Disable the current Cinemachine camera
             StartCoroutine(PanCameraToTarget(player2CameraTransform)); // Pan to player2's camera
         }
+    }
+
+    internal void HandleEclipseCameraTransition()
+    {
+        // Disable current camera and transition to eclipse camera
+        cinemachineCamera.gameObject.SetActive(true); // Disable the current Cinemachine camera
+        if (eclipseCameraTransform == null)
+        {
+            Debug.LogError("Eclipse camera transform is not assigned!");
+            return;
+        }
+        StartCoroutine(PanCameraToTarget(eclipseCameraTransform)); // Pan to eclipse camera
     }
 
     IEnumerator PanCameraToTarget(Transform target)
