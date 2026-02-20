@@ -57,6 +57,23 @@ public class Spawner : MonoBehaviour
         roundManager.GetPlants(spawned);
     }
 
+    public void ResetPlants()
+    {
+        foreach (GameObject plant in spawned)
+        {
+            PlantHandler ph = plant.GetComponent<PlantHandler>();
+            
+            if (rng.NextDouble() < 0.5f)
+            {
+                ph.SetToDeadr();
+            }
+            else
+            {
+                ph.SetToMonster();
+            }
+        }
+    }
+
     [ContextMenu("Spawn")]
     public void Spawn()
     {

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class RoundManager : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class RoundManager : MonoBehaviour
 
     [Header("UI")]
     public Text timerText; // UI text to show danger timer
-    private bool gameEnded = false;
+    public bool inGame = false;
 
     public MenuHandler menuHandler;
     public float currentTime = 0;
@@ -34,6 +35,19 @@ public class RoundManager : MonoBehaviour
         }
     }
 
+    public void Reset()
+    {
+        if (progressBar != null)
+        {
+            progressBar.fillAmount = 0f;
+            currentTime = 0;
+        }
+        if (clock != null)
+        {
+            clock.fillAmount = 0f;
+        }
+    } 
+
     public void GetPlants(List<GameObject> plants2)
     {
         plants = plants2;
@@ -41,7 +55,7 @@ public class RoundManager : MonoBehaviour
 
     void Update()
     {
-        if (gameEnded)
+        if (!inGame)
             return;
 
         if (SocketHandler.instance.hasGameStarted == false)
@@ -107,7 +121,7 @@ public class RoundManager : MonoBehaviour
 
     void WinGame()
     {
-        gameEnded = true;
+        inGame = false;
         Debug.Log("YOU WIN! All blocks are C!");
 
         if (timerText != null)
@@ -118,7 +132,7 @@ public class RoundManager : MonoBehaviour
 
     void LoseGame()
     {
-        gameEnded = true;
+        inGame = false;
         Debug.Log("YOU LOSE! Stayed below 40% too long.");
 
         if (timerText != null)

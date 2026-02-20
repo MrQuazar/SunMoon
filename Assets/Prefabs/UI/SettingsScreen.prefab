@@ -88,8 +88,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6210859061039430177}
-  - component: {fileID: 8494979972199710794}
-  - component: {fileID: 4817744702400803919}
+  - component: {fileID: 8161314179976622597}
+  - component: {fileID: 4843649521348888772}
   m_Layer: 5
   m_Name: TouchpadToggle
   m_TagString: Untagged
@@ -118,24 +118,7 @@ RectTransform:
   m_AnchoredPosition: {x: 5, y: 500}
   m_SizeDelta: {x: 390, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8494979972199710794
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 214142303990320101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5fd311e4760d1049979c9beae1a3361, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onSprite: {fileID: -1723898668, guid: 3cb88ada5fdf4f343b8e497dccdf3f81, type: 3}
-  offSprite: {fileID: 1033677300, guid: 3cb88ada5fdf4f343b8e497dccdf3f81, type: 3}
-  image: {fileID: 8340958663293015533}
-  button: {fileID: 4817744702400803919}
-  state: 1
---- !u!114 &4817744702400803919
+--- !u!114 &8161314179976622597
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -179,6 +162,23 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4843649521348888772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 214142303990320101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1e726554104309468a0ecf7eb7cb33c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onSprite: {fileID: -1723898668, guid: 3cb88ada5fdf4f343b8e497dccdf3f81, type: 3}
+  offSprite: {fileID: 1033677300, guid: 3cb88ada5fdf4f343b8e497dccdf3f81, type: 3}
+  image: {fileID: 8340958663293015533}
+  button: {fileID: 8161314179976622597}
+  state: 1
 --- !u!1 &456432880983423803
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,8 +267,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5923984690169557501}
-  - component: {fileID: 817402088127679212}
   - component: {fileID: 3320006507237061426}
+  - component: {fileID: 3034486727637561334}
   m_Layer: 5
   m_Name: VibrationToggle
   m_TagString: Untagged
@@ -297,23 +297,6 @@ RectTransform:
   m_AnchoredPosition: {x: 5, y: -230}
   m_SizeDelta: {x: 390, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &817402088127679212
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1129733010676637567}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5fd311e4760d1049979c9beae1a3361, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onSprite: {fileID: -1723898668, guid: 3cb88ada5fdf4f343b8e497dccdf3f81, type: 3}
-  offSprite: {fileID: 1033677300, guid: 3cb88ada5fdf4f343b8e497dccdf3f81, type: 3}
-  image: {fileID: 5086817464584583948}
-  button: {fileID: 3320006507237061426}
-  state: 1
 --- !u!114 &3320006507237061426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,6 +341,23 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3034486727637561334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1129733010676637567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3664f4fd8551554faaae5929e89081b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onSprite: {fileID: -1723898668, guid: 3cb88ada5fdf4f343b8e497dccdf3f81, type: 3}
+  offSprite: {fileID: 1033677300, guid: 3cb88ada5fdf4f343b8e497dccdf3f81, type: 3}
+  image: {fileID: 5086817464584583948}
+  button: {fileID: 3320006507237061426}
+  state: 1
 --- !u!1 &1671763014694375354
 GameObject:
   m_ObjectHideFlags: 0
@@ -1248,7 +1248,7 @@ GameObject:
   - component: {fileID: 7713838119010305995}
   - component: {fileID: 2116664255923264740}
   - component: {fileID: 1795770073247765463}
-  - component: {fileID: 2991898620045199476}
+  - component: {fileID: 8152908300322113487}
   m_Layer: 5
   m_Name: SettingsScreen
   m_TagString: Untagged
@@ -1339,7 +1339,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &2991898620045199476
+--- !u!114 &8152908300322113487
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1683,8 +1683,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3362310925099192246}
-  - component: {fileID: 1957467413576043321}
   - component: {fileID: 1862356786332276604}
+  - component: {fileID: 6330024860708489654}
   m_Layer: 5
   m_Name: SFXToggle
   m_TagString: Untagged
@@ -1713,23 +1713,6 @@ RectTransform:
   m_AnchoredPosition: {x: 5, y: 0}
   m_SizeDelta: {x: 390, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1957467413576043321
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6515747286636620785}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5fd311e4760d1049979c9beae1a3361, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onSprite: {fileID: -1723898668, guid: 3cb88ada5fdf4f343b8e497dccdf3f81, type: 3}
-  offSprite: {fileID: 1033677300, guid: 3cb88ada5fdf4f343b8e497dccdf3f81, type: 3}
-  image: {fileID: 1161265872414955175}
-  button: {fileID: 1862356786332276604}
-  state: 1
 --- !u!114 &1862356786332276604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1774,6 +1757,23 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6330024860708489654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6515747286636620785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef268224b6ccf7447b66915b0386abcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onSprite: {fileID: -1723898668, guid: 3cb88ada5fdf4f343b8e497dccdf3f81, type: 3}
+  offSprite: {fileID: 1033677300, guid: 3cb88ada5fdf4f343b8e497dccdf3f81, type: 3}
+  image: {fileID: 1161265872414955175}
+  button: {fileID: 1862356786332276604}
+  state: 1
 --- !u!1 &6935321268686516397
 GameObject:
   m_ObjectHideFlags: 0
