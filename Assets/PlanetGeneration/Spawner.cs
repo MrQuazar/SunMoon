@@ -10,6 +10,7 @@ public class WeightedLandPrefab
 
 public class Spawner : MonoBehaviour
 {
+    public RoundManager roundManager;
     [Header("Raycast")]
     public Transform center;
     [Min(0.001f)] public float radius = 10f;
@@ -53,6 +54,7 @@ public class Spawner : MonoBehaviour
     void Start()
     {
         Spawn();
+        roundManager.GetPlants(spawned);
     }
 
     [ContextMenu("Spawn")]

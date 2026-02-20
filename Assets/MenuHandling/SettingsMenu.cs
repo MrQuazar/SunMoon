@@ -13,5 +13,6 @@ public class SettingsMenu : Screens
     private void OnBackPress()
     {
         menuHandler.ChangeScreen(menuHandler.mainMenu);
+        AudioManager.Instance.PlaySFX(menuHandler.click1);
     }
 }

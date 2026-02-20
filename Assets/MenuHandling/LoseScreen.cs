@@ -25,5 +25,6 @@ public class LoseScreen : Screens
     private void OnMainMenu()
     {
         menuHandler.ChangeScreen(menuHandler.mainMenu);
+        AudioManager.Instance.PlaySFX(menuHandler.click1);
     }
 }
