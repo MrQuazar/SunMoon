@@ -875,9 +875,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6920aeb5d6d29084581b435c89fe9e42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1: {fileID: 171148635}
-  player2: {fileID: 535296853}
-  isPlayerSun: 1
 --- !u!4 &478407252
 Transform:
   m_ObjectHideFlags: 0
@@ -901,10 +898,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1775756670072618457, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
-      propertyPath: isSun
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2508340270525239493, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: m_Name
       value: Moon
@@ -919,7 +912,7 @@ PrefabInstance:
       objectReference: {fileID: 171148635}
     - target: {fileID: 6853264597455414612, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.94
       objectReference: {fileID: 0}
     - target: {fileID: 6853264597455414612, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -927,35 +920,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6853264597455414612, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7
+      value: -7.12
       objectReference: {fileID: 0}
     - target: {fileID: 6853264597455414612, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.71432304
       objectReference: {fileID: 0}
     - target: {fileID: 6853264597455414612, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0.6988765
       objectReference: {fileID: 0}
     - target: {fileID: 6853264597455414612, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.026928907
       objectReference: {fileID: 0}
     - target: {fileID: 6853264597455414612, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0.02427332
       objectReference: {fileID: 0}
     - target: {fileID: 6853264597455414612, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -88.73
       objectReference: {fileID: 0}
     - target: {fileID: 6853264597455414612, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -11.83
       objectReference: {fileID: 0}
     - target: {fileID: 6853264597455414612, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 7.68
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -965,11 +958,6 @@ PrefabInstance:
 --- !u!1 &535296853 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2508340270525239493, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
-  m_PrefabInstance: {fileID: 535296852}
-  m_PrefabAsset: {fileID: 0}
---- !u!20 &535296854 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 3510378196497046235, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
   m_PrefabInstance: {fileID: 535296852}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &748890262
@@ -2615,7 +2603,7 @@ MonoBehaviour:
     m_Bits: 16
   landMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   landSpawns:
   - prefab: {fileID: 7327397989898089303, guid: cb2f0de24135e9f46b4961ebd15d5598, type: 3}
     weight: 50
@@ -2626,6 +2614,7 @@ MonoBehaviour:
   spawned: []
   surfaceOffset: -0.05
   alignUpToNormal: 1
+  seed: 12345
 --- !u!43 &1892786543
 Mesh:
   m_ObjectHideFlags: 0
@@ -3664,14 +3653,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3078257170799284286, guid: cb2f0de24135e9f46b4961ebd15d5598, type: 3}
-      propertyPath: targetCamera
-      value: 
-      objectReference: {fileID: 535296854}
-    - target: {fileID: 6615153515470219748, guid: cb2f0de24135e9f46b4961ebd15d5598, type: 3}
-      propertyPath: targetCamera
-      value: 
-      objectReference: {fileID: 535296854}
     - target: {fileID: 7327397989898089303, guid: cb2f0de24135e9f46b4961ebd15d5598, type: 3}
       propertyPath: m_Name
       value: Base Plant
