@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class GameScreen : Screens
 {
     public Button settings;
-    RoundManager roundManager;
+    public RoundManager roundManager;
 
     internal override void AddListeners()
     {

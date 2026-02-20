@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class RoundManager : MonoBehaviour
 {
@@ -33,6 +34,19 @@ public class RoundManager : MonoBehaviour
             clock.fillAmount = 0f;
         }
     }
+
+    public void Reset()
+    {
+        if (progressBar != null)
+        {
+            progressBar.fillAmount = 0f;
+            currentTime = 0;
+        }
+        if (clock != null)
+        {
+            clock.fillAmount = 0f;
+        }
+    } 
 
     public void GetPlants(List<GameObject> plants2)
     {
