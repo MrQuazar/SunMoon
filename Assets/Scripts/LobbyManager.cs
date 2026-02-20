@@ -94,13 +94,31 @@ public class LobbyManager : MonoBehaviour
     internal void HandleEclipseCameraTransition()
     {
         // Disable current camera and transition to eclipse camera
-        cinemachineCamera.gameObject.SetActive(true); // Disable the current Cinemachine camera
+        cinemachineCamera.gameObject.SetActive(false); // Disable the current Cinemachine camera
         if (eclipseCameraTransform == null)
         {
             Debug.LogError("Eclipse camera transform is not assigned!");
             return;
         }
-        StartCoroutine(PanCameraToTarget(eclipseCameraTransform)); // Pan to eclipse camera
+
+        // Directly set the camera's position and rotation (teleport without pan)
+        TeleportCameraToTarget(eclipseCameraTransform);
+    }
+
+    void TeleportCameraToTarget(Transform target)
+    {
+        Transform cam = Camera.main.transform;
+
+        // Set the camera's position and rotation to the target's position and rotation
+        cam.position = target.position;
+        cam.rotation = target.rotation;
+
+        // Now make it a child of the TARGET (not the parent)
+        cam.SetParent(target);
+
+        // Reset local transform so it follows perfectly
+        cam.localPosition = Vector3.zero;
+        cam.localRotation = Quaternion.identity;
     }
 
     IEnumerator PanCameraToTarget(Transform target)
