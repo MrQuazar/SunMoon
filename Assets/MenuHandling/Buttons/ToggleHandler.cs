@@ -13,7 +13,7 @@ public class ToggleHandler : MonoBehaviour
     void Awake()
     {
         if (state) image.sprite = onSprite;
-        else image.sprite = onSprite;
+        else image.sprite = offSprite;
 
         button.onClick.AddListener(OnClick);
     }
@@ -21,8 +21,8 @@ public class ToggleHandler : MonoBehaviour
     void OnClick()
     {
         state = !state;
-        
+
         if (state) image.sprite = onSprite;
-        else image.sprite = onSprite;
+        else image.sprite = offSprite;
     }
 }
