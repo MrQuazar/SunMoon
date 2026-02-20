@@ -22,7 +22,10 @@ public class ToggleHandler : MonoBehaviour
     {
         state = !state;
 
-        if (state) image.sprite = onSprite;
+        if (state) 
+        {
+            image.sprite = onSprite;
+        }
         else image.sprite = offSprite;
     }
 }
