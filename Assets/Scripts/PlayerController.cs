@@ -112,8 +112,8 @@ public class PlayerController : MonoBehaviour
                 transform.position = recievedLocation;
             }
 
-            if (!SocketHandler.instance.isEclipseActive)
-                return;
+            // if (!SocketHandler.instance.isEclipseActive)
+            return;
         }
         float h = 0f; // LEFT/RIGHT
         float v = 0f; // UP/DOWN
@@ -171,8 +171,8 @@ public class PlayerController : MonoBehaviour
 
         moveDir.Normalize();
         moveDirGlobal = moveDir;
-        if (!isPlayerController || (SocketHandler.instance.isEclipseActive && !SocketHandler.instance.isSameDirection))
-            return;
+        // if (!isPlayerController/*  || (SocketHandler.instance.isEclipseActive && !SocketHandler.instance.isSameDirection) */)
+        //     return;
         Vector3 newPos = transform.position + moveDir * moveSpeed * Time.deltaTime;
 
         // Clamp to planet surface

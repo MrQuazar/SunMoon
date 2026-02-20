@@ -131,7 +131,7 @@ public class SocketHandler : MonoBehaviour
         ws.OnClosed += (WebSocket w, WebSocketStatusCodes code, string reason) =>
         {
             Debug.Log("Disconnected from server. Code: " + code + " Reason: " + reason);
-            hasGameStarted = true;
+            hasGameStarted = false;
             // Clear reference
             ws = null;
         };
@@ -228,8 +228,8 @@ public class SocketHandler : MonoBehaviour
             // Handle received data from the other player
             string receivedData = receivedMessage.data;
             Debug.Log("Received data from peer: " + receivedData);
-
-            // Debug.LogError("Other: " + receivedMessage.direction + " MY: " + eclipseDirection);
+            // if (isEclipseActive && (receivedMessage.direction > 0 || eclipseDirection > 0))
+            //     Debug.LogError("Other: " + receivedMessage.direction + " MY: " + eclipseDirection);
             isSameDirection = isEclipseActive && receivedMessage.direction == eclipseDirection;
             if (/* isEclipseActive && isSameDirection && */ myID != receivedMessage.clientId)
             {
@@ -237,7 +237,7 @@ public class SocketHandler : MonoBehaviour
                 {
                     recievedLocation = receivedMessage.pos;
                 }
-                else if (isEclipseActive && isSameDirection)
+                else if (isEclipseActive && !isPlayerSun)
                 {
                     recievedLocation = receivedMessage.pos;
                 }
@@ -280,6 +280,7 @@ public class SocketHandler : MonoBehaviour
             if (isPlayerSun)
             {
                 cube1 = lobbyManager.eclipse.transform;
+                lobbyManager.eclipse.GetComponent<PlayerController>().isPlayerController = true;
             }
             lobbyManager.eclipse.gameObject.SetActive(true);
             lobbyManager.HandleEclipseCameraTransition();
@@ -298,8 +299,9 @@ public class SocketHandler : MonoBehaviour
             if (isPlayerSun)
             {
                 cube1 = lobbyManager.player1.transform;
-                lobbyManager.HandleCameraTransition();
+                lobbyManager.eclipse.GetComponent<PlayerController>().isPlayerController = false;
             }
+            lobbyManager.HandleCameraTransition();
             lobbyManager.eclipse.gameObject.SetActive(false);
         }
         else if (type == "peer_joined")
@@ -316,7 +318,6 @@ public class SocketHandler : MonoBehaviour
         }
         else
         {
-            hasGameStarted = true;
             Debug.Log("Unknown message type: " + type);
         }
     }
