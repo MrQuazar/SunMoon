@@ -36,10 +36,18 @@ public class Spawner : MonoBehaviour
     [Header("Surface Settings")]
     public float surfaceOffset = 0.05f;
     public bool alignUpToNormal = true;
+    
+    public int seed = 12345;
+    System.Random rng;
 
     void Reset()
     {
         center = transform;
+    }
+
+    void Awake()
+    {
+        rng = new System.Random(seed);
     }
 
     void Start()
@@ -63,28 +71,30 @@ public class Spawner : MonoBehaviour
         }
 
         int successCount = 0;
+        int totalAttempts = 0;
+        int maxTotalAttempts = spawnCount * maxAttemptsPerSpawn;
 
-        for (int i = 0; i < spawnCount; i++)
+        while (successCount < spawnCount && totalAttempts < maxTotalAttempts)
         {
+            totalAttempts++;
+
             if (TrySpawnOne() == 1)
             {
                 successCount++;
             }
-            else
-            {
-                i -= 1;
-            }
         }
 
-        Debug.Log($"Spawned {successCount}/{spawnCount}");
+        Debug.Log($"Spawned {successCount}/{spawnCount} after {totalAttempts} attempts");
     }
 
     int TrySpawnOne()
     {
         for (int attempt = 0; attempt < maxAttemptsPerSpawn; attempt++)
         {
-            Vector3 origin = RandomPointOnSphere(center.position, radius + startPadding);
+            Vector3 origin = RandomPointOnSphere(center.position, radius + startPadding, rng);
             Vector3 dir = (center.position - origin).normalized;
+
+            Debug.Log(origin);
 
             float maxDist = radius * maxDistanceMultiplier;
 
@@ -133,6 +143,17 @@ public class Spawner : MonoBehaviour
         // Align prefab's UP (Y) to the hit object's UP axis
         Quaternion rot = Quaternion.FromToRotation(Vector3.up, outwardDirection);
 
+        PlantHandler ph = prefab.GetComponent<PlantHandler>();
+        
+        if (rng.NextDouble() < 0.5f)
+        {
+            ph.currentState = PlantHandler.PlantState.monster;
+        }
+        else
+        {
+            ph.currentState = PlantHandler.PlantState.dead;
+        }
+
         spawned.Add(Instantiate(prefab, pos, rot, transform));
     }
 
@@ -149,7 +170,7 @@ public class Spawner : MonoBehaviour
         if (totalWeight <= 0f)
             return null;
 
-        float randomValue = Random.Range(0f, totalWeight);
+        float randomValue = (float)rng.NextDouble() * totalWeight;
         float currentWeight = 0f;
 
         foreach (var item in prefabs)
@@ -166,8 +187,17 @@ public class Spawner : MonoBehaviour
         return null;
     }
 
-    static Vector3 RandomPointOnSphere(Vector3 center, float r)
+    static Vector3 RandomPointOnSphere(Vector3 center, float r, System.Random rng)
     {
-        return center + Random.onUnitSphere * r;
+        // uniform point on unit sphere
+        double z = rng.NextDouble() * 2.0 - 1.0;
+        double t = rng.NextDouble() * (System.Math.PI * 2.0);
+        double xy = System.Math.Sqrt(1.0 - z * z);
+
+        float x = (float)(xy * System.Math.Cos(t));
+        float y = (float)z;
+        float z2 = (float)(xy * System.Math.Sin(t));
+
+        return center + new Vector3(x, y, z2) * r;
     }
 }

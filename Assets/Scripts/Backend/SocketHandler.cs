@@ -51,7 +51,6 @@ public class SocketHandler : MonoBehaviour
         // Debug.Log(hasGameStarted + " " + Vector3.Distance(cube1.position, previousLocation));
         if (hasGameStarted /* && Vector3.Distance(cube1.position, previousLocation) > 0.01f */)
         {
-            Debug.Log("Position changed, sending data...");
             SendData();
         }
     }

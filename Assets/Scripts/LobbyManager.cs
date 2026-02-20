@@ -9,8 +9,6 @@ public class LobbyManager : MonoBehaviour
     public GameObject player2;
     public GameObject eclipse;
     public GameObject gameManager;
-    public Canvas mainMenuCanvas;
-    public Canvas mainGameCanvas;
 
     public bool roomCreated = false; // Set to true once the room is created
     private bool isPlanetRotating = true;
@@ -22,11 +20,13 @@ public class LobbyManager : MonoBehaviour
     public Transform player2CameraTransform;
     public Transform eclipseCameraTransform;
     public float cameraTransitionSpeed = 2f; // Adjust speed of camera pan
+    public AudioClip bgMusic;
 
     void Start()
     {
         Screen.orientation = ScreenOrientation.Portrait;
         UnityEngine.Application.targetFrameRate = 120;
+        AudioManager.Instance.PlayMusic(bgMusic);
     }
 
     void Update()
@@ -43,7 +43,6 @@ public class LobbyManager : MonoBehaviour
             StopPlanetRotation();
             EnableGameObjects();
             SetPlayerSunStatus();
-            SwitchCanvases();
             HandleCameraTransition();
         }
     }

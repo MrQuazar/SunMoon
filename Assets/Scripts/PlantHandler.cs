@@ -1,11 +1,14 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.VFX;
 
 public class PlantHandler : MonoBehaviour
 {
     public CanvasGroup barGroup;
     public Image progressBar;
-    
+    public VisualEffect dustCloud;
+
     [HideInInspector]
     public float currentAmount = 0f;
     public float maxAmount = 3f;
@@ -38,6 +41,7 @@ public class PlantHandler : MonoBehaviour
 
         progressBar.color = stateColors[(int)currentState];
         currentStatePrefab = Instantiate(statePrefabs[(int)currentState], transform);
+        dustCloud.SendEvent("Stop");
     }
 
     void Update()
@@ -46,8 +50,8 @@ public class PlantHandler : MonoBehaviour
 
         if (!isTriggered)
         {
-            DecreaseProgress(0.01f, false);  
-            
+            DecreaseProgress(false);
+
             currentTimeTriggered -= 0.05f;
             if (currentTimeTriggered <= 0)
             {
@@ -74,8 +78,15 @@ public class PlantHandler : MonoBehaviour
         }
     }
 
+    IEnumerator DustPuff()
+    {
+        dustCloud.SendEvent("OnPlay");
+        yield return new WaitForSeconds(1.0f);
+        dustCloud.SendEvent("Stop");
+    }
+
     public void ChangeState(int value = 1)
-    {   
+    {
         if (currentState == PlantState.dead && value < 0) return;
         if (currentState == PlantState.monster && value > 0) return;
 
@@ -90,37 +101,61 @@ public class PlantHandler : MonoBehaviour
         currentState = (PlantState)((int)currentState + value);
         progressBar.color = stateColors[(int)currentState];
 
+
+        Destroy(currentStatePrefab);
+        currentStatePrefab = Instantiate(statePrefabs[(int)currentState], transform);
+
+        StartCoroutine(DustPuff());
+    }
+
+    public void SetFinalState(bool isPlayerSun)
+    {
+        currentState = isPlayerSun ? PlantState.monster : PlantState.dead;
+        progressBar.color = stateColors[(int)currentState];
+
         Destroy(currentStatePrefab);
         currentStatePrefab = Instantiate(statePrefabs[(int)currentState], transform);
     }
 
-    public void SetState(PlantState state)
+    public void IncreaseProgress(bool CanChangeState)
     {
-        currentState = state;
-        progressBar.color = stateColors[(int)currentState];
-    }
+        currentAmount += Time.deltaTime;
 
-    public void IncreaseProgress(float value, bool allowChange)
-    {
-        currentAmount += value;
+        if (currentAmount > maxAmount)
+            currentAmount = maxAmount;
 
-        if (currentAmount > maxAmount) currentAmount = maxAmount;
-
-        if (currentAmount >= maxAmount && allowChange)
+        if (currentAmount >= maxAmount && CanChangeState)
         {
             ChangeState(1);
         }
     }
 
-    public void DecreaseProgress(float value, bool allowChange)
+    public void DecreaseProgress(bool CanChangeState)
     {
-        currentAmount -= value;
+        currentAmount -= Time.deltaTime;
 
-        if (currentAmount < 0) currentAmount = 0;
+        if (currentAmount < 0)
+            currentAmount = 0;
 
-        if (currentAmount <= 0 && allowChange)
+        if (currentAmount <= 0 && CanChangeState)
         {
             ChangeState(-1);
+        }
+    }
+
+    public void GoToPerfect()
+    {
+        if ((int)currentState > 3)
+        {
+            DecreaseProgress(true);
+        }
+        else if ((int)currentState < 3)
+        {
+            IncreaseProgress(true);
+        }
+        else
+        {
+            IncreaseProgress(false);
         }
     }
 }
