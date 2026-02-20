@@ -10,8 +10,13 @@ public class JoinMenu : Screens
         back.onClick.AddListener(OnBackPress);
     }
 
+    internal override void RemoveListeners()
+    {
+        back.onClick.RemoveListener(OnBackPress);
+    }
+
     private void OnBackPress()
     {
-        menuHandler.GoBack();
+        menuHandler.ChangeScreen(menuHandler.mainMenu);
     }
 }
