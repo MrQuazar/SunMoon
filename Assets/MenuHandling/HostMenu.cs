@@ -31,6 +31,7 @@ public class HostMenu : Screens
     }
     internal void SetRoomCode(string roomCode, int playerCount)
     {
+        Debug.Log($"Setting room code: {roomCode} with player count: {playerCount}");
         txtRoomCode.text = $"{roomCode}";
     }
 }

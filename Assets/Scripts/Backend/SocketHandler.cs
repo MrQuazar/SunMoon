@@ -193,12 +193,16 @@ public class SocketHandler : MonoBehaviour
             Debug.Log("Joined room successfully: " + receivedMessage.roomId);
             roomID = receivedMessage.roomId;
             players = receivedMessage.players;
-            if (JoinMenu.instance != null)
+            if (MainMenu.instance != null)
             {
-                if (JoinMenu.instance.gameObject.activeInHierarchy)
-                    JoinMenu.instance.OnJoinRoomSuccess(roomID, players.Length);
-                else if (JoinMenu.instance.lobbyWaitingScreen.gameObject.activeInHierarchy)
+                if (players[0] == myID)
+                    MainMenu.instance.ChangeScreenToHost();
+                else
+                {
+                    Debug.Log("Updating lobby waiting screen with room code and player count.");
                     JoinMenu.instance.lobbyWaitingScreen.SetRoomCode(roomID, players.Length);
+                    JoinMenu.instance.OnJoinRoomSuccess(roomID, players.Length);
+                }
             }
             if (players.Length == 2)
             {

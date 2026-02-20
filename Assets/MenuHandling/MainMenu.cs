@@ -3,10 +3,15 @@ using UnityEngine.UI;
 
 public class MainMenu : Screens
 {
+    public static MainMenu instance;
     public Button settings;
     public Button host;
     public Button join;
 
+    private void Awake()
+    {
+        instance = this;
+    }
     internal override void AddListeners()
     {
         settings.onClick.AddListener(OnSettingsPress);
@@ -27,6 +32,12 @@ public class MainMenu : Screens
     }
     private void OnHostPress()
     {
+        SocketHandler.instance.CreateNewRoomRequest();
+    }
+
+    public void ChangeScreenToHost()
+    {
+        Debug.Log("Changing screen to host menu.");
         menuHandler.ChangeScreen(menuHandler.hostGame);
     }
     private void OnJoinPress()

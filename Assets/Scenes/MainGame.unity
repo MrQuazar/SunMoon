@@ -4198,13 +4198,17 @@ PrefabInstance:
       propertyPath: txtRoomCode
       value: 
       objectReference: {fileID: 587028682}
+    - target: {fileID: 1325498004237206009, guid: b5c525866645a6741ae02048219203c5, type: 3}
+      propertyPath: m_Text
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2773109633978633937, guid: b5c525866645a6741ae02048219203c5, type: 3}
       propertyPath: m_Name
       value: HostGameMenu
       objectReference: {fileID: 0}
     - target: {fileID: 2773109633978633937, guid: b5c525866645a6741ae02048219203c5, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4817562007649598304, guid: b5c525866645a6741ae02048219203c5, type: 3}
       propertyPath: m_Pivot.x
