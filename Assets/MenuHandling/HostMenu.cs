@@ -5,7 +5,8 @@ public class HostMenu : Screens
 {
     public Button back;
     public Button startGame;
-    public Text status;
+
+    [SerializeField] private Text txtRoomCode;
 
     internal override void AddListeners()
     {
@@ -27,5 +28,9 @@ public class HostMenu : Screens
     {
         //
         AudioManager.Instance.PlaySFX(menuHandler.click1);
+    }
+    internal void SetRoomCode(string roomCode, int playerCount)
+    {
+        txtRoomCode.text = $"{roomCode}";
     }
 }
