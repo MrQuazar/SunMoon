@@ -50,7 +50,7 @@ public class PlantHandler : MonoBehaviour
 
         if (!isTriggered)
         {
-            DecreaseProgress(false);
+            //DecreaseProgress(false);
 
             currentTimeTriggered -= 0.05f;
             if (currentTimeTriggered <= 0)
@@ -151,7 +151,7 @@ public class PlantHandler : MonoBehaviour
 
     public void SetToDeadr()
     {
-        
+
         currentState = PlantState.grass;
         ChangeState(-1);
     }

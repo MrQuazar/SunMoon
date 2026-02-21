@@ -10,14 +10,14 @@ public class GameScreen : Screens
 
     internal override void AddListeners()
     {
-        settings.onClick.AddListener(OnSettingsPress);
+        // settings.onClick.AddListener(OnSettingsPress);
         spawner.ResetPlants();
         roundManager.inGame = true;
     }
 
     internal override void RemoveListeners()
     {
-        settings.onClick.RemoveListener(OnSettingsPress);
+        //settings.onClick.RemoveListener(OnSettingsPress);
     }
 
     private void OnSettingsPress()

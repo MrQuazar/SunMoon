@@ -56,33 +56,35 @@ public class OverheatCollider : MonoBehaviour
 
     void ShowWarning()
     {
-        if (!playerController.isPlayerController) return;
-        // Set correct sprite
-        if (roleImage != null)
-            roleImage.sprite = sprite;
-
-        if (!hasShownDialogue)
+        if (playerController.isPlayerController)
         {
-            if (warningPanel != null)
-                warningPanel.SetActive(true);
+            // Set correct sprite
+            if (roleImage != null)
+                roleImage.sprite = sprite;
 
-            if (warningText != null)
+            if (!hasShownDialogue)
             {
-                warningText.text = isPlayerSun
-                    ? "Uh-oh! Overheating"
-                    : "Umm... Am I losing parts again?";
+                if (warningPanel != null)
+                    warningPanel.SetActive(true);
+
+                if (warningText != null)
+                {
+                    warningText.text = isPlayerSun
+                        ? "Uh-oh! Overheating"
+                        : "Umm... Am I losing parts again?";
+                }
+
+                if (dialogueAudio != null)
+                    AudioManager.Instance.PlaySFX(dialogueAudio);
+
+                hasShownDialogue = true;
             }
-
-            if (dialogueAudio != null)
-                AudioManager.Instance.PlaySFX(dialogueAudio);
-
-            hasShownDialogue = true;
-        }
-        else
-        {
-            // Later overheats → no text, only laser audio
-            if (laserAudio != null)
-                AudioManager.Instance.PlaySFX(laserAudio);
+            else
+            {
+                // Later overheats → no text, only laser audio
+                if (laserAudio != null)
+                    AudioManager.Instance.PlaySFX(laserAudio);
+            }
         }
     }
 
@@ -137,9 +139,11 @@ public class OverheatCollider : MonoBehaviour
 
     void Vibrate()
     {
-        if (!vibrationToggleHandler.state) return;
+        if (vibrationToggleHandler.state)
+        {
 #if UNITY_ANDROID || UNITY_IOS
-        Handheld.Vibrate();
+            Handheld.Vibrate();
 #endif
+        }
     }
 }

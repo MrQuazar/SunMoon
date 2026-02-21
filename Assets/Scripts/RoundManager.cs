@@ -11,10 +11,6 @@ public class RoundManager : MonoBehaviour
     public List<GameObject> plants = new List<GameObject>();
     public Image clock;
 
-    [Header("Win/Lose Settings")]
-    public float loseThreshold = 0.4f;     // 40%
-    public float loseTimeLimit = 60f;      // 60 seconds
-
     [Header("UI")]
     public Text timerText; // UI text to show danger timer
     public bool inGame = false;
@@ -22,6 +18,8 @@ public class RoundManager : MonoBehaviour
     public MenuHandler menuHandler;
     public float currentTime = 0;
     public float maxTime = 5;
+
+    public float winVal = 0.4f;
 
     void Start()
     {
@@ -46,7 +44,7 @@ public class RoundManager : MonoBehaviour
         {
             clock.fillAmount = 0f;
         }
-    } 
+    }
 
     public void GetPlants(List<GameObject> plants2)
     {
@@ -67,14 +65,14 @@ public class RoundManager : MonoBehaviour
         UpdateProgressBar(progress);
 
         // WIN CONDITION
-        if (progress >= 1f)
+        if (progress >= winVal)
         {
             WinGame();
             return;
         }
 
         // LOSE TIMER LOGIC
-        if (progress < loseThreshold)
+        if (currentTime < maxTime)
         {
             currentTime += Time.deltaTime;
             clock.fillAmount = currentTime / maxTime;
