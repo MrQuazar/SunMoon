@@ -8,6 +8,10 @@ public class MainMenu : Screens
     public Button host;
     public Button join;
 
+    // TEMP: play-test entry point. Remove this button + OnSinglePlayerPress
+    // once solo testing of the main game loop is no longer needed.
+    public Button singlePlayer;
+
     private void Awake()
     {
         instance = this;
@@ -17,6 +21,9 @@ public class MainMenu : Screens
         settings.onClick.AddListener(OnSettingsPress);
         host.onClick.AddListener(OnHostPress);
         join.onClick.AddListener(OnJoinPress);
+
+        if (singlePlayer != null)
+            singlePlayer.onClick.AddListener(OnSinglePlayerPress);
     }
 
     internal override void RemoveListeners()
@@ -24,6 +31,9 @@ public class MainMenu : Screens
         settings.onClick.RemoveListener(OnSettingsPress);
         host.onClick.RemoveListener(OnHostPress);
         join.onClick.RemoveListener(OnJoinPress);
+
+        if (singlePlayer != null)
+            singlePlayer.onClick.RemoveListener(OnSinglePlayerPress);
     }
 
     private void OnSettingsPress()
@@ -33,6 +43,16 @@ public class MainMenu : Screens
     private void OnHostPress()
     {
         SocketHandler.instance.CreateNewRoomRequest();
+    }
+
+    // TEMP: play-test only. Skips room create/join over HTTP/WS entirely and
+    // drops straight into the game as Sun, with Moon idling in place, so the
+    // main loop can be tested solo. MenuHandler.ChangeScreen(gameScreen) is
+    // called from inside StartSinglePlayerMode(), same as the real
+    // HandleStartGame() flow does after two players join.
+    private void OnSinglePlayerPress()
+    {
+        SocketHandler.instance.StartSinglePlayerMode();
     }
 
     public void ChangeScreenToHost()
