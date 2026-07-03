@@ -68,11 +68,14 @@ public class PlayerController : MonoBehaviour
         {
             Input.gyro.enabled = true;
             gyroAvailable = true;
+            Debug.Log("Gyroscope is available and enabled.");
         }
         else
         {
             gyroAvailable = false;
             useGyro = false;
+            Debug.Log("Gyroscope is not available.");
+
         }
     }
 

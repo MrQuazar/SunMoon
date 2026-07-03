@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cda66f28cc3289044b1cb02f0ca30727, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useLocalhost: 0
   cube1: {fileID: 171148642}
   cube2: {fileID: 535296859}
   players: []
@@ -1894,8 +1895,6 @@ MonoBehaviour:
   progressBar: {fileID: 1101430260}
   plants: []
   clock: {fileID: 1101430261}
-  loseThreshold: 0.4
-  loseTimeLimit: 60
   timerText: {fileID: 0}
   inGame: 0
   menuHandler: {fileID: 258204196}
@@ -4516,7 +4515,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1229442776
 MonoBehaviour:
   m_ObjectHideFlags: 0

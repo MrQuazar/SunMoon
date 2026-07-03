@@ -13,8 +13,13 @@ public class SocketHandler : MonoBehaviour
 
     private WebSocket ws;
 
+    [SerializeField] private bool useLocalhost = false; // Toggle this in the Inspector to switch between local and remote server
+    private string baseURLLocal = "localhost:8000";
+    private string baseURLRemote = "192.168.0.51:8000";
+
     // URL to your WebSocket server
     private string serverUrl = "ws://172.24.144.152:8000/ws"; // Change this to your server URL
+    private string httpUrl = "http://";
 
     public Transform cube1;
     public Transform cube2;
@@ -46,6 +51,21 @@ public class SocketHandler : MonoBehaviour
         lobbyManager = GetComponent<LobbyManager>();
     }
 
+    private void Start()
+    {
+        if (useLocalhost)
+        {
+            serverUrl = "ws://" + baseURLLocal + "/ws";
+            httpUrl = "http://" + baseURLLocal;
+
+        }
+        else
+        {
+            serverUrl = "ws://" + baseURLRemote + "/ws";
+            httpUrl = "http://" + baseURLRemote;
+        }
+    }
+
     private void FixedUpdate()
     {
         // Debug.Log(hasGameStarted + " " + Vector3.Distance(cube1.position, previousLocation));
@@ -59,7 +79,7 @@ public class SocketHandler : MonoBehaviour
     internal void CreateNewRoomRequest()
     {
         // 1. Create request with a callback
-        var request = HTTPRequest.CreateGet("http://172.24.144.152:8000/room/create",
+        var request = HTTPRequest.CreateGet(httpUrl + "/room/create",
                                              CreateNewRoomResponse);
 
         // 3. Send request

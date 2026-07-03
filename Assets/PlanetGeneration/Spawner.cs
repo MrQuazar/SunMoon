@@ -37,7 +37,7 @@ public class Spawner : MonoBehaviour
     [Header("Surface Settings")]
     public float surfaceOffset = 0.05f;
     public bool alignUpToNormal = true;
-    
+
     public int seed = 12345;
     System.Random rng;
 
@@ -62,7 +62,7 @@ public class Spawner : MonoBehaviour
         foreach (GameObject plant in spawned)
         {
             PlantHandler ph = plant.GetComponent<PlantHandler>();
-            
+
             if (rng.NextDouble() < 0.5f)
             {
                 ph.SetToDeadr();
@@ -113,7 +113,7 @@ public class Spawner : MonoBehaviour
             Vector3 origin = RandomPointOnSphere(center.position, radius + startPadding, rng);
             Vector3 dir = (center.position - origin).normalized;
 
-            Debug.Log(origin);
+            // Debug.Log(origin);
 
             float maxDist = radius * maxDistanceMultiplier;
 
@@ -133,7 +133,7 @@ public class Spawner : MonoBehaviour
                 // Skip water hits completely
                 if ((hitLayerMask & waterMask.value) != 0)
                 {
-                    Debug.Log("Hit water, skipping.");
+                    // Debug.Log("Hit water, skipping.");
                     return 0;
                 }
 
@@ -146,7 +146,7 @@ public class Spawner : MonoBehaviour
                         return 0;
 
                     SpawnAtHit(hit, -dir, prefab);
-                    Debug.Log($"Spawned on land at {prefab.name}");
+                    // Debug.Log($"Spawned on land at {prefab.name}");
                     return 1;
                 }
             }
@@ -163,7 +163,7 @@ public class Spawner : MonoBehaviour
         Quaternion rot = Quaternion.FromToRotation(Vector3.up, outwardDirection);
 
         PlantHandler ph = prefab.GetComponent<PlantHandler>();
-        
+
         if (rng.NextDouble() < 0.5f)
         {
             ph.currentState = PlantHandler.PlantState.monster;
