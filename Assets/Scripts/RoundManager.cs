@@ -1,7 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using TMPro;
 
 public class RoundManager : MonoBehaviour
 {
@@ -9,11 +11,28 @@ public class RoundManager : MonoBehaviour
     public Spawner spawner;
     public Image progressBar;
     public List<GameObject> plants = new List<GameObject>();
-    public Image clock;
 
     [Header("UI")]
-    public Text timerText; // UI text to show danger timer
+    public TextMeshProUGUI timerText; // UI text to show danger timer
     public bool inGame = false;
+
+    [Header("Digital Countdown")]
+    [Tooltip("Text that shows the mm:ss countdown. Reuses timerText if left empty.")]
+    public TextMeshProUGUI digitalTimerText;
+
+    [Tooltip("What gets scaled for the attention pulse. Defaults to digitalTimerText's RectTransform if left empty.")]
+    public RectTransform pulseTarget;
+
+    [Tooltip("Whole-second marks (counting down) that should trigger one attention pulse each.")]
+    public int[] pulseAtSeconds = { 60, 30 };
+
+    [Tooltip("Once the countdown reaches this many seconds or fewer, pulse every single second.")]
+    public int continuousPulseSeconds = 5;
+
+    [Header("Pulse Animation")]
+    public float pulseScaleUpTime = 0.15f;
+    public float pulseScaleDownTime = 0.35f;
+    public float pulseMaxScale = 1.3f;
 
     public MenuHandler menuHandler;
     public float currentTime = 0;
@@ -21,16 +40,22 @@ public class RoundManager : MonoBehaviour
 
     public float winVal = 0.4f;
 
+    private int lastWholeSecond = -1;
+    private Coroutine pulseRoutine;
+
     void Start()
     {
         if (progressBar != null)
         {
             progressBar.fillAmount = 0f;
         }
-        if (clock != null)
+
+        if (pulseTarget == null && digitalTimerText != null)
         {
-            clock.fillAmount = 0f;
+            pulseTarget = digitalTimerText.GetComponent<RectTransform>();
         }
+
+        UpdateDigitalTimer(maxTime);
     }
 
     public void Reset()
@@ -40,10 +65,20 @@ public class RoundManager : MonoBehaviour
             progressBar.fillAmount = 0f;
             currentTime = 0;
         }
-        if (clock != null)
+
+        lastWholeSecond = -1;
+
+        if (pulseRoutine != null)
         {
-            clock.fillAmount = 0f;
+            StopCoroutine(pulseRoutine);
+            pulseRoutine = null;
         }
+        if (pulseTarget != null)
+        {
+            pulseTarget.localScale = Vector3.one;
+        }
+
+        UpdateDigitalTimer(maxTime);
     }
 
     public void GetPlants(List<GameObject> plants2)
@@ -75,7 +110,10 @@ public class RoundManager : MonoBehaviour
         if (currentTime < maxTime)
         {
             currentTime += Time.deltaTime;
-            clock.fillAmount = currentTime / maxTime;
+
+            float remaining = Mathf.Max(0f, maxTime - currentTime);
+            UpdateDigitalTimer(remaining);
+            CheckPulseThresholds(remaining);
 
             if (currentTime >= maxTime)
             {
@@ -115,6 +153,81 @@ public class RoundManager : MonoBehaviour
         // Debug.Log(progress);
         if (progressBar != null)
             progressBar.fillAmount = progress;
+    }
+
+    void UpdateDigitalTimer(float remainingSeconds)
+    {
+        TextMeshProUGUI target = digitalTimerText != null ? digitalTimerText : timerText;
+        if (target == null)
+            return;
+
+        target.text = FormatTime(remainingSeconds);
+    }
+
+    string FormatTime(float seconds)
+    {
+        seconds = Mathf.Max(0f, seconds);
+        int minutes = Mathf.FloorToInt(seconds / 60f);
+        int secs = Mathf.FloorToInt(seconds % 60f);
+        return string.Format("{0:00}:{1:00}", minutes, secs);
+    }
+
+    void CheckPulseThresholds(float remainingSeconds)
+    {
+        int wholeSecond = Mathf.CeilToInt(remainingSeconds);
+        if (wholeSecond == lastWholeSecond)
+            return;
+
+        lastWholeSecond = wholeSecond;
+
+        bool isNamedMark = System.Array.IndexOf(pulseAtSeconds, wholeSecond) >= 0;
+        bool isFinalStretch = wholeSecond > 0 && wholeSecond <= continuousPulseSeconds;
+
+        if (isNamedMark || isFinalStretch)
+        {
+            TriggerPulse();
+        }
+    }
+
+    void TriggerPulse()
+    {
+        if (pulseTarget == null)
+            return;
+
+        if (pulseRoutine != null)
+        {
+            StopCoroutine(pulseRoutine);
+        }
+        pulseRoutine = StartCoroutine(PulseOnce());
+    }
+
+    IEnumerator PulseOnce()
+    {
+        Vector3 baseScale = Vector3.one;
+        Vector3 peakScale = baseScale * pulseMaxScale;
+
+        float t = 0f;
+        while (t < pulseScaleUpTime)
+        {
+            t += Time.deltaTime;
+            float p = Mathf.Clamp01(t / pulseScaleUpTime);
+            pulseTarget.localScale = Vector3.Lerp(baseScale, peakScale, p);
+            yield return null;
+        }
+        pulseTarget.localScale = peakScale;
+
+        t = 0f;
+        while (t < pulseScaleDownTime)
+        {
+            t += Time.deltaTime;
+            float p = Mathf.Clamp01(t / pulseScaleDownTime);
+            float eased = 1f - Mathf.Pow(1f - p, 3f);
+            pulseTarget.localScale = Vector3.Lerp(peakScale, baseScale, eased);
+            yield return null;
+        }
+        pulseTarget.localScale = baseScale;
+
+        pulseRoutine = null;
     }
 
     void WinGame()

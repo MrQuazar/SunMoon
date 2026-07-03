@@ -29,6 +29,12 @@ public class SocketHandler : MonoBehaviour
     public string myID;
     internal bool hasGameStarted = false;
     private bool isPlayerSun = true;
+
+    // TEMP: set true when the game was started via the single-player test button.
+    // Skips all networking (no HTTP/WS calls) so the main game loop can be
+    // play-tested on one device. Remove this whole block (and its call sites)
+    // once real multiplayer testing takes over.
+    internal bool isSinglePlayerMode = false;
     private Vector3 previousLocation = Vector3.zero;
     public Vector3 recievedLocation = Vector3.zero;
 
@@ -69,7 +75,8 @@ public class SocketHandler : MonoBehaviour
     private void FixedUpdate()
     {
         // Debug.Log(hasGameStarted + " " + Vector3.Distance(cube1.position, previousLocation));
-        if (hasGameStarted /* && Vector3.Distance(cube1.position, previousLocation) > 0.01f */)
+        // Single-player test mode has no socket, so never try to send over it.
+        if (hasGameStarted && !isSinglePlayerMode /* && Vector3.Distance(cube1.position, previousLocation) > 0.01f */)
         {
             SendData();
         }
@@ -383,6 +390,33 @@ public class SocketHandler : MonoBehaviour
         lobbyManager.isPlayerSun = isPlayerSun;
         MenuHandler.instance.ChangeScreen(MenuHandler.instance.gameScreen);
         hasGameStarted = true;
+    }
+
+    // ------------------------------------------------------------------
+    // TEMP TEST-ONLY: single-player mode.
+    // Bypasses room-create/join over HTTP/WS entirely and drops the local
+    // player straight into the game as Sun so the main loop can be
+    // play-tested solo. Player2 (Moon) stays put in its spawn position
+    // (see PlayerController.HandleMovement's isSinglePlayerMode check).
+    // Delete this method and its call site in LobbySelectionScreen once
+    // you no longer need solo play-testing.
+    // ------------------------------------------------------------------
+    [ContextMenu("Start Single Player (Test)")]
+    internal void StartSinglePlayerMode()
+    {
+        isSinglePlayerMode = true;
+
+        myID = "local_player";
+        roomID = "LOCAL";
+        players = new string[] { myID };
+        isPlayerSun = true;
+
+        lobbyManager.isPlayerSun = true;
+        lobbyManager.roomCreated = true;
+
+        hasGameStarted = true;
+
+        MenuHandler.instance.ChangeScreen(MenuHandler.instance.gameScreen);
     }
 
     [ContextMenu("Send Eclipse Request")]

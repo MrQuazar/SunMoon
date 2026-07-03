@@ -107,6 +107,15 @@ public class PlayerController : MonoBehaviour
     {
         if (!isPlayerController && SocketHandler.instance.hasGameStarted)
         {
+            // TEMP: in single-player test mode there's no peer sending real
+            // positions, so recievedLocation just sits at Vector3.zero. Skip
+            // the snap-to-received-location logic entirely and leave this
+            // player (Moon) resting at its spawn point instead.
+            if (SocketHandler.instance.isSinglePlayerMode)
+            {
+                return;
+            }
+
             recievedLocation = SocketHandler.instance.recievedLocation;
             Debug.Log("Received location: " + recievedLocation);
             if (!WouldCollideWithOtherPlayer(recievedLocation))
