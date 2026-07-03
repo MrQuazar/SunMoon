@@ -9,6 +9,9 @@ public class PlantHandler : MonoBehaviour
     public Image progressBar;
     public VisualEffect dustCloud;
 
+    // Timer for the CURRENT, unbroken hover session only. Resets to 0 the
+    // instant contact is lost or a state change fires - a state change
+    // always requires a fresh, continuous maxAmount-second hover.
     [HideInInspector]
     public float currentAmount = 0f;
     public float maxAmount = 3f;
@@ -18,26 +21,24 @@ public class PlantHandler : MonoBehaviour
     public float timeTriggered = 2;
 
     public bool isTriggered = false;
+    private bool wasTriggered = false;
+
     public enum PlantState
     {
         dead,
-        grass,
         flower,
-        baby,
         monster
     }
 
-    public Color[] stateColors = new Color[5];
-    public GameObject[] statePrefabs = new GameObject[5];
+    public Color[] stateColors = new Color[3];
+    public GameObject[] statePrefabs = new GameObject[3];
 
     public PlantState currentState = PlantState.dead;
     public GameObject currentStatePrefab;
 
     void Awake()
     {
-        if (currentState == PlantState.monster)
-            currentAmount = maxAmount;
-        else currentAmount = 0;
+        currentAmount = 0f;
 
         progressBar.color = stateColors[(int)currentState];
         currentStatePrefab = Instantiate(statePrefabs[(int)currentState], transform);
@@ -50,7 +51,13 @@ public class PlantHandler : MonoBehaviour
 
         if (!isTriggered)
         {
-            //DecreaseProgress(false);
+            if (wasTriggered)
+            {
+                // Contact just broke before a full hover was completed:
+                // discard the partial progress so the next contact must
+                // start the 3 seconds over from scratch.
+                currentAmount = 0f;
+            }
 
             currentTimeTriggered -= 0.05f;
             if (currentTimeTriggered <= 0)
@@ -64,6 +71,8 @@ public class PlantHandler : MonoBehaviour
             currentTimeTriggered = timeTriggered;
             ShowProgressBar(true);
         }
+
+        wasTriggered = isTriggered;
     }
 
     public void ShowProgressBar(bool show)
@@ -85,22 +94,15 @@ public class PlantHandler : MonoBehaviour
         dustCloud.SendEvent("Stop");
     }
 
-    public void ChangeState(int value = 1)
+    // Single source of truth for actually swapping state: updates the enum,
+    // resets the hover timer, swaps colour/prefab, and puffs dust. Both the
+    // hover-based ChangeState() and the instant force-setters below funnel
+    // through here.
+    private void SetState(PlantState newState)
     {
-        if (currentState == PlantState.dead && value < 0) return;
-        if (currentState == PlantState.monster && value > 0) return;
-
-        if (value > 0)
-        {
-            currentAmount = 0;
-        }
-        else if (value < 0)
-        {
-            currentAmount = maxAmount;
-        }
-        currentState = (PlantState)((int)currentState + value);
+        currentState = newState;
+        currentAmount = 0f;
         progressBar.color = stateColors[(int)currentState];
-
 
         Destroy(currentStatePrefab);
         currentStatePrefab = Instantiate(statePrefabs[(int)currentState], transform);
@@ -108,63 +110,72 @@ public class PlantHandler : MonoBehaviour
         StartCoroutine(DustPuff());
     }
 
+    // Steps one state in `value`'s direction, respecting bounds (dead can't
+    // go lower, monster can't go higher). Used for the hover-based
+    // Sun/Moon conversion - NOT for the forced Set/Go methods below.
+    public void ChangeState(int value = 1)
+    {
+        int stateCount = System.Enum.GetValues(typeof(PlantState)).Length;
+        int newIndex = Mathf.Clamp((int)currentState + value, 0, stateCount - 1);
+
+        if (newIndex == (int)currentState)
+            return;
+
+        SetState((PlantState)newIndex);
+    }
+
+    // Forced, instant state setters - bypass the hover requirement entirely.
     public void SetFinalState(bool isPlayerSun)
     {
-        currentState = isPlayerSun ? PlantState.monster : PlantState.dead;
-        progressBar.color = stateColors[(int)currentState];
-
-        Destroy(currentStatePrefab);
-        currentStatePrefab = Instantiate(statePrefabs[(int)currentState], transform);
-    }
-
-    public void IncreaseProgress(bool CanChangeState)
-    {
-        currentAmount += Time.deltaTime;
-
-        if (currentAmount > maxAmount)
-            currentAmount = maxAmount;
-
-        if (currentAmount >= maxAmount && CanChangeState)
-        {
-            ChangeState(1);
-        }
-    }
-
-    public void DecreaseProgress(bool CanChangeState)
-    {
-        currentAmount -= Time.deltaTime;
-
-        if (currentAmount < 0)
-            currentAmount = 0;
-
-        if (currentAmount <= 0 && CanChangeState)
-        {
-            ChangeState(-1);
-        }
+        SetState(isPlayerSun ? PlantState.monster : PlantState.dead);
     }
 
     public void SetToMonster()
     {
-        currentState = PlantState.baby;
-        ChangeState(1);
+        SetState(PlantState.monster);
     }
 
-    public void SetToDeadr()
+    public void SetToDead()
     {
-
-        currentState = PlantState.grass;
-        ChangeState(-1);
+        SetState(PlantState.dead);
     }
 
     public void GoToPerfect()
     {
+        SetState(PlantState.flower);
+    }
 
-        currentState = PlantState.grass;
-        ChangeState(1);
+    // Hover-based conversion: only steps the state once currentAmount has
+    // built up to a full, unbroken maxAmount seconds of contact.
+    public void IncreaseProgress(bool CanChangeState)
+    {
+        ApplyHover(1, CanChangeState);
+    }
 
-        // else
-        // {
-        //     IncreaseProgress(false);
-        // }
+    public void DecreaseProgress(bool CanChangeState)
+    {
+        ApplyHover(-1, CanChangeState);
+    }
+
+    private void ApplyHover(int direction, bool canChangeState)
+    {
+        // Already at the extreme for this direction - nothing to build
+        // toward, so don't let progress silently accumulate.
+        if (direction > 0 && currentState == PlantState.monster) return;
+        if (direction < 0 && currentState == PlantState.dead) return;
+
+        currentAmount += Time.deltaTime;
+
+        if (currentAmount >= maxAmount)
+        {
+            currentAmount = maxAmount;
+
+            if (canChangeState)
+            {
+                // ChangeState -> SetState resets currentAmount back to 0,
+                // so the next step requires another full 3s hover.
+                ChangeState(direction);
+            }
+        }
     }
 }

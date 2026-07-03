@@ -395,7 +395,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.91, y: 1.4645126, z: 5.1360526}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8434037769330951586}
@@ -497,18 +497,14 @@ MonoBehaviour:
   timeTriggered: 2
   isTriggered: 0
   stateColors:
-  - {r: 1, g: 0.18293746, b: 0, a: 1}
-  - {r: 1, g: 0.18293746, b: 0, a: 1}
+  - {r: 0, g: 0.8317747, b: 1, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
   - {r: 0.11823726, g: 1, b: 0, a: 1}
-  - {r: 1, g: 0.18293746, b: 0, a: 1}
-  - {r: 1, g: 0.18293746, b: 0, a: 1}
   statePrefabs:
   - {fileID: 4209542921565992774, guid: e3cb2107dcd016d48818a96561c6bab8, type: 3}
-  - {fileID: 4209542921565992774, guid: e26cd07f365edc64aafcc33cbd80b3a9, type: 3}
   - {fileID: 4209542921565992774, guid: 78d56ca3a1736554288f6566a5d9fc0f, type: 3}
-  - {fileID: 4209542921565992774, guid: 96a6dda31a20cba4aacb5729a3cc6962, type: 3}
   - {fileID: 4209542921565992774, guid: 2b53bc6b28a8c9e4ebb5d31c3a8c45be, type: 3}
-  currentState: 0
+  currentState: 2
   currentStatePrefab: {fileID: 0}
 --- !u!1 &9157839104768675829
 GameObject:

@@ -65,7 +65,7 @@ public class Spawner : MonoBehaviour
             
             if (rng.NextDouble() < 0.5f)
             {
-                ph.SetToDeadr();
+                ph.SetToDead();
             }
             else
             {
