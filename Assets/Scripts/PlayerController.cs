@@ -30,6 +30,9 @@ public class PlayerController : MonoBehaviour
     public float playerCollisionRadius = 0.5f;
     public GameObject otherPlayer;
 
+    [Header("Overheat")]
+    [SerializeField] private OverheatCollider overheat;
+
     [Header("Wiggle Fix Settings")]
     public float wiggleThreshold = 0.2f;     // minimum horizontal input
     public int requiredWiggles = 3;          // left-right switches required
@@ -55,6 +58,7 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 normal = GetNormal();
         transform.position = planet.position + normal * radius;
+        overheat = GetComponent<OverheatCollider>();
     }
 
     Vector3 GetNormal()
@@ -87,8 +91,11 @@ public class PlayerController : MonoBehaviour
 
         int direction = horizontalInput > 0 ? 1 : -1;
 
+        // Debug.LogError("Direction: " + direction + ", Last Direction: " + lastWiggleDirection + ", horizontalInput: " + horizontalInput);
+
         if (lastWiggleDirection != 0 && direction != lastWiggleDirection)
         {
+            // Debug.LogError(wiggleCount + " / " + requiredWiggles);
             wiggleCount++;
 
             if (wiggleCount >= requiredWiggles)
@@ -133,17 +140,17 @@ public class PlayerController : MonoBehaviour
         // ANDROID CONTROLS
         // ================================
         // Joystick controls for Android
-        if (!useGyro && joystick != null)
+        if (!overheat.isOverheating && !useGyro && joystick != null)
         {
             Vector2 input = joystick.InputDirection;
 
             h = -input.y;   // left/right
             v = input.x;  // flipped forward/back
-            //CheckWiggle(h);
+            // CheckWiggle(h);
         }
 
         // Gyro controls for Android
-        else if (useGyro && gyroAvailable)
+        else if (overheat.isOverheating || (useGyro && gyroAvailable))
         {
             Vector3 tilt = Input.gyro.gravity;
 
@@ -167,7 +174,7 @@ public class PlayerController : MonoBehaviour
             {
                 v = gyroX;  // forward/back (y-axis)
             }
-            //CheckWiggle(h);
+            CheckWiggle(v);
         }
 
         // Calculate movement direction and apply it to player
@@ -179,6 +186,10 @@ public class PlayerController : MonoBehaviour
         if (moveDir.sqrMagnitude < 0.001f)
             return;
 
+        if (overheat.isOverheating)
+        {
+            return; // Prevent movement during overheating
+        }
 
         moveDir.Normalize();
         moveDirGlobal = moveDir;
@@ -219,7 +230,6 @@ public class PlayerController : MonoBehaviour
 
     void ForceStopOverheat()
     {
-        OverheatCollider overheat = GetComponent<OverheatCollider>();
         if (overheat == null) return;
 
         if (overheat.isOverheating)
