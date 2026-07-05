@@ -149,7 +149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cda66f28cc3289044b1cb02f0ca30727, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useLocalhost: 0
   cube1: {fileID: 171148642}
   cube2: {fileID: 535296859}
   players: []
@@ -636,10 +635,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: 07ac2488e44eda049ac2fb6f81ec1436, type: 3}
     - target: {fileID: 6569806582943790690, guid: 16abd216900745b40b3cac7d842192af, type: 3}
-      propertyPath: overheatDuration
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 6569806582943790690, guid: 16abd216900745b40b3cac7d842192af, type: 3}
       propertyPath: playerController
       value: 
       objectReference: {fileID: 171148647}
@@ -946,7 +941,7 @@ MonoBehaviour:
   mainMenu: {fileID: 1049026866}
   tutorial: {fileID: 0}
   lose: {fileID: 2107094702}
-  win: {fileID: 0}
+  win: {fileID: 1317866492}
   gameSettingsMenu: {fileID: 296363208}
   startScreen: {fileID: 1049026866}
   click1: {fileID: 8300000, guid: 136bfa30ba0f2e8408fc21acd3345217, type: 3}
@@ -1212,7 +1207,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &372785809
 Light:
   m_ObjectHideFlags: 0
@@ -1638,7 +1633,7 @@ MonoBehaviour:
   pulseMaxScale: 1.3
   menuHandler: {fileID: 258204196}
   currentTime: 0
-  maxTime: 300
+  maxTime: 180
   winVal: 1
 --- !u!114 &478407254
 MonoBehaviour:
@@ -1789,10 +1784,6 @@ PrefabInstance:
       propertyPath: laserBeamAudio
       value: 
       objectReference: {fileID: 8300000, guid: 07ac2488e44eda049ac2fb6f81ec1436, type: 3}
-    - target: {fileID: 7943423119846812642, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
-      propertyPath: overheatDuration
-      value: 25
-      objectReference: {fileID: 0}
     - target: {fileID: 7943423119846812642, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: playerController
       value: 
@@ -2030,6 +2021,34 @@ PrefabInstance:
       propertyPath: joystick
       value: 
       objectReference: {fileID: 704494372}
+    - target: {fileID: 3875714862404647496, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+      propertyPath: blockTags.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3875714862404647496, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+      propertyPath: 'blockTags.Array.data[1]'
+      value: Flower
+      objectReference: {fileID: 0}
+    - target: {fileID: 3875714862404647496, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+      propertyPath: 'blockTags.Array.data[2]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3875714862404647496, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+      propertyPath: 'blockTags.Array.data[3]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3875714862404647496, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+      propertyPath: replacementPrefabs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3875714862404647496, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+      propertyPath: 'replacementPrefabs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 4209542921565992774, guid: 78d56ca3a1736554288f6566a5d9fc0f, type: 3}
+    - target: {fileID: 3875714862404647496, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+      propertyPath: 'replacementPrefabs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 4209542921565992774, guid: 2b53bc6b28a8c9e4ebb5d31c3a8c45be, type: 3}
     - target: {fileID: 6639416554454101902, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.84
@@ -2661,7 +2680,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 1
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 0.6132076, g: 0.52706784, b: 0.29214135, a: 1}
   m_Intensity: 0.3
   m_Range: 10
   m_SpotAngle: 30
@@ -3399,7 +3418,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4756986704392918929, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5849352337976130786, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
       propertyPath: m_Pivot.x
@@ -3663,7 +3682,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 1101430258}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1151958141}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -4016,7 +4035,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1229442776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4076,7 +4095,7 @@ MonoBehaviour:
     reporterScrollerSkin: {fileID: 11400000, guid: 1cc68832d00d3284a9324a4dc05be753, type: 2}
   size: {x: 32, y: 32}
   maxSize: 20
-  numOfCircleToShow: 2
+  numOfCircleToShow: 3
   Initialized: 0
 --- !u!4 &1229442778
 Transform:
@@ -4674,6 +4693,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1983861861998284729, guid: bd6cc06eb4aab4e439e38a17f5c2a8d2, type: 3}
   m_PrefabInstance: {fileID: 1317866490}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1317866492 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8986888781256422199, guid: bd6cc06eb4aab4e439e38a17f5c2a8d2, type: 3}
+  m_PrefabInstance: {fileID: 1317866490}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4717e7696432793479dd5de7f309467a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1325218226
 GameObject:
   m_ObjectHideFlags: 0
@@ -6226,7 +6256,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 1
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 0.17021182, g: 0.4811321, b: 0.43288794, a: 1}
   m_Intensity: 0.3
   m_Range: 10
   m_SpotAngle: 30
