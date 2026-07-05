@@ -40,6 +40,9 @@ public class SocketHandler : MonoBehaviour
 
     internal bool isEclipseActive = false;
 
+    // Track the last time an eclipse request was sent
+    private DateTime timeSpan = DateTime.MinValue;
+
     private LobbyManager lobbyManager;
 
     private void Awake()
@@ -47,12 +50,12 @@ public class SocketHandler : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            // DontDestroyOnLoad(gameObject);
         }
-        else
-        {
-            Destroy(gameObject);
-        }
+        // else
+        // {
+        //     Destroy(gameObject);
+        // }
 
         lobbyManager = GetComponent<LobbyManager>();
     }
@@ -313,6 +316,8 @@ public class SocketHandler : MonoBehaviour
             lobbyManager.HandleEclipseCameraTransition();
             lobbyManager.player1.gameObject.SetActive(false);
             lobbyManager.player2.gameObject.SetActive(false);
+
+            timeSpan = DateTime.Now;
         }
         else if (type == "eclipse_end")
         {
@@ -422,6 +427,11 @@ public class SocketHandler : MonoBehaviour
     [ContextMenu("Send Eclipse Request")]
     internal void SendEclipseRequest()
     {
+        if (DateTime.Now - timeSpan < TimeSpan.FromSeconds(60))
+        {
+            Debug.Log("Eclipse request sent too soon. Please wait before sending another request.");
+            return;
+        }
         WebSocketMessage dataMessage = new WebSocketMessage
         {
             type = "eclipse",
