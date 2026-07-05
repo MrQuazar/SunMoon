@@ -10,8 +10,8 @@ public class JoystickToggleHandler : MonoBehaviour
 
     public bool state
     {
-        get => PlayerPrefs.GetInt("JoystickEnabled", 1) == 1;
-        set => PlayerPrefs.SetInt("JoystickEnabled", value ? 1 : 0);
+        get => PlayerPrefs.GetInt("VibrationEnabled", 1) == 1;
+        set => PlayerPrefs.SetInt("VibrationEnabled", value ? 1 : 0);
     }
 
     void Awake()

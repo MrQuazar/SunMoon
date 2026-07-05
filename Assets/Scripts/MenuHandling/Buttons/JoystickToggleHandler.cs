@@ -10,7 +10,11 @@ public class ToggleHandler : MonoBehaviour
     public PlayerController sunController;
     public PlayerController moonController;
     public PlayerController ecclipseController;
-    public bool state = true;
+    public bool state
+    {
+        get => PlayerPrefs.GetInt("JoystickEnabled", 1) == 1;
+        set => PlayerPrefs.SetInt("JoystickEnabled", value ? 1 : 0);
+    }
 
     void Awake()
     {
