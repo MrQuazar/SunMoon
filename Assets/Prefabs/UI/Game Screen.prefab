@@ -273,6 +273,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuHandler: {fileID: 0}
   settings: {fileID: 3349688854628897544}
+  roundManager: {fileID: 0}
+  spawner: {fileID: 0}
 --- !u!1 &1269207229763472797
 GameObject:
   m_ObjectHideFlags: 0
@@ -496,7 +498,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 1155849821, guid: 3cb88ada5fdf4f343b8e497dccdf3f81, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -815,7 +817,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: -1729004630, guid: 3cb88ada5fdf4f343b8e497dccdf3f81, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

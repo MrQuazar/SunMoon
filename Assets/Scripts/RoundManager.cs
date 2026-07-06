@@ -138,6 +138,7 @@ public class RoundManager : MonoBehaviour
             totalCount++;
             if (plantHandler.currentState == PlantHandler.PlantState.flower)
             {
+                // Debug.Log("FLOWER");
                 flowerCount++;
             }
         }

@@ -12,21 +12,29 @@ public class AudioManager : MonoBehaviour
     [Range(0f, 1f)] public float musicVolume = 1f;
     [Range(0f, 1f)] public float sfxVolume = 1f;
 
-    private bool musicMuted = false;
-    private bool sfxMuted = false;
+    private bool musicMuted
+    {
+        get => PlayerPrefs.GetInt("MusicMuted", 0) == 1;
+        set => PlayerPrefs.SetInt("MusicMuted", value ? 1 : 0);
+    }
+    private bool sfxMuted
+    {
+        get => PlayerPrefs.GetInt("SFXMuted", 0) == 1;
+        set => PlayerPrefs.SetInt("SFXMuted", value ? 1 : 0);
+    }
 
     void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            // DontDestroyOnLoad(gameObject);
         }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
+        // else
+        // {
+        //     Destroy(gameObject);
+        //     return;
+        // }
     }
 
     void Start()

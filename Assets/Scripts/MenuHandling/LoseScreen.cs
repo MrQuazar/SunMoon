@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LoseScreen : Screens
@@ -24,7 +25,8 @@ public class LoseScreen : Screens
     }
     private void OnMainMenu()
     {
-        menuHandler.ChangeScreen(menuHandler.mainMenu);
         AudioManager.Instance.PlaySFX(menuHandler.click1);
+        // menuHandler.ChangeScreen(menuHandler.mainMenu);
+        SceneManager.LoadScene("MainGame");
     }
 }

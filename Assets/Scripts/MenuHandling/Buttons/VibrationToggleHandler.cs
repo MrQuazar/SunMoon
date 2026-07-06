@@ -8,7 +8,11 @@ public class JoystickToggleHandler : MonoBehaviour
     public Image image;
     public Button button;
 
-    public bool state = true;
+    public bool state
+    {
+        get => PlayerPrefs.GetInt("VibrationEnabled", 1) == 1;
+        set => PlayerPrefs.SetInt("VibrationEnabled", value ? 1 : 0);
+    }
 
     void Awake()
     {
@@ -22,7 +26,7 @@ public class JoystickToggleHandler : MonoBehaviour
     {
         state = !state;
 
-        if (state) 
+        if (state)
         {
             image.sprite = onSprite;
         }

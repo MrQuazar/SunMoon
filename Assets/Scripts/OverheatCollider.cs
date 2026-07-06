@@ -95,9 +95,23 @@ public class OverheatCollider : MonoBehaviour
         if (actionButton != null)
             actionButton.gameObject.SetActive(true);
 
+        StartCoroutine(OverheatCountdown());
         Vibrate();
 
         Debug.Log("OVERHEAT STARTED");
+    }
+
+    //Reduce actionbutton fill
+    private IEnumerator OverheatCountdown()
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < overheatDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float fillAmount = Mathf.Clamp01(1f - (elapsedTime / overheatDuration));
+            actionButton.image.fillAmount = fillAmount;
+            yield return null;
+        }
     }
 
     void EndOverheat()
