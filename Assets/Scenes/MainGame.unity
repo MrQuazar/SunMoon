@@ -2231,7 +2231,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2773109633978633937, guid: b5c525866645a6741ae02048219203c5, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3324301124341880604, guid: b5c525866645a6741ae02048219203c5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -4446,7 +4446,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6593468949202759260, guid: fd9e56f50425d6d4b94988f5fa3441b2, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8545663196867839191, guid: fd9e56f50425d6d4b94988f5fa3441b2, type: 3}
       propertyPath: m_Sprite
@@ -4513,6 +4513,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 258204195}
     m_Modifications:
+    - target: {fileID: 304615002461858496, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
+      propertyPath: quitBtn
+      value: 
+      objectReference: {fileID: 840643523}
     - target: {fileID: 304615002461858496, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
       propertyPath: spawner
       value: 
