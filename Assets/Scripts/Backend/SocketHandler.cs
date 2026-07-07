@@ -15,7 +15,7 @@ public class SocketHandler : MonoBehaviour
 
     [SerializeField] private bool useLocalhost = false; // Toggle this in the Inspector to switch between local and remote server
     private string baseURLLocal = "localhost:8000";
-    private string baseURLRemote = "10.219.193.252:8000";
+    private string baseURLRemote = "192.168.0.51:8000";
 
     // URL to your WebSocket server
     private string serverUrl = "ws://172.24.144.152:8000/ws"; // Change this to your server URL
@@ -39,6 +39,8 @@ public class SocketHandler : MonoBehaviour
     public Vector3 recievedLocation = Vector3.zero;
 
     internal bool isEclipseActive = false;
+
+    internal int timeout = 10000; // Default timeout value in milliseconds
 
     // Track the last time an eclipse request was sent
     private DateTime timeSpan = DateTime.MinValue;
@@ -303,14 +305,16 @@ public class SocketHandler : MonoBehaviour
             Debug.Log("Eclipse started!");
             isEclipseActive = true;
             isPlayerSun = players.Length > 0 && players[0] == myID; // First player is Sun, second is Moon
-
+            timeout = receivedMessage.timeout; // Set the timeout value from the received message
             // LobbyManager lobbyManager = gameObject.GetComponent<LobbyManager>();
             lobbyManager.eclipse.transform.position = lobbyManager.player1.transform.position;
-            // lobbyManager.eclipse.transform.localRotation = lobbyManager.player1.transform.localRotation;
+            lobbyManager.eclipse.transform.localRotation = lobbyManager.player1.transform.localRotation;
             if (isPlayerSun)
             {
                 cube1 = lobbyManager.eclipse.transform;
                 lobbyManager.eclipse.GetComponent<PlayerController>().isPlayerController = true;
+                lobbyManager.eclipse.GetComponent<PlayerController>().StartEclipse();
+
             }
             lobbyManager.eclipse.gameObject.SetActive(true);
             lobbyManager.HandleEclipseCameraTransition();
@@ -332,6 +336,7 @@ public class SocketHandler : MonoBehaviour
             {
                 cube1 = lobbyManager.player1.transform;
                 lobbyManager.eclipse.GetComponent<PlayerController>().isPlayerController = false;
+                lobbyManager.eclipse.GetComponent<PlayerController>().EndEclipse();
             }
             lobbyManager.HandleCameraTransition();
             lobbyManager.eclipse.gameObject.SetActive(false);
@@ -425,7 +430,7 @@ public class SocketHandler : MonoBehaviour
     }
 
     [ContextMenu("Send Eclipse Request")]
-    internal void SendEclipseRequest()
+    public void SendEclipseRequest()
     {
         if (DateTime.Now - timeSpan < TimeSpan.FromSeconds(60))
         {
@@ -454,6 +459,7 @@ public class WebSocketMessage
     public Vector3 pos; // Example additional field for position data
     public string[] players; // Example additional field for player list
     public int direction = -1;   // 0 = left, 1 = right, 2 = up, 3 = down
+    public int timeout = 10000;
 }
 
 [Serializable]
