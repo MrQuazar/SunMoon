@@ -11,6 +11,7 @@ public class MenuHandler : MonoBehaviour
     public Screens gameScreen;
     public Screens hostGame;
     public Screens joinGame;
+    public Screens quitPanel;
     public Screens mainMenu;
     public Screens tutorial;
     public Screens lose;
