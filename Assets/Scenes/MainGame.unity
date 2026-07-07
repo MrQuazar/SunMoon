@@ -1937,7 +1937,7 @@ PrefabInstance:
     - target: {fileID: 7943423119846812642, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: actionButton
       value: 
-      objectReference: {fileID: 1429764356}
+      objectReference: {fileID: 1151958143}
     - target: {fileID: 7943423119846812642, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: warningPanel
       value: 
@@ -5514,17 +5514,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2400376287012903167, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
   m_PrefabInstance: {fileID: 1101430258}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1429764356 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7710888792376382111, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
-  m_PrefabInstance: {fileID: 1101430258}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1429764354}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1490385789
 GameObject:
   m_ObjectHideFlags: 0
