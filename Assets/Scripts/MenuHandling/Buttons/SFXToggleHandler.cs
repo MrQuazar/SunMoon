@@ -8,7 +8,11 @@ public class SFXToggleHandler : MonoBehaviour
     public Image image;
     public Button button;
 
-    public bool state = true;
+    public bool state
+    {
+        get => PlayerPrefs.GetInt("SFXEnabled", 1) == 1;
+        set => PlayerPrefs.SetInt("SFXEnabled", value ? 1 : 0);
+    }
 
     void Awake()
     {
@@ -23,7 +27,7 @@ public class SFXToggleHandler : MonoBehaviour
         state = !state;
         AudioManager.Instance.MuteSFX(!state);
 
-        if (state) 
+        if (state)
         {
             image.sprite = onSprite;
         }

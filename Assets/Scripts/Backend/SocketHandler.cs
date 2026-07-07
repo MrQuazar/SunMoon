@@ -13,8 +13,13 @@ public class SocketHandler : MonoBehaviour
 
     private WebSocket ws;
 
+    [SerializeField] private bool useLocalhost = false; // Toggle this in the Inspector to switch between local and remote server
+    private string baseURLLocal = "localhost:8000";
+    private string baseURLRemote = "192.168.0.51:8000";
+
     // URL to your WebSocket server
     private string serverUrl = "ws://172.24.144.152:8000/ws"; // Change this to your server URL
+    private string httpUrl = "http://";
 
     public Transform cube1;
     public Transform cube2;
@@ -35,6 +40,9 @@ public class SocketHandler : MonoBehaviour
 
     internal bool isEclipseActive = false;
 
+    // Track the last time an eclipse request was sent
+    private DateTime timeSpan = DateTime.MinValue;
+
     private LobbyManager lobbyManager;
 
     private void Awake()
@@ -42,14 +50,29 @@ public class SocketHandler : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            // DontDestroyOnLoad(gameObject);
+        }
+        // else
+        // {
+        //     Destroy(gameObject);
+        // }
+
+        lobbyManager = GetComponent<LobbyManager>();
+    }
+
+    private void Start()
+    {
+        if (useLocalhost)
+        {
+            serverUrl = "ws://" + baseURLLocal + "/ws";
+            httpUrl = "http://" + baseURLLocal;
+
         }
         else
         {
-            Destroy(gameObject);
+            serverUrl = "ws://" + baseURLRemote + "/ws";
+            httpUrl = "http://" + baseURLRemote;
         }
-
-        lobbyManager = GetComponent<LobbyManager>();
     }
 
     private void FixedUpdate()
@@ -66,7 +89,7 @@ public class SocketHandler : MonoBehaviour
     internal void CreateNewRoomRequest()
     {
         // 1. Create request with a callback
-        var request = HTTPRequest.CreateGet("http://172.24.144.152:8000/room/create",
+        var request = HTTPRequest.CreateGet(httpUrl + "/room/create",
                                              CreateNewRoomResponse);
 
         // 3. Send request
@@ -293,6 +316,8 @@ public class SocketHandler : MonoBehaviour
             lobbyManager.HandleEclipseCameraTransition();
             lobbyManager.player1.gameObject.SetActive(false);
             lobbyManager.player2.gameObject.SetActive(false);
+
+            timeSpan = DateTime.Now;
         }
         else if (type == "eclipse_end")
         {
@@ -402,6 +427,11 @@ public class SocketHandler : MonoBehaviour
     [ContextMenu("Send Eclipse Request")]
     internal void SendEclipseRequest()
     {
+        if (DateTime.Now - timeSpan < TimeSpan.FromSeconds(60))
+        {
+            Debug.Log("Eclipse request sent too soon. Please wait before sending another request.");
+            return;
+        }
         WebSocketMessage dataMessage = new WebSocketMessage
         {
             type = "eclipse",

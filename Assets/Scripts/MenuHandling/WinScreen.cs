@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class WinScreen : Screens
@@ -25,7 +26,8 @@ public class WinScreen : Screens
     }
     private void OnMainMenu()
     {
-        menuHandler.ChangeScreen(menuHandler.mainMenu);
+        // menuHandler.ChangeScreen(menuHandler.mainMenu);
         AudioManager.Instance.PlaySFX(menuHandler.click1);
+        SceneManager.LoadScene("MainGame");
     }
 }

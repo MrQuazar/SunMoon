@@ -8,7 +8,11 @@ public class MusicToggleHandler : MonoBehaviour
     public Image image;
     public Button button;
 
-    public bool state = true;
+    public bool state
+    {
+        get => PlayerPrefs.GetInt("MusicEnabled", 1) == 1;
+        set => PlayerPrefs.SetInt("MusicEnabled", value ? 1 : 0);
+    }
 
     void Awake()
     {
@@ -23,7 +27,7 @@ public class MusicToggleHandler : MonoBehaviour
         state = !state;
         AudioManager.Instance.MuteMusic(!state);
 
-        if (state) 
+        if (state)
         {
             image.sprite = onSprite;
         }
