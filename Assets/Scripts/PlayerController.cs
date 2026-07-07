@@ -1,5 +1,7 @@
 using UnityEngine;
 using PinePie.SimpleJoystick;
+using UnityEngine.UI;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -32,6 +34,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Overheat")]
     [SerializeField] private OverheatCollider overheat;
+    [SerializeField] internal Image eclipseObject;
 
     [Header("Wiggle Fix Settings")]
     public float wiggleThreshold = 0.2f;     // minimum horizontal input
@@ -237,5 +240,31 @@ public class PlayerController : MonoBehaviour
             overheat.ForceStopOverheat();
             Debug.Log("OVERHEAT FORCE STOPPED BY WIGGLE");
         }
+    }
+
+    internal void StartEclipse()
+    {
+        eclipseObject.gameObject.SetActive(true);
+        StartCoroutine(EclipseCountdown());
+    }
+
+    //Reduce actionbutton fill
+    private IEnumerator EclipseCountdown()
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < SocketHandler.instance.timeout / 1000f) // Convert milliseconds to seconds
+        {
+            elapsedTime += Time.deltaTime;
+            float fillAmount = Mathf.Clamp01(1f - (elapsedTime / (SocketHandler.instance.timeout / 1000f))); // Convert milliseconds to seconds
+            eclipseObject.fillAmount = fillAmount;
+            yield return null;
+        }
+    }
+
+    internal void EndEclipse()
+    {
+        eclipseObject.gameObject.SetActive(false);
+        StopCoroutine(EclipseCountdown());
+        Debug.Log("ECLIPSE ENDED");
     }
 }

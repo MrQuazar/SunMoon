@@ -586,6 +586,10 @@ PrefabInstance:
       propertyPath: useJoystick
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4310528059478020432, guid: 16abd216900745b40b3cac7d842192af, type: 3}
+      propertyPath: eclipseObject
+      value: 
+      objectReference: {fileID: 1429764357}
     - target: {fileID: 5252201107971370767, guid: 16abd216900745b40b3cac7d842192af, type: 3}
       propertyPath: isEclipse
       value: 0
@@ -1870,6 +1874,10 @@ PrefabInstance:
       propertyPath: useJoystick
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6491208777690090470, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
+      propertyPath: eclipseObject
+      value: 
+      objectReference: {fileID: 1429764357}
     - target: {fileID: 6853264597455414612, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1937,7 +1945,7 @@ PrefabInstance:
     - target: {fileID: 7943423119846812642, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: actionButton
       value: 
-      objectReference: {fileID: 1429764356}
+      objectReference: {fileID: 1151958143}
     - target: {fileID: 7943423119846812642, guid: 7a048ee83c767534ba24314ff59ac35a, type: 3}
       propertyPath: warningPanel
       value: 
@@ -2159,10 +2167,10 @@ RectTransform:
   - {fileID: 1490385790}
   m_Father: {fileID: 525925661}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 753.32, y: 1869.2}
-  m_SizeDelta: {x: 266.6846, y: 247.9825}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -286.68, y: -269}
+  m_SizeDelta: {x: 266.68457, y: 247.98254}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &587028682 stripped
 MonoBehaviour:
@@ -2191,6 +2199,10 @@ PrefabInstance:
       propertyPath: joystick
       value: 
       objectReference: {fileID: 704494372}
+    - target: {fileID: 1072438170956880513, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+      propertyPath: eclipseObject
+      value: 
+      objectReference: {fileID: 1429764357}
     - target: {fileID: 3875714862404647496, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
       propertyPath: blockTags.Array.size
       value: 2
@@ -3974,6 +3986,34 @@ PrefabInstance:
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
       objectReference: {fileID: 0}
+    - target: {fileID: 8537995320965664822, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8537995320965664822, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8537995320965664822, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 36775475}
+    - target: {fileID: 8537995320965664822, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8537995320965664822, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SendEclipseRequest
+      objectReference: {fileID: 0}
+    - target: {fileID: 8537995320965664822, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SocketHandler, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8537995320965664822, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 2380570191920090868, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
@@ -5514,15 +5554,15 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2400376287012903167, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
   m_PrefabInstance: {fileID: 1101430258}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1429764356 stripped
+--- !u!114 &1429764357 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7710888792376382111, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6268701813466033250, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
   m_PrefabInstance: {fileID: 1101430258}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1429764354}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1490385789

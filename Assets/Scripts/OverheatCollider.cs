@@ -92,13 +92,16 @@ public class OverheatCollider : MonoBehaviour
     {
         isOverheating = true;
 
-        if (actionButton != null)
-            actionButton.gameObject.SetActive(true);
+        if (playerController.isPlayerController)
+        {
+            if (actionButton != null)
+                actionButton.gameObject.SetActive(true);
 
-        StartCoroutine(OverheatCountdown());
-        Vibrate();
+            StartCoroutine(OverheatCountdown());
+            Vibrate();
 
-        Debug.Log("OVERHEAT STARTED");
+            Debug.Log("OVERHEAT STARTED");
+        }
     }
 
     //Reduce actionbutton fill
@@ -129,6 +132,8 @@ public class OverheatCollider : MonoBehaviour
 
         if (actionButton != null)
             actionButton.gameObject.SetActive(false);
+
+        hasShownDialogue = false; // Reset for next overheat cycle 
     }
 
     private void OnTriggerStay(Collider other)
