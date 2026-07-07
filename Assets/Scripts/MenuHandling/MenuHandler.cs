@@ -38,7 +38,7 @@ public class MenuHandler : MonoBehaviour
         hostGame.menuHandler = this;
         joinGame.menuHandler = this;
         mainMenu.menuHandler = this;
-        // tutorial.menuHandler = this;
+        tutorial.menuHandler = this;
         // lose.menuHandler = this;
         // win.menuHandler = this;
 

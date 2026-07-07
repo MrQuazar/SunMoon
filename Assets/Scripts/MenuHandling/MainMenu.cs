@@ -5,6 +5,7 @@ public class MainMenu : Screens
 {
     public static MainMenu instance;
     public Button settings;
+    public Button tutorial;
     public Button host;
     public Button join;
 
@@ -19,6 +20,7 @@ public class MainMenu : Screens
     internal override void AddListeners()
     {
         settings.onClick.AddListener(OnSettingsPress);
+        tutorial.onClick.AddListener(OnTutorialPress);
         host.onClick.AddListener(OnHostPress);
         join.onClick.AddListener(OnJoinPress);
 
@@ -29,6 +31,7 @@ public class MainMenu : Screens
     internal override void RemoveListeners()
     {
         settings.onClick.RemoveListener(OnSettingsPress);
+        tutorial.onClick.RemoveListener(OnTutorialPress);
         host.onClick.RemoveListener(OnHostPress);
         join.onClick.RemoveListener(OnJoinPress);
 
@@ -39,6 +42,10 @@ public class MainMenu : Screens
     private void OnSettingsPress()
     {
         menuHandler.ChangeScreen(menuHandler.settings);
+    }
+    private void OnTutorialPress()
+    {
+        menuHandler.ChangeScreen(menuHandler.tutorial);
     }
     private void OnHostPress()
     {
