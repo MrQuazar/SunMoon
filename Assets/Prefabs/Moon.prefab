@@ -114,7 +114,6 @@ MonoBehaviour:
   alignSpeed: 12
   isPlayerController: 0
   recievedLocation: {x: 0, y: 0, z: 0}
-  useJoystick: 1
   useGyro: 0
   joystick: {fileID: 0}
   gyroSensitivity: 0.5
@@ -122,6 +121,7 @@ MonoBehaviour:
   invertGyroY: 1
   playerCollisionRadius: 2
   otherPlayer: {fileID: 0}
+  overheat: {fileID: 0}
   wiggleThreshold: 0.2
   requiredWiggles: 3
 --- !u!136 &1635130846463311762
@@ -143,7 +143,7 @@ CapsuleCollider:
   m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.2
+  m_Radius: 0.01
   m_Height: 3
   m_Direction: 1
   m_Center: {x: 0, y: -1, z: 0}
@@ -176,7 +176,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interval: 30
   overheatDuration: 5
+  warningTime: 2
   isPlayerSun: 0
+  warningPanel: {fileID: 0}
+  warningText: {fileID: 0}
+  actionButton: {fileID: 0}
+  roleImage: {fileID: 0}
+  sprite: {fileID: 0}
+  dialogueAudio: {fileID: 0}
+  laserAudio: {fileID: 0}
+  isOverheating: 0
+  playerController: {fileID: 0}
+  vibrationToggleHandler: {fileID: 0}
 --- !u!54 &3962419453485345885
 Rigidbody:
   m_ObjectHideFlags: 0

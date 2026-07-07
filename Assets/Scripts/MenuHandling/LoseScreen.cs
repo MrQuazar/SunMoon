@@ -11,22 +11,47 @@ public class LoseScreen : Screens
     {
         playAgain.onClick.AddListener(OnPlayAgain);
         mainMenu.onClick.AddListener(OnMainMenu);
+
+        if (SocketHandler.instance != null)
+            SocketHandler.instance.OnReplayStart += HandleReplayStart;
+
+        // Reset button state each time this screen is shown
+        playAgain.interactable = true;
     }
 
     internal override void RemoveListeners()
     {
         playAgain.onClick.RemoveListener(OnPlayAgain);
         mainMenu.onClick.RemoveListener(OnMainMenu);
+
+        if (SocketHandler.instance != null)
+            SocketHandler.instance.OnReplayStart -= HandleReplayStart;
     }
 
     private void OnPlayAgain()
     {
-        // play again
+        AudioManager.Instance.PlaySFX(menuHandler.click1);
+
+        // Wait for the other player to also request a replay before
+        // actually restarting (server confirms via OnReplayStart).
+        playAgain.interactable = false;
+        SocketHandler.instance.RequestReplay();
     }
+
+    private void HandleReplayStart()
+    {
+        // Both players agreed — same room, jump back into gameplay.
+        menuHandler.ChangeScreen(menuHandler.gameScreen);
+    }
+
     private void OnMainMenu()
     {
         AudioManager.Instance.PlaySFX(menuHandler.click1);
-        // menuHandler.ChangeScreen(menuHandler.mainMenu);
+
+        // Let the other player know we left before we actually go.
+        if (SocketHandler.instance != null)
+            SocketHandler.instance.QuitGame();
+
         SceneManager.LoadScene("MainGame");
     }
 }

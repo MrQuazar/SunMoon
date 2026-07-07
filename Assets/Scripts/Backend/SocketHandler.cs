@@ -45,6 +45,14 @@ public class SocketHandler : MonoBehaviour
 
     private LobbyManager lobbyManager;
 
+    // ---------- Replay / Quit events ----------
+    // Hook these up from your menu/UI scripts instead of editing this file.
+    public event Action OnReplayRequestedByOpponent; // opponent asked for a rematch, we haven't yet
+    public event Action OnReplayStart;               // both players agreed, restart the session now
+    public event Action<string> OnOpponentQuit;      // opponent quit (arg = their clientId); show "player quit" UI then go to main menu
+
+    private bool hasQuit = false;
+
     private void Awake()
     {
         if (instance == null)
@@ -342,11 +350,41 @@ public class SocketHandler : MonoBehaviour
         }
         else if (type == "peer_left")
         {
+            // Unexpected disconnect (crash, network drop, tab close) rather
+            // than an explicit quit_game — treat it the same way on the UI
+            // side: show the "player left" screen, then go to main menu.
             Debug.Log("A peer left the room.");
+            hasGameStarted = false;
+            OnOpponentQuit?.Invoke(receivedMessage.clientId);
         }
         else if (type == "room_full")
         {
             Debug.Log("Room is full, cannot join.");
+        }
+        else if (type == "replay_requested")
+        {
+            // Opponent tapped "Replay" first — show "opponent wants a
+            // rematch" UI. Fires only for the player who hasn't requested yet.
+            Debug.Log("Opponent requested a replay.");
+            OnReplayRequestedByOpponent?.Invoke();
+        }
+        else if (type == "replay_start")
+        {
+            // Both players have opted in — reset local game state and
+            // jump back into the game screen using the same room.
+            Debug.Log("Replay starting.");
+            players = receivedMessage.players;
+            hasGameStarted = false;
+            isEclipseActive = false;
+            OnReplayStart?.Invoke();
+        }
+        else if (type == "opponent_quit")
+        {
+            // The other player explicitly quit via the UI. Show the
+            // "opponent quit" screen, then send both players to main menu.
+            Debug.Log("Opponent quit the game.");
+            hasGameStarted = false;
+            OnOpponentQuit?.Invoke(receivedMessage.clientId);
         }
         else
         {
@@ -440,6 +478,55 @@ public class SocketHandler : MonoBehaviour
         string json = JsonUtility.ToJson(dataMessage);
         ws.Send(json);
         Debug.Log("Sending eclipse request: " + JsonUtility.ToJson(dataMessage));
+    }
+
+    // ---------- Replay / Quit: call these from UI buttons ----------
+
+    // Wire this to your "Replay" button. Both players need to call it
+    // before the session actually restarts (server waits for both).
+    [ContextMenu("Request Replay")]
+    public void RequestReplay()
+    {
+        if (ws == null || string.IsNullOrEmpty(roomID))
+        {
+            Debug.LogWarning("Cannot request replay: no active room/socket.");
+            return;
+        }
+
+        WebSocketMessage msg = new WebSocketMessage
+        {
+            type = "replay_request",
+            roomId = roomID
+        };
+        ws.Send(JsonUtility.ToJson(msg));
+        Debug.Log("Requested replay for room " + roomID);
+    }
+
+    // Wire this to your "Quit" button. Notifies the other player, then
+    // closes this client's own connection.
+    [ContextMenu("Quit Game")]
+    public void QuitGame()
+    {
+        if (ws != null && !string.IsNullOrEmpty(roomID))
+        {
+            WebSocketMessage msg = new WebSocketMessage
+            {
+                type = "quit_game",
+                roomId = roomID
+            };
+            ws.Send(JsonUtility.ToJson(msg));
+        }
+
+        hasGameStarted = false;
+        hasQuit = true;
+
+        if (ws != null)
+        {
+            ws.Close(WebSocketStatusCodes.NormalClosure, "Player quit");
+            ws = null;
+        }
+
+        Debug.Log("Quit game, room " + roomID);
     }
 }
 
