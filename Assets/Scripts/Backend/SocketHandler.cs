@@ -15,7 +15,7 @@ public class SocketHandler : MonoBehaviour
 
     [SerializeField] private bool useLocalhost = false; // Toggle this in the Inspector to switch between local and remote server
     private string baseURLLocal = "localhost:8000";
-    private string baseURLRemote = "192.168.0.51:8000";
+    private string baseURLRemote = "10.219.193.252:8000";
 
     // URL to your WebSocket server
     private string serverUrl = "ws://172.24.144.152:8000/ws"; // Change this to your server URL
