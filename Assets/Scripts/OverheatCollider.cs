@@ -160,6 +160,20 @@ public class OverheatCollider : MonoBehaviour
         StartCoroutine(OverheatRoutine());
     }
 
+    // Called when a replay starts (or any time the overheat cycle needs a
+    // clean restart). Unlike ForceStopOverheat, this also clears
+    // hasShownDialogue so the intro warning line plays again next match,
+    // and doesn't vibrate/count as a player-triggered stop.
+    public void ResetForReplay()
+    {
+        StopAllCoroutines();
+        isOverheating = false;
+        hasShownDialogue = false;
+        HideUI();
+        HideShakeIcon();
+        StartCoroutine(OverheatRoutine());
+    }
+
     void Vibrate()
     {
         if (vibrationToggleHandler.state)

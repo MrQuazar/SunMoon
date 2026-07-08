@@ -153,4 +153,23 @@ public class LobbyManager : MonoBehaviour
         cam.localPosition = Vector3.zero;
         cam.localRotation = Quaternion.identity;
     }
+
+    // Called on replay start. A match can technically end (win/lose fires
+    // off the round timer, independent of eclipse state) while an eclipse
+    // is mid-flight, which would otherwise leave eclipse active, player1/
+    // player2 disabled, and the camera still parented to the eclipse
+    // transform going into the next match.
+    public void ResetForReplay()
+    {
+        if (eclipse != null && eclipse.activeSelf)
+        {
+            eclipse.GetComponent<PlayerController>().isPlayerController = false;
+            eclipse.SetActive(false);
+        }
+
+        if (player1 != null) player1.SetActive(true);
+        if (player2 != null) player2.SetActive(true);
+
+        HandleCameraTransition();
+    }
 }

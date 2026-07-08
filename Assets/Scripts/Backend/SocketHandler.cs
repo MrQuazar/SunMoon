@@ -374,9 +374,22 @@ public class SocketHandler : MonoBehaviour
             // jump back into the game screen using the same room.
             Debug.Log("Replay starting.");
             players = receivedMessage.players;
-            hasGameStarted = false;
+
+            // Clear anything left over from the previous match. Previously
+            // hasGameStarted was reset to false here and never set back to
+            // true, which silently froze RoundManager's timer (it gates on
+            // hasGameStarted) and stopped position sync in FixedUpdate.
             isEclipseActive = false;
+            isSameDirection = false;
+            eclipseDirection = -1;
+            timeSpan = DateTime.MinValue;
+            previousLocation = Vector3.zero;
+
+            // Subscribers (GameScreen, RoundManager, OverheatCollider,
+            // LobbyManager) do their local resets in response to this event.
             OnReplayStart?.Invoke();
+
+            hasGameStarted = true;
         }
         else if (type == "opponent_quit")
         {
