@@ -10,6 +10,9 @@ public class ToggleHandler : MonoBehaviour
     public PlayerController sunController;
     public PlayerController moonController;
     public PlayerController ecclipseController;
+
+    [Header("Sounds")]
+    public AudioClip click1;
     public bool state
     {
         get => PlayerPrefs.GetInt("JoystickEnabled", 1) == 1;
@@ -30,6 +33,7 @@ public class ToggleHandler : MonoBehaviour
         sunController.useGyro = !state;
         moonController.useGyro = !state;
         ecclipseController.useGyro = !state;
+        AudioManager.Instance.PlaySFX(click1);
         if (state)
         {
             image.sprite = onSprite;

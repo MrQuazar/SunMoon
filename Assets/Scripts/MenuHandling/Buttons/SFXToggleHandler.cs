@@ -8,6 +8,9 @@ public class SFXToggleHandler : MonoBehaviour
     public Image image;
     public Button button;
 
+    [Header("Sounds")]
+    public AudioClip click1;
+
     public bool state
     {
         get => PlayerPrefs.GetInt("SFXEnabled", 1) == 1;
@@ -30,6 +33,7 @@ public class SFXToggleHandler : MonoBehaviour
         if (state)
         {
             image.sprite = onSprite;
+            AudioManager.Instance.PlaySFX(click1);
         }
         else image.sprite = offSprite;
     }

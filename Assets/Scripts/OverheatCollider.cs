@@ -21,12 +21,18 @@ public class OverheatCollider : MonoBehaviour
     [Header("Role Sprites")]
     public Sprite sprite;
 
+    [Header("Shake Phone Icon")]
+    public RectTransform shakePhoneIcon; // Drag the icon's RectTransform here (already in scene, hidden)
+    public float tiltAngle = 20f;        // Max rotation angle in each direction
+    public float tiltSpeed = 4f;         // How fast it tilts back and forth
+
     [Header("Audio")]
     public AudioClip dialogueAudio;
     public AudioClip laserAudio;
 
     public bool isOverheating = false;
     private bool hasShownDialogue = false;
+    private Coroutine shakeIconRoutine;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private JoystickToggleHandler vibrationToggleHandler;
 
@@ -97,8 +103,9 @@ public class OverheatCollider : MonoBehaviour
             if (actionButton != null)
                 actionButton.gameObject.SetActive(true);
 
-            StartCoroutine(OverheatCountdown());
-            Vibrate();
+        StartCoroutine(OverheatCountdown());
+        Vibrate();
+        ShowShakeIcon();
 
             Debug.Log("OVERHEAT STARTED");
         }
@@ -122,6 +129,7 @@ public class OverheatCollider : MonoBehaviour
         isOverheating = false;
         HideUI();
         AudioManager.Instance.StopSFX();
+        HideShakeIcon();
         Debug.Log("OVERHEAT ENDED");
     }
 
@@ -152,7 +160,22 @@ public class OverheatCollider : MonoBehaviour
         StopAllCoroutines();
         isOverheating = false;
         HideUI();
+        HideShakeIcon();
         Vibrate();
+        StartCoroutine(OverheatRoutine());
+    }
+
+    // Called when a replay starts (or any time the overheat cycle needs a
+    // clean restart). Unlike ForceStopOverheat, this also clears
+    // hasShownDialogue so the intro warning line plays again next match,
+    // and doesn't vibrate/count as a player-triggered stop.
+    public void ResetForReplay()
+    {
+        StopAllCoroutines();
+        isOverheating = false;
+        hasShownDialogue = false;
+        HideUI();
+        HideShakeIcon();
         StartCoroutine(OverheatRoutine());
     }
 
@@ -163,6 +186,47 @@ public class OverheatCollider : MonoBehaviour
 #if UNITY_ANDROID || UNITY_IOS
             Handheld.Vibrate();
 #endif
+        }
+    }
+
+    // ---------- Shake Phone Icon ----------
+
+    void ShowShakeIcon()
+    {
+        if (shakePhoneIcon == null) return;
+
+        shakePhoneIcon.gameObject.SetActive(true);
+
+        if (shakeIconRoutine != null)
+            StopCoroutine(shakeIconRoutine);
+
+        shakeIconRoutine = StartCoroutine(TiltShakeIconRoutine());
+    }
+
+    void HideShakeIcon()
+    {
+        if (shakePhoneIcon == null) return;
+
+        if (shakeIconRoutine != null)
+        {
+            StopCoroutine(shakeIconRoutine);
+            shakeIconRoutine = null;
+        }
+
+        shakePhoneIcon.localRotation = Quaternion.identity;
+        shakePhoneIcon.gameObject.SetActive(false);
+    }
+
+    IEnumerator TiltShakeIconRoutine()
+    {
+        // Continuously oscillate rotation between -tiltAngle and +tiltAngle using a sine wave
+        float t = 0f;
+        while (true)
+        {
+            t += Time.deltaTime * tiltSpeed;
+            float angle = Mathf.Sin(t) * tiltAngle;
+            shakePhoneIcon.localRotation = Quaternion.Euler(0f, 0f, angle);
+            yield return null;
         }
     }
 }

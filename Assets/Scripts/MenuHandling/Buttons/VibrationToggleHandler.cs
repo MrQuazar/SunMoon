@@ -8,6 +8,9 @@ public class JoystickToggleHandler : MonoBehaviour
     public Image image;
     public Button button;
 
+    [Header("Sounds")]
+    public AudioClip click1;
+
     public bool state
     {
         get => PlayerPrefs.GetInt("VibrationEnabled", 1) == 1;
@@ -25,6 +28,8 @@ public class JoystickToggleHandler : MonoBehaviour
     void OnClick()
     {
         state = !state;
+
+        AudioManager.Instance.PlaySFX(click1);
 
         if (state)
         {
