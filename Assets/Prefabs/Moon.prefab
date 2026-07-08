@@ -114,7 +114,6 @@ MonoBehaviour:
   alignSpeed: 12
   isPlayerController: 0
   recievedLocation: {x: 0, y: 0, z: 0}
-  useJoystick: 1
   useGyro: 0
   joystick: {fileID: 0}
   gyroSensitivity: 0.5
@@ -122,6 +121,7 @@ MonoBehaviour:
   invertGyroY: 1
   playerCollisionRadius: 2
   otherPlayer: {fileID: 0}
+  overheat: {fileID: 0}
   wiggleThreshold: 0.2
   requiredWiggles: 3
 --- !u!136 &1635130846463311762
@@ -143,7 +143,7 @@ CapsuleCollider:
   m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.2
+  m_Radius: 0.01
   m_Height: 3
   m_Direction: 1
   m_Center: {x: 0, y: -1, z: 0}
@@ -176,7 +176,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interval: 30
   overheatDuration: 5
+  warningTime: 2
   isPlayerSun: 0
+  warningPanel: {fileID: 0}
+  warningText: {fileID: 0}
+  actionButton: {fileID: 0}
+  roleImage: {fileID: 0}
+  sprite: {fileID: 0}
+  shakePhoneIcon: {fileID: 0}
+  tiltAngle: 20
+  tiltSpeed: 4
+  dialogueAudio: {fileID: 0}
+  laserAudio: {fileID: 0}
+  isOverheating: 0
+  playerController: {fileID: 0}
+  vibrationToggleHandler: {fileID: 0}
 --- !u!54 &3962419453485345885
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -377,7 +391,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: -0.8, z: 0}
-  m_LocalScale: {x: 120, y: 120, z: 120}
+  m_LocalScale: {x: 120, y: 120, z: 280}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6853264597455414612}
@@ -452,7 +466,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5979611495186612934
 Transform:
   m_ObjectHideFlags: 0
@@ -514,7 +528,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9196937266409670752}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
