@@ -103,9 +103,9 @@ public class OverheatCollider : MonoBehaviour
             if (actionButton != null)
                 actionButton.gameObject.SetActive(true);
 
-        StartCoroutine(OverheatCountdown());
-        Vibrate();
-        ShowShakeIcon();
+            StartCoroutine(OverheatCountdown());
+            Vibrate();
+            ShowShakeIcon();
 
             Debug.Log("OVERHEAT STARTED");
         }

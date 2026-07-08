@@ -4,13 +4,16 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using TMPro;
+using System;
 
 public class RoundManager : MonoBehaviour
 {
+    public static RoundManager Instance { get; private set; }
     [Header("References")]
     public Spawner spawner;
     public Image progressBar;
     public List<GameObject> plants = new List<GameObject>();
+    public CountdownTimer countdownTimer;
 
     [Header("UI")]
     public TextMeshProUGUI timerText; // UI text to show danger timer
@@ -43,6 +46,21 @@ public class RoundManager : MonoBehaviour
     private int lastWholeSecond = -1;
     private Coroutine pulseRoutine;
 
+    private DateTime lastUpdateTime;
+    private DateTime startTime;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     void Start()
     {
         if (progressBar != null)
@@ -67,6 +85,11 @@ public class RoundManager : MonoBehaviour
         }
 
         lastWholeSecond = -1;
+
+        if (countdownTimer != null)
+        {
+            countdownTimer.StopCountdown();
+        }
 
         if (pulseRoutine != null)
         {
@@ -107,23 +130,16 @@ public class RoundManager : MonoBehaviour
         }
 
         // LOSE TIMER LOGIC
-        if (currentTime < maxTime)
-        {
-            currentTime += Time.deltaTime;
+        currentTime += Time.deltaTime;
+        float remaining = Mathf.Max(0f, maxTime - currentTime);
 
-            float remaining = Mathf.Max(0f, maxTime - currentTime);
-            UpdateDigitalTimer(remaining);
-            CheckPulseThresholds(remaining);
+        UpdateDigitalTimer(remaining);
+        CheckPulseThresholds(remaining);
 
-            if (currentTime >= maxTime)
-            {
-                LoseGame();
-                return;
-            }
-        }
-        else
+        if (currentTime >= maxTime)
         {
-            currentTime = 0;
+            LoseGame();
+            return;
         }
     }
 
@@ -161,6 +177,11 @@ public class RoundManager : MonoBehaviour
         if (target == null)
             return;
 
+        if (countdownTimer.countdownStarted)
+        {
+            target.text = string.Empty;
+            return;
+        }
         target.text = FormatTime(remainingSeconds);
     }
 

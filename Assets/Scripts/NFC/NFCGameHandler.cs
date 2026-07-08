@@ -101,7 +101,7 @@ NativeNFCManager.AddNDEFPushFinishedListener(OnNDEFPushFinished);
             pendingMessage.Records.Add(new TextRecord(message));
             if (pendingMessage != null)
             {
-                Debug.LogError(pendingMessage);
+                // Debug.LogError(pendingMessage);
 
 #if (!UNITY_EDITOR) && UNITY_ANDROID
 				NativeNFCManager.RequestNDEFPush(pendingMessage);

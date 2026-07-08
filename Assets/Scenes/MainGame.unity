@@ -1932,6 +1932,7 @@ MonoBehaviour:
   spawner: {fileID: 1849394350}
   progressBar: {fileID: 1101430260}
   plants: []
+  countdownTimer: {fileID: 1101430261}
   timerText: {fileID: 0}
   inGame: 0
   digitalTimerText: {fileID: 1714106034}
@@ -2759,6 +2760,10 @@ PrefabInstance:
       propertyPath: alignSpeed
       value: 24
       objectReference: {fileID: 0}
+    - target: {fileID: 1072438170956880513, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+      propertyPath: eclipseObject
+      value: 
+      objectReference: {fileID: 1429764357}
     - target: {fileID: 3875714862404647496, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
       propertyPath: blockTags.Array.size
       value: 2
@@ -5036,6 +5041,7 @@ PrefabInstance:
     - target: {fileID: 8537995320965664822, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 8758982880374387584, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -5076,6 +5082,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1101430261 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3186521730129138784, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
+  m_PrefabInstance: {fileID: 1101430258}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84720a94780fb464882cd5148dc95617, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1140510561
