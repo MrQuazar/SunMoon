@@ -410,6 +410,9 @@ MonoBehaviour:
   actionButton: {fileID: 0}
   roleImage: {fileID: 0}
   sprite: {fileID: 0}
+  shakePhoneIcon: {fileID: 0}
+  tiltAngle: 20
+  tiltSpeed: 4
   dialogueAudio: {fileID: 0}
   laserAudio: {fileID: 0}
   isOverheating: 0
