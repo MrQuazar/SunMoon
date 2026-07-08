@@ -70,8 +70,9 @@ public class SocketHandler : MonoBehaviour
         lobbyManager = GetComponent<LobbyManager>();
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
+        yield return new WaitForSeconds(1f); // Wait a frame to ensure PlayerPrefs are loaded
         if (useLocalhost)
         {
             serverUrl = "ws://" + baseURLLocal + "/ws";
@@ -80,9 +81,10 @@ public class SocketHandler : MonoBehaviour
         }
         else
         {
-            serverUrl = "ws://" + baseURLRemote + "/ws";
-            httpUrl = "http://" + baseURLRemote;
+            serverUrl = "ws://" + FirebaseRemoteConfigConstants.BASE_URL + "/ws";
+            httpUrl = "http://" + FirebaseRemoteConfigConstants.BASE_URL;
         }
+        yield return null;
     }
 
     private void FixedUpdate()

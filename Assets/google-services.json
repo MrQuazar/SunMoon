@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "222278680533",
+    "project_id": "bloom-or-doom",
+    "storage_bucket": "bloom-or-doom.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222278680533:android:5cf7bced848bdecccdc75c",
+        "android_client_info": {
+          "package_name": "com.ObsidianCore.BloomOrDoom"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpKhA8c4_v9yFtgU_1fDHarBj60tzk61c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
