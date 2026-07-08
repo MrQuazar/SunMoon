@@ -194,6 +194,11 @@ public class PlayerController : MonoBehaviour
             return; // Prevent movement during overheating
         }
 
+        if (RoundManager.Instance.countdownTimer.countdownStarted)
+        {
+            return; // Prevent movement during countdown
+        }
+
         moveDir.Normalize();
         moveDirGlobal = moveDir;
         // if (!isPlayerController/*  || (SocketHandler.instance.isEclipseActive && !SocketHandler.instance.isSameDirection) */)

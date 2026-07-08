@@ -7,10 +7,12 @@ using TMPro;
 
 public class RoundManager : MonoBehaviour
 {
+    public static RoundManager Instance { get; private set; }
     [Header("References")]
     public Spawner spawner;
     public Image progressBar;
     public List<GameObject> plants = new List<GameObject>();
+    public CountdownTimer countdownTimer;
 
     [Header("UI")]
     public TextMeshProUGUI timerText; // UI text to show danger timer
@@ -43,6 +45,18 @@ public class RoundManager : MonoBehaviour
     private int lastWholeSecond = -1;
     private Coroutine pulseRoutine;
 
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     void Start()
     {
         if (progressBar != null)
@@ -67,6 +81,11 @@ public class RoundManager : MonoBehaviour
         }
 
         lastWholeSecond = -1;
+
+        if (countdownTimer != null)
+        {
+            countdownTimer.StopCountdown();
+        }
 
         if (pulseRoutine != null)
         {
@@ -161,6 +180,11 @@ public class RoundManager : MonoBehaviour
         if (target == null)
             return;
 
+        if (countdownTimer.countdownStarted)
+        {
+            target.text = string.Empty;
+            return;
+        }
         target.text = FormatTime(remainingSeconds);
     }
 
