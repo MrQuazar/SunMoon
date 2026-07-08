@@ -143,17 +143,10 @@ public class PlayerController : MonoBehaviour
         // ANDROID CONTROLS
         // ================================
         // Joystick controls for Android
-        if (!overheat.isOverheating && !useGyro && joystick != null)
-        {
-            Vector2 input = joystick.InputDirection;
 
-            h = -input.y;   // left/right
-            v = input.x;  // flipped forward/back
-            // CheckWiggle(h);
-        }
 
         // Gyro controls for Android
-        else if (overheat.isOverheating || (useGyro && gyroAvailable))
+        if ((overheat && overheat.isOverheating) || (useGyro && gyroAvailable))
         {
             Vector3 tilt = Input.gyro.gravity;
 
@@ -179,7 +172,14 @@ public class PlayerController : MonoBehaviour
             }
             CheckWiggle(v);
         }
+        else if (!useGyro && joystick != null)
+        {
+            Vector2 input = joystick.InputDirection;
 
+            h = -input.y;   // left/right
+            v = input.x;  // flipped forward/back
+            // CheckWiggle(h);
+        }
         // Calculate movement direction and apply it to player
         Vector3 normal = GetNormal();
         Vector3 forwardDir = Vector3.ProjectOnPlane(transform.forward, normal).normalized;
@@ -189,7 +189,7 @@ public class PlayerController : MonoBehaviour
         if (moveDir.sqrMagnitude < 0.001f)
             return;
 
-        if (overheat.isOverheating)
+        if (overheat && overheat.isOverheating)
         {
             return; // Prevent movement during overheating
         }
@@ -250,7 +250,8 @@ public class PlayerController : MonoBehaviour
     internal void StartEclipse()
     {
         eclipseObject.gameObject.SetActive(true);
-        StartCoroutine(EclipseCountdown());
+        if (gameObject.activeInHierarchy)
+            StartCoroutine(EclipseCountdown());
     }
 
     //Reduce actionbutton fill

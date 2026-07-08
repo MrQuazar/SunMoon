@@ -2760,6 +2760,10 @@ PrefabInstance:
       propertyPath: alignSpeed
       value: 24
       objectReference: {fileID: 0}
+    - target: {fileID: 1072438170956880513, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
+      propertyPath: eclipseObject
+      value: 
+      objectReference: {fileID: 1429764357}
     - target: {fileID: 3875714862404647496, guid: 6e8ccabcb19eaa24cbfeba3386cd2734, type: 3}
       propertyPath: blockTags.Array.size
       value: 2
@@ -5037,6 +5041,7 @@ PrefabInstance:
     - target: {fileID: 8537995320965664822, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 8758982880374387584, guid: 2ab35420a96c3584a844f9398ec5d595, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -275,8 +275,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuHandler: {fileID: 0}
   settings: {fileID: 3349688854628897544}
+  quitBtn: {fileID: 0}
   roundManager: {fileID: 0}
   spawner: {fileID: 0}
+  overheatColliders: []
+  lobbyManager: {fileID: 0}
 --- !u!114 &3186521730129138784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1898,7 +1901,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2801579441118321549
 RectTransform:
   m_ObjectHideFlags: 0

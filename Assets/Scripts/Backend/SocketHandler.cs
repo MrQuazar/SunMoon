@@ -15,7 +15,7 @@ public class SocketHandler : MonoBehaviour
 
     [SerializeField] private bool useLocalhost = false; // Toggle this in the Inspector to switch between local and remote server
     private string baseURLLocal = "localhost:8000";
-    private string baseURLRemote = "192.168.0.51:8000";
+    private string baseURLRemote = "10.26.128.152:8000";
 
     // URL to your WebSocket server
     private string serverUrl = "ws://172.24.144.152:8000/ws"; // Change this to your server URL
@@ -321,9 +321,15 @@ public class SocketHandler : MonoBehaviour
             {
                 cube1 = lobbyManager.eclipse.transform;
                 lobbyManager.eclipse.GetComponent<PlayerController>().isPlayerController = true;
-                lobbyManager.eclipse.GetComponent<PlayerController>().StartEclipse();
+                // lobbyManager.eclipse.GetComponent<PlayerController>().StartEclipse();
 
             }
+            else
+            {
+                cube2 = lobbyManager.eclipse.transform;
+                lobbyManager.eclipse.GetComponent<PlayerController>().isPlayerController = false;
+            }
+            lobbyManager.eclipse.GetComponent<PlayerController>().StartEclipse();
             lobbyManager.eclipse.gameObject.SetActive(true);
             lobbyManager.HandleEclipseCameraTransition();
             lobbyManager.player1.gameObject.SetActive(false);
@@ -345,6 +351,10 @@ public class SocketHandler : MonoBehaviour
                 cube1 = lobbyManager.player1.transform;
                 lobbyManager.eclipse.GetComponent<PlayerController>().isPlayerController = false;
                 lobbyManager.eclipse.GetComponent<PlayerController>().EndEclipse();
+            }
+            else
+            {
+                cube2 = lobbyManager.player2.transform;
             }
             lobbyManager.HandleCameraTransition();
             lobbyManager.eclipse.gameObject.SetActive(false);

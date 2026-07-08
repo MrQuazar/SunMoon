@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using TMPro;
+using System;
 
 public class RoundManager : MonoBehaviour
 {
@@ -44,6 +45,9 @@ public class RoundManager : MonoBehaviour
 
     private int lastWholeSecond = -1;
     private Coroutine pulseRoutine;
+
+    private DateTime lastUpdateTime;
+    private DateTime startTime;
 
     private void Awake()
     {
@@ -126,23 +130,16 @@ public class RoundManager : MonoBehaviour
         }
 
         // LOSE TIMER LOGIC
-        if (currentTime < maxTime)
-        {
-            currentTime += Time.deltaTime;
+        currentTime += Time.deltaTime;
+        float remaining = Mathf.Max(0f, maxTime - currentTime);
 
-            float remaining = Mathf.Max(0f, maxTime - currentTime);
-            UpdateDigitalTimer(remaining);
-            CheckPulseThresholds(remaining);
+        UpdateDigitalTimer(remaining);
+        CheckPulseThresholds(remaining);
 
-            if (currentTime >= maxTime)
-            {
-                LoseGame();
-                return;
-            }
-        }
-        else
+        if (currentTime >= maxTime)
         {
-            currentTime = 0;
+            LoseGame();
+            return;
         }
     }
 
