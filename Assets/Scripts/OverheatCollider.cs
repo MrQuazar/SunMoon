@@ -148,6 +148,13 @@ public class OverheatCollider : MonoBehaviour
     {
         if (!isOverheating) return;
 
+        // Same reasoning as LightCollider: every client has both an overheat
+        // collider for the Sun and one for the Moon in its scene, but only
+        // the one attached to this client's own controlled player is
+        // allowed to force a plant's state locally. The other player's
+        // overheat conversions only ever arrive via the server.
+        if (playerController == null || !playerController.isPlayerController) return;
+
         PlantHandler plant = other.GetComponentInParent<PlantHandler>();
         if (plant == null) return;
 
@@ -176,7 +183,7 @@ public class OverheatCollider : MonoBehaviour
         hasShownDialogue = false;
         HideUI();
         HideShakeIcon();
-        StartCoroutine(OverheatRoutine());
+        if(gameObject.activeInHierarchy) StartCoroutine(OverheatRoutine());
     }
 
     void Vibrate()

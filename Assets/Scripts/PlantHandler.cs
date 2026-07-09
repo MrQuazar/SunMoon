@@ -36,6 +36,16 @@ public class PlantHandler : MonoBehaviour
     public PlantState currentState = PlantState.dead;
     public GameObject currentStatePrefab;
 
+    // Stable network ID for this plant. Assigned by Spawner as it walks the
+    // baked spawn data in a fixed order, so it lines up on both clients
+    // (same seed/bake -> same spawn order -> same index).
+    [HideInInspector]
+    public int plantId = -1;
+
+    // Guards against applying a stale/out-of-order network conversion for
+    // this plant (e.g. two conversions land close together).
+    private long lastNetworkTimestamp = 0;
+
     void Awake()
     {
         currentAmount = 0f;
@@ -98,7 +108,13 @@ public class PlantHandler : MonoBehaviour
     // resets the hover timer, swaps colour/prefab, and puffs dust. Both the
     // hover-based ChangeState() and the instant force-setters below funnel
     // through here.
-    private void SetState(PlantState newState)
+    //
+    // `broadcast` distinguishes a LOCALLY-caused change (hover, eclipse,
+    // overheat - this device's own colliders decided this) from a change
+    // that's being force-applied because it arrived from the server. Only
+    // locally-caused changes get sent back out, otherwise every conversion
+    // would ping-pong between clients forever.
+    private void SetState(PlantState newState, bool broadcast = true)
     {
         currentState = newState;
         currentAmount = 0f;
@@ -108,6 +124,30 @@ public class PlantHandler : MonoBehaviour
         currentStatePrefab = Instantiate(statePrefabs[(int)currentState], transform);
 
         StartCoroutine(DustPuff());
+
+        if (broadcast && plantId >= 0 && SocketHandler.instance != null && !SocketHandler.instance.isSinglePlayerMode)
+        {
+            SocketHandler.instance.SendPlantConversion(plantId, (int)newState);
+        }
+    }
+
+    // Force-applies a state that the server relayed from the OTHER player's
+    // client. Bypasses hover/timers entirely and never re-broadcasts (that
+    // would just bounce the same conversion back and forth).
+    // `serverTimestamp` lets us drop a message that arrived out of order
+    // relative to one we've already applied for this same plant.
+    public void ApplyNetworkState(PlantState newState, long serverTimestamp = 0)
+    {
+        if (serverTimestamp != 0 && serverTimestamp < lastNetworkTimestamp)
+            return;
+
+        if (serverTimestamp != 0)
+            lastNetworkTimestamp = serverTimestamp;
+
+        if (newState == currentState)
+            return;
+
+        SetState(newState, broadcast: false);
     }
 
     // Steps one state in `value`'s direction, respecting bounds (dead can't
@@ -143,6 +183,15 @@ public class PlantHandler : MonoBehaviour
     public void GoToPerfect()
     {
         SetState(PlantState.flower);
+    }
+
+    // For resets that both clients compute independently from the same
+    // deterministic baked data (e.g. Spawner.ResetPlants at the start of a
+    // replay) - both sides arrive at the same answer on their own, so there's
+    // no need to also broadcast it over the network.
+    public void SetStateLocalOnly(PlantState newState)
+    {
+        SetState(newState, broadcast: false);
     }
 
     // Hover-based conversion: only steps the state once currentAmount has

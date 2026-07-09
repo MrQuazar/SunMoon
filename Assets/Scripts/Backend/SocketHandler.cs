@@ -53,6 +53,14 @@ public class SocketHandler : MonoBehaviour
     public event Action OnReplayStart;               // both players agreed, restart the session now
     public event Action<string> OnOpponentQuit;      // opponent quit (arg = their clientId); show "player quit" UI then go to main menu
 
+    // ---------- World generation sync ----------
+    // Both clients receive the same seed from the server (assigned once per
+    // room in room_joined). Subscribe to this to trigger Planet + Spawner
+    // generation only once the shared seed is known, instead of generating
+    // independently in each script's own Start().
+    public int worldSeed = -1;
+    public event Action<int> OnWorldSeedReady;
+
     private bool hasQuit = false;
 
     private void Awake()
@@ -294,6 +302,15 @@ public class SocketHandler : MonoBehaviour
             Debug.Log("Joined room successfully: " + receivedMessage.roomId);
             roomID = receivedMessage.roomId;
             players = receivedMessage.players;
+
+            // Shared world seed from the server, generated once per room.
+            // Both players receive the same value here, before HandleStartGame
+            // fires, so Planet + Spawner generation is identical on both ends.
+            if (receivedMessage.seed != -1)
+            {
+                worldSeed = receivedMessage.seed;
+            }
+
             if (MainMenu.instance != null)
             {
                 if (players[0] == myID)
@@ -416,10 +433,33 @@ public class SocketHandler : MonoBehaviour
             hasGameStarted = false;
             OnOpponentQuit?.Invoke(receivedMessage.clientId);
         }
+        else if (type == "plant_convert")
+        {
+            // The OTHER player's client caused this conversion (their Sun/Moon
+            // hover, eclipse, or overheat). Force our copy of the same plant
+            // to match - this is authoritative, not another vote toward a
+            // locally-simulated hover.
+            ApplyRemotePlantConversion(receivedMessage.plantId, receivedMessage.state, receivedMessage.timestamp);
+        }
         else
         {
             Debug.Log("Unknown message type: " + type);
         }
+    }
+
+    private void ApplyRemotePlantConversion(int plantId, int state, long serverTimestamp)
+    {
+        if (plantId < 0) return;
+        if (RoundManager.Instance == null || RoundManager.Instance.plants == null) return;
+        if (plantId >= RoundManager.Instance.plants.Count) return;
+
+        GameObject plantObj = RoundManager.Instance.plants[plantId];
+        if (plantObj == null) return;
+
+        PlantHandler plant = plantObj.GetComponent<PlantHandler>();
+        if (plant == null) return;
+
+        plant.ApplyNetworkState((PlantHandler.PlantState)state, serverTimestamp);
     }
 
     // Ensure the WebSocket is closed properly when the object is destroyed
@@ -461,6 +501,12 @@ public class SocketHandler : MonoBehaviour
         // LobbyManager lobbyManager = gameObject.GetComponent<LobbyManager>();
         lobbyManager.roomCreated = true;
         lobbyManager.isPlayerSun = isPlayerSun;
+
+        // Both clients now have the same worldSeed (received in room_joined).
+        // Fire the event so Planet + Spawner generate identical terrain and
+        // spawn placements before the game screen is shown.
+        OnWorldSeedReady?.Invoke(worldSeed);
+
         MenuHandler.instance.ChangeScreen(MenuHandler.instance.gameScreen);
         hasGameStarted = true;
     }
@@ -487,9 +533,33 @@ public class SocketHandler : MonoBehaviour
         lobbyManager.isPlayerSun = true;
         lobbyManager.roomCreated = true;
 
+        // No server involved in single-player, so there's no room_joined
+        // message to supply a seed — pick a local one so world generation
+        // still fires the same way it does in the networked flow.
+        worldSeed = UnityEngine.Random.Range(0, int.MaxValue);
+        OnWorldSeedReady?.Invoke(worldSeed);
+
         hasGameStarted = true;
 
         MenuHandler.instance.ChangeScreen(MenuHandler.instance.gameScreen);
+    }
+
+    // ---------- Plant conversion sync ----------
+    // Called by PlantHandler whenever a LOCAL (this device's own, authoritative)
+    // collision caused a state change - never for a change that itself arrived
+    // from the network, so this can't ping-pong.
+    public void SendPlantConversion(int plantId, int state)
+    {
+        if (ws == null || isSinglePlayerMode || string.IsNullOrEmpty(roomID)) return;
+
+        WebSocketMessage msg = new WebSocketMessage
+        {
+            type = "plant_convert",
+            roomId = roomID,
+            plantId = plantId,
+            state = state
+        };
+        ws.Send(JsonUtility.ToJson(msg));
     }
 
     [ContextMenu("Send Eclipse Request")]
@@ -572,6 +642,10 @@ public class WebSocketMessage
     public string[] players; // Example additional field for player list
     public int direction = -1;   // 0 = left, 1 = right, 2 = up, 3 = down
     public int timeout = 10000;
+    public int seed = -1;        // Shared world seed for Planet + Spawner generation
+    public int plantId = -1;     // Index into Spawner/RoundManager's plant list
+    public int state = -1;       // PlantHandler.PlantState as int, for plant_convert
+    public long timestamp = 0;   // Server-assigned time a plant_convert was relayed at
 }
 
 [Serializable]
