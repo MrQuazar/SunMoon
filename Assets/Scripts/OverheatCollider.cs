@@ -172,6 +172,20 @@ public class OverheatCollider : MonoBehaviour
         StartCoroutine(OverheatRoutine());
     }
 
+    // Permanently stops the overheat cycle - used when the round has
+    // actually ended (win/lose), unlike ForceStopOverheat/ResetForReplay
+    // which both restart the loop afterward. The interval coroutine runs
+    // on its own timer independent of which UI screen is showing, so
+    // without this it kept warning/overheating/vibrating behind the
+    // Win/Lose screen.
+    public void StopForRoundEnd()
+    {
+        StopAllCoroutines();
+        isOverheating = false;
+        HideUI();
+        HideShakeIcon();
+    }
+
     // Called when a replay starts (or any time the overheat cycle needs a
     // clean restart). Unlike ForceStopOverheat, this also clears
     // hasShownDialogue so the intro warning line plays again next match,

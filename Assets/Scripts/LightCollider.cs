@@ -27,6 +27,7 @@ public class LightCollider : MonoBehaviour
 
     private bool IsAuthoritative =>
         playerController != null &&
+        (RoundManager.Instance == null || RoundManager.Instance.inGame) &&
         (playerController.isPlayerController || (SocketHandler.instance != null && SocketHandler.instance.isSinglePlayerMode));
 
     private void OnTriggerStay(Collider other)

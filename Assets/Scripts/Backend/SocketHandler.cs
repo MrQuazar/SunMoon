@@ -264,6 +264,17 @@ public class SocketHandler : MonoBehaviour
         WebSocketMessage receivedMessage = JsonUtility.FromJson<WebSocketMessage>(message);
         string type = receivedMessage.type;
 
+        // Once our round has ended (win/lose/quit) or hasn't started yet,
+        // ignore anything that's only meaningful mid-round. Without this, a
+        // message the opponent's client sent just before IT froze too
+        // (their overheat/eclipse/plant conversion, one more position tick)
+        // can still land here and swap cameras, move the remote cube, or
+        // force-convert a plant behind the Win/Lose screen.
+        bool isGameplayOnlyMessage = type == "receive_data" || type == "plant_convert"
+            || type == "eclipse_start" || type == "eclipse_end";
+        if (isGameplayOnlyMessage && !hasGameStarted)
+            return;
+
         if (type == "connected")
         {
             Debug.Log("Received connected message. My ID: " + receivedMessage.clientId);

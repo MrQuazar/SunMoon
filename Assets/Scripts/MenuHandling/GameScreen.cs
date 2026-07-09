@@ -43,6 +43,36 @@ public class GameScreen : Screens
     {
         //settings.onClick.RemoveListener(OnSettingsPress);
         quitBtn.onClick.RemoveListener(OnQuitPress);
+
+        // This screen is being hidden - whether because we won, lost, or
+        // quit. Whatever the reason, gameplay should stop right here:
+        // otherwise OverheatCollider's interval coroutine, plant hover
+        // conversions, and position sync all keep running (and making
+        // noise/network traffic) behind the Win/Lose screen, since none of
+        // that is otherwise tied to this screen's visibility.
+        StopGameplay();
+    }
+
+    private void StopGameplay()
+    {
+        if (roundManager != null)
+            roundManager.inGame = false;
+
+        if (overheatColliders != null)
+        {
+            foreach (OverheatCollider oc in overheatColliders)
+            {
+                if (oc != null)
+                    oc.StopForRoundEnd();
+            }
+        }
+
+        // Stops SocketHandler.FixedUpdate's per-frame SendData loop, and
+        // (paired with the SocketHandler-side guard) tells this client to
+        // ignore any late in-round messages the opponent's client sends
+        // before it also finishes freezing.
+        if (SocketHandler.instance != null)
+            SocketHandler.instance.hasGameStarted = false;
     }
 
     private void OnSettingsPress()
