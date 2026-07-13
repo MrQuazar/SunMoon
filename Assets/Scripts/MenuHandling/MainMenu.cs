@@ -41,10 +41,12 @@ public class MainMenu : Screens
 
     private void OnSettingsPress()
     {
+        AudioManager.Instance.PlaySFX(menuHandler.click1);
         menuHandler.ChangeScreen(menuHandler.settings);
     }
     private void OnTutorialPress()
     {
+        AudioManager.Instance.PlaySFX(menuHandler.click1);
         menuHandler.ChangeScreen(menuHandler.tutorial);
     }
     private void OnHostPress()
@@ -84,6 +86,7 @@ public class MainMenu : Screens
     }
     private void OnJoinPress()
     {
+        AudioManager.Instance.PlaySFX(menuHandler.click1);
         menuHandler.ChangeScreen(menuHandler.joinGame);
     }
 }

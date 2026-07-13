@@ -98,14 +98,17 @@ public class OverheatCollider : MonoBehaviour
     {
         isOverheating = true;
 
-        if (actionButton != null)
-            actionButton.gameObject.SetActive(true);
+        if (playerController.isPlayerController)
+        {
+            if (actionButton != null)
+                actionButton.gameObject.SetActive(true);
 
-        StartCoroutine(OverheatCountdown());
-        Vibrate();
-        ShowShakeIcon();
+            StartCoroutine(OverheatCountdown());
+            Vibrate();
+            ShowShakeIcon();
 
-        Debug.Log("OVERHEAT STARTED");
+            Debug.Log("OVERHEAT STARTED");
+        }
     }
 
     //Reduce actionbutton fill
@@ -137,11 +140,20 @@ public class OverheatCollider : MonoBehaviour
 
         if (actionButton != null)
             actionButton.gameObject.SetActive(false);
+
+        hasShownDialogue = false; // Reset for next overheat cycle 
     }
 
     private void OnTriggerStay(Collider other)
     {
         if (!isOverheating) return;
+
+        // Same reasoning as LightCollider: every client has both an overheat
+        // collider for the Sun and one for the Moon in its scene, but only
+        // the one attached to this client's own controlled player is
+        // allowed to force a plant's state locally. The other player's
+        // overheat conversions only ever arrive via the server.
+        if (playerController == null || !playerController.isPlayerController) return;
 
         PlantHandler plant = other.GetComponentInParent<PlantHandler>();
         if (plant == null) return;
@@ -158,6 +170,34 @@ public class OverheatCollider : MonoBehaviour
         HideShakeIcon();
         Vibrate();
         StartCoroutine(OverheatRoutine());
+    }
+
+    // Permanently stops the overheat cycle - used when the round has
+    // actually ended (win/lose), unlike ForceStopOverheat/ResetForReplay
+    // which both restart the loop afterward. The interval coroutine runs
+    // on its own timer independent of which UI screen is showing, so
+    // without this it kept warning/overheating/vibrating behind the
+    // Win/Lose screen.
+    public void StopForRoundEnd()
+    {
+        StopAllCoroutines();
+        isOverheating = false;
+        HideUI();
+        HideShakeIcon();
+    }
+
+    // Called when a replay starts (or any time the overheat cycle needs a
+    // clean restart). Unlike ForceStopOverheat, this also clears
+    // hasShownDialogue so the intro warning line plays again next match,
+    // and doesn't vibrate/count as a player-triggered stop.
+    public void ResetForReplay()
+    {
+        StopAllCoroutines();
+        isOverheating = false;
+        hasShownDialogue = false;
+        HideUI();
+        HideShakeIcon();
+        if(gameObject.activeInHierarchy) StartCoroutine(OverheatRoutine());
     }
 
     void Vibrate()

@@ -15,7 +15,7 @@ public class SocketHandler : MonoBehaviour
 
     [SerializeField] private bool useLocalhost = false; // Toggle this in the Inspector to switch between local and remote server
     private string baseURLLocal = "localhost:8000";
-    private string baseURLRemote = "10.219.193.252:8000";
+    private string baseURLRemote = "10.26.128.152:8000";
 
     // URL to your WebSocket server
     private string serverUrl = "ws://172.24.144.152:8000/ws"; // Change this to your server URL
@@ -40,6 +40,8 @@ public class SocketHandler : MonoBehaviour
 
     internal bool isEclipseActive = false;
 
+    internal int timeout = 10000; // Default timeout value in milliseconds
+
     // Track the last time an eclipse request was sent
     private DateTime timeSpan = DateTime.MinValue;
 
@@ -50,6 +52,14 @@ public class SocketHandler : MonoBehaviour
     public event Action OnReplayRequestedByOpponent; // opponent asked for a rematch, we haven't yet
     public event Action OnReplayStart;               // both players agreed, restart the session now
     public event Action<string> OnOpponentQuit;      // opponent quit (arg = their clientId); show "player quit" UI then go to main menu
+
+    // ---------- World generation sync ----------
+    // Both clients receive the same seed from the server (assigned once per
+    // room in room_joined). Subscribe to this to trigger Planet + Spawner
+    // generation only once the shared seed is known, instead of generating
+    // independently in each script's own Start().
+    public int worldSeed = -1;
+    public event Action<int> OnWorldSeedReady;
 
     private bool hasQuit = false;
 
@@ -68,8 +78,9 @@ public class SocketHandler : MonoBehaviour
         lobbyManager = GetComponent<LobbyManager>();
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
+        yield return new WaitForSeconds(1f); // Wait a frame to ensure PlayerPrefs are loaded
         if (useLocalhost)
         {
             serverUrl = "ws://" + baseURLLocal + "/ws";
@@ -78,9 +89,10 @@ public class SocketHandler : MonoBehaviour
         }
         else
         {
-            serverUrl = "ws://" + baseURLRemote + "/ws";
-            httpUrl = "http://" + baseURLRemote;
+            serverUrl = "ws://" + FirebaseRemoteConfigConstants.BASE_URL + "/ws";
+            httpUrl = "http://" + FirebaseRemoteConfigConstants.BASE_URL;
         }
+        yield return null;
     }
 
     private void FixedUpdate()
@@ -252,6 +264,17 @@ public class SocketHandler : MonoBehaviour
         WebSocketMessage receivedMessage = JsonUtility.FromJson<WebSocketMessage>(message);
         string type = receivedMessage.type;
 
+        // Once our round has ended (win/lose/quit) or hasn't started yet,
+        // ignore anything that's only meaningful mid-round. Without this, a
+        // message the opponent's client sent just before IT froze too
+        // (their overheat/eclipse/plant conversion, one more position tick)
+        // can still land here and swap cameras, move the remote cube, or
+        // force-convert a plant behind the Win/Lose screen.
+        bool isGameplayOnlyMessage = type == "receive_data" || type == "plant_convert"
+            || type == "eclipse_start" || type == "eclipse_end";
+        if (isGameplayOnlyMessage && !hasGameStarted)
+            return;
+
         if (type == "connected")
         {
             Debug.Log("Received connected message. My ID: " + receivedMessage.clientId);
@@ -290,6 +313,15 @@ public class SocketHandler : MonoBehaviour
             Debug.Log("Joined room successfully: " + receivedMessage.roomId);
             roomID = receivedMessage.roomId;
             players = receivedMessage.players;
+
+            // Shared world seed from the server, generated once per room.
+            // Both players receive the same value here, before HandleStartGame
+            // fires, so Planet + Spawner generation is identical on both ends.
+            if (receivedMessage.seed != -1)
+            {
+                worldSeed = receivedMessage.seed;
+            }
+
             if (MainMenu.instance != null)
             {
                 if (players[0] == myID)
@@ -311,15 +343,23 @@ public class SocketHandler : MonoBehaviour
             Debug.Log("Eclipse started!");
             isEclipseActive = true;
             isPlayerSun = players.Length > 0 && players[0] == myID; // First player is Sun, second is Moon
-
+            timeout = receivedMessage.timeout; // Set the timeout value from the received message
             // LobbyManager lobbyManager = gameObject.GetComponent<LobbyManager>();
             lobbyManager.eclipse.transform.position = lobbyManager.player1.transform.position;
-            // lobbyManager.eclipse.transform.localRotation = lobbyManager.player1.transform.localRotation;
+            lobbyManager.eclipse.transform.localRotation = lobbyManager.player1.transform.localRotation;
             if (isPlayerSun)
             {
                 cube1 = lobbyManager.eclipse.transform;
                 lobbyManager.eclipse.GetComponent<PlayerController>().isPlayerController = true;
+                // lobbyManager.eclipse.GetComponent<PlayerController>().StartEclipse();
+
             }
+            else
+            {
+                cube2 = lobbyManager.eclipse.transform;
+                lobbyManager.eclipse.GetComponent<PlayerController>().isPlayerController = false;
+            }
+            lobbyManager.eclipse.GetComponent<PlayerController>().StartEclipse();
             lobbyManager.eclipse.gameObject.SetActive(true);
             lobbyManager.HandleEclipseCameraTransition();
             lobbyManager.player1.gameObject.SetActive(false);
@@ -340,6 +380,11 @@ public class SocketHandler : MonoBehaviour
             {
                 cube1 = lobbyManager.player1.transform;
                 lobbyManager.eclipse.GetComponent<PlayerController>().isPlayerController = false;
+                lobbyManager.eclipse.GetComponent<PlayerController>().EndEclipse();
+            }
+            else
+            {
+                cube2 = lobbyManager.player2.transform;
             }
             lobbyManager.HandleCameraTransition();
             lobbyManager.eclipse.gameObject.SetActive(false);
@@ -374,9 +419,22 @@ public class SocketHandler : MonoBehaviour
             // jump back into the game screen using the same room.
             Debug.Log("Replay starting.");
             players = receivedMessage.players;
-            hasGameStarted = false;
+
+            // Clear anything left over from the previous match. Previously
+            // hasGameStarted was reset to false here and never set back to
+            // true, which silently froze RoundManager's timer (it gates on
+            // hasGameStarted) and stopped position sync in FixedUpdate.
             isEclipseActive = false;
+            isSameDirection = false;
+            eclipseDirection = -1;
+            timeSpan = DateTime.MinValue;
+            previousLocation = Vector3.zero;
+
+            // Subscribers (GameScreen, RoundManager, OverheatCollider,
+            // LobbyManager) do their local resets in response to this event.
             OnReplayStart?.Invoke();
+
+            hasGameStarted = true;
         }
         else if (type == "opponent_quit")
         {
@@ -386,10 +444,33 @@ public class SocketHandler : MonoBehaviour
             hasGameStarted = false;
             OnOpponentQuit?.Invoke(receivedMessage.clientId);
         }
+        else if (type == "plant_convert")
+        {
+            // The OTHER player's client caused this conversion (their Sun/Moon
+            // hover, eclipse, or overheat). Force our copy of the same plant
+            // to match - this is authoritative, not another vote toward a
+            // locally-simulated hover.
+            ApplyRemotePlantConversion(receivedMessage.plantId, receivedMessage.state, receivedMessage.timestamp);
+        }
         else
         {
             Debug.Log("Unknown message type: " + type);
         }
+    }
+
+    private void ApplyRemotePlantConversion(int plantId, int state, long serverTimestamp)
+    {
+        if (plantId < 0) return;
+        if (RoundManager.Instance == null || RoundManager.Instance.plants == null) return;
+        if (plantId >= RoundManager.Instance.plants.Count) return;
+
+        GameObject plantObj = RoundManager.Instance.plants[plantId];
+        if (plantObj == null) return;
+
+        PlantHandler plant = plantObj.GetComponent<PlantHandler>();
+        if (plant == null) return;
+
+        plant.ApplyNetworkState((PlantHandler.PlantState)state, serverTimestamp);
     }
 
     // Ensure the WebSocket is closed properly when the object is destroyed
@@ -431,6 +512,12 @@ public class SocketHandler : MonoBehaviour
         // LobbyManager lobbyManager = gameObject.GetComponent<LobbyManager>();
         lobbyManager.roomCreated = true;
         lobbyManager.isPlayerSun = isPlayerSun;
+
+        // Both clients now have the same worldSeed (received in room_joined).
+        // Fire the event so Planet + Spawner generate identical terrain and
+        // spawn placements before the game screen is shown.
+        OnWorldSeedReady?.Invoke(worldSeed);
+
         MenuHandler.instance.ChangeScreen(MenuHandler.instance.gameScreen);
         hasGameStarted = true;
     }
@@ -457,13 +544,37 @@ public class SocketHandler : MonoBehaviour
         lobbyManager.isPlayerSun = true;
         lobbyManager.roomCreated = true;
 
+        // No server involved in single-player, so there's no room_joined
+        // message to supply a seed — pick a local one so world generation
+        // still fires the same way it does in the networked flow.
+        worldSeed = UnityEngine.Random.Range(0, int.MaxValue);
+        OnWorldSeedReady?.Invoke(worldSeed);
+
         hasGameStarted = true;
 
         MenuHandler.instance.ChangeScreen(MenuHandler.instance.gameScreen);
     }
 
+    // ---------- Plant conversion sync ----------
+    // Called by PlantHandler whenever a LOCAL (this device's own, authoritative)
+    // collision caused a state change - never for a change that itself arrived
+    // from the network, so this can't ping-pong.
+    public void SendPlantConversion(int plantId, int state)
+    {
+        if (ws == null || isSinglePlayerMode || string.IsNullOrEmpty(roomID)) return;
+
+        WebSocketMessage msg = new WebSocketMessage
+        {
+            type = "plant_convert",
+            roomId = roomID,
+            plantId = plantId,
+            state = state
+        };
+        ws.Send(JsonUtility.ToJson(msg));
+    }
+
     [ContextMenu("Send Eclipse Request")]
-    internal void SendEclipseRequest()
+    public void SendEclipseRequest()
     {
         if (DateTime.Now - timeSpan < TimeSpan.FromSeconds(60))
         {
@@ -548,6 +659,11 @@ public class WebSocketMessage
     public Vector3 pos; // Example additional field for position data
     public string[] players; // Example additional field for player list
     public int direction = -1;   // 0 = left, 1 = right, 2 = up, 3 = down
+    public int timeout = 10000;
+    public int seed = -1;        // Shared world seed for Planet + Spawner generation
+    public int plantId = -1;     // Index into Spawner/RoundManager's plant list
+    public int state = -1;       // PlantHandler.PlantState as int, for plant_convert
+    public long timestamp = 0;   // Server-assigned time a plant_convert was relayed at
 }
 
 [Serializable]

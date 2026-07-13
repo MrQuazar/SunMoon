@@ -8,6 +8,9 @@ public class MusicToggleHandler : MonoBehaviour
     public Image image;
     public Button button;
 
+    [Header("Sounds")]
+    public AudioClip click1;
+
     public bool state
     {
         get => PlayerPrefs.GetInt("MusicEnabled", 1) == 1;
@@ -26,7 +29,7 @@ public class MusicToggleHandler : MonoBehaviour
     {
         state = !state;
         AudioManager.Instance.MuteMusic(!state);
-
+        AudioManager.Instance.PlaySFX(click1);
         if (state)
         {
             image.sprite = onSprite;
