@@ -528,6 +528,13 @@ public class SocketHandler : MonoBehaviour
 
         Debug.Log("Quit game, room " + roomID);
     }
+
+    
+    internal void SetServerAddress(string ip, int port)
+    {
+        serverUrl = $"ws://{ip}:{port}/ws";
+        httpUrl = $"http://{ip}:{port}";
+    }
 }
 
 // Define a simple class for JSON serialization

@@ -22,6 +22,11 @@ public class JoinMenu : Screens
     {
         AddListeners();
         joinGameButton.interactable = false;
+        LanHostDiscovery.Instance.StartListening(ip =>
+        {
+        SocketHandler.instance.SetServerAddress(ip, 8000);
+        joinGameButton.interactable = roomCodeInput.text.Length == 5;
+        });
     }
 
     private void OnDisable()

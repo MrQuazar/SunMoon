@@ -49,6 +49,11 @@ public class MainMenu : Screens
     }
     private void OnHostPress()
     {
+        Debug.Log("Host button pressed. Starting server and creating room.");
+        AudioManager.Instance.PlaySFX(menuHandler.click1);
+        EmbeddedGameServer.Instance.StartServer(8000);
+        LanHostDiscovery.Instance.StartBroadcasting();
+        SocketHandler.instance.SetServerAddress("127.0.0.1", 8000);
         SocketHandler.instance.CreateNewRoomRequest();
     }
 
