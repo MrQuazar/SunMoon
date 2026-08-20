@@ -162,11 +162,11 @@ joystick controls
 
 This project was created in 3 days by:
 
-- Aartem Singh
-- Abbas Kagalwala
-- Rafael
-- Mawrah Khan
-- Tanti Harsh
+- Mawrah Khan (Level Designer & Game Designer)
+- Tanti Harsh (Game artist & Sound Engineer)
+- Aartem Singh (Gameplay Developer)
+- Abbas Kagalwala (Backend Engineer) 
+- Rafael (Animation & special effects)
 
 ---
 
