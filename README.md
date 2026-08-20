@@ -183,9 +183,9 @@ feedback:
 
 ---
 
-# 🔗 Repository
+# 🔗 Download
 
-GitHub Repo: https://github.com/MrQuazar/SunMoon
+Download Link: (https://drive.google.com/drive/folders/1wQc11dHf73zuvE_fBKyDMFg2GIVGWanl?usp=sharing)
 
 ---
 
